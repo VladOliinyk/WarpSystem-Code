@@ -28,6 +28,7 @@ public class Options implements Serializable {
 
         customMessage = d.getString("custom_message", null);
         delay = d.getInteger("delay", null);
+        if(delay != null && delay == -1) delay = 0;
 
         i = d.getInteger("rotation", null);
         if(i == null) rotation = null;
@@ -39,7 +40,7 @@ public class Options implements Serializable {
     public void write(DataWriter d) {
         d.put("message", message == null ? 0 : (message ? 2 : 1));
         d.put("custom_message", customMessage);
-        d.put("delay", delay);
+        d.put("delay", delay == null ? null : (delay == 0 ? -1 : delay));
         d.put("rotation", rotation == null ? 0 : (rotation ? 2 : 1));
     }
 
