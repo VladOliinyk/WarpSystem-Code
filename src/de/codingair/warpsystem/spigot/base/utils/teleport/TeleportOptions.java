@@ -5,9 +5,8 @@ import de.codingair.codingapi.server.sounds.SoundData;
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.utils.ImprovedDouble;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
-import de.codingair.warpsystem.spigot.base.guis.editor.pages.TeleportSoundPage;
+import de.codingair.warpsystem.spigot.base.guis.editor.pages.SoundPage;
 import de.codingair.warpsystem.spigot.base.language.Lang;
-import de.codingair.warpsystem.spigot.base.managers.TeleportManager;
 import de.codingair.warpsystem.spigot.base.utils.money.Bank;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.LocationAdapter;
@@ -175,7 +174,7 @@ public class TeleportOptions {
 
     public SoundData getTeleportSound() {
         if(teleportSound == null) teleportSound = AnimationManager.getInstance().getActive().getTeleportSound();
-        if(this.teleportSound == null) this.teleportSound = TeleportSoundPage.createStandard();
+        if(this.teleportSound == null) this.teleportSound = SoundPage.createStandard();
         return teleportSound;
     }
 

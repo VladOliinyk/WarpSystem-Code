@@ -23,12 +23,12 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeleportSoundPage extends PageItem {
+public class SoundPage extends PageItem {
     private final SoundData soundData;
     private final Sound[] sounds = Sound.values();
 
-    public TeleportSoundPage(Player player, String title, SoundData soundData) {
-        super(player, title, new ItemBuilder(XMaterial.NOTE_BLOCK).setName(Editor.ITEM_TITLE_COLOR + Lang.get("Teleport_Sound")).getItem(), false);
+    public SoundPage(Player player, String title, SoundData soundData) {
+        super(player, title, new ItemBuilder(XMaterial.NOTE_BLOCK).setName(Editor.ITEM_TITLE_COLOR + Lang.get("Sound")).getItem(), false);
         this.soundData = soundData;
         initialize(player);
     }
@@ -106,8 +106,10 @@ public class TeleportSoundPage extends PageItem {
 
             @Override
             public void onClose(AnvilCloseEvent e) {
-                soundData.play(p);
-                update();
+                if(e.getSubmittedText() != null) {
+                    soundData.play(p);
+                    update();
+                }
             }
 
             @Override
@@ -160,7 +162,7 @@ public class TeleportSoundPage extends PageItem {
             @Override
             public ItemStack craftItem() {
                 return new ItemBuilder(XMaterial.MUSIC_DISC_CAT)
-                        .setName(Editor.ITEM_TITLE_COLOR + Lang.get("Teleport_Sound") + "§8 (§7" + (sounds.length - 1) + "§8)")
+                        .setName(Editor.ITEM_TITLE_COLOR + Lang.get("Sound") + "§8 (§7" + (sounds.length - 1) + "§8)")
                         .addLore(Editor.ITEM_SUB_TITLE_COLOR + Lang.get("Current") + ": §7'" + (searchingFor == null ? soundData.getSound().name() : ChatColor.highlight(soundData.getSound().name(), searchingFor, "§e", "§7")) + "§7' §8(§7id: " + soundData.getSound().ordinal() + "§8)")
                         .addLore(soundData.getSound().isSupported() ? null : "§8» §7" + Lang.get("Not_Available_in_Version").replace("%VERSION%", Version.get().getShortVersionName()))
                         .addLore(soundData.getSound().isSupported() ? null : "")

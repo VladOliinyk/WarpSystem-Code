@@ -43,10 +43,7 @@ public class SignListener implements Listener {
 
                     s.update(true, true);
 
-                    WarpSign clone = sign.clone();
-                    if(clone.getDestination() == null) clone.setDestination(new Destination());
-
-                    Bukkit.getScheduler().runTaskLater(WarpSystem.getInstance(), () -> new WarpSignGUI(e.getPlayer(), sign, clone).open(), 1L);
+                    Bukkit.getScheduler().runTaskLater(WarpSystem.getInstance(), () -> new WarpSignGUI(e.getPlayer(), sign).open(), 1L);
                     return;
                 }
 
@@ -95,7 +92,7 @@ public class SignListener implements Listener {
 
         if(e.getLine(0).equalsIgnoreCase("[warps]")) {
             WarpSign sign = new WarpSign(Location.getByLocation(e.getBlock().getLocation()), new Destination());
-            Bukkit.getScheduler().runTaskLater(WarpSystem.getInstance(), () -> new WarpSignGUI(e.getPlayer(), sign, sign.clone()).open(), 1L);
+            Bukkit.getScheduler().runTaskLater(WarpSystem.getInstance(), () -> new WarpSignGUI(e.getPlayer(), sign).open(), 1L);
         }
     }
 

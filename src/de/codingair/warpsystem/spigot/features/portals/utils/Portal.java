@@ -8,11 +8,8 @@ import de.codingair.codingapi.tools.Location;
 import de.codingair.codingapi.tools.io.JSON.JSON;
 import de.codingair.codingapi.tools.io.lib.JSONArray;
 import de.codingair.codingapi.tools.io.utils.DataWriter;
-import de.codingair.warpsystem.spigot.base.guis.editor.pages.TeleportSoundPage;
 import de.codingair.warpsystem.spigot.base.managers.PostWorldManager;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.FeatureObject;
-import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Action;
-import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.TeleportSoundAction;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.WarpAction;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
 import de.codingair.warpsystem.spigot.base.utils.teleport.TeleportOptions;
@@ -24,7 +21,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Portal extends FeatureObject {
     private boolean editMode = false;
@@ -530,26 +526,6 @@ public class Portal extends FeatureObject {
 
     public Portal clone() {
         return new Portal(this);
-    }
-
-    public Destination getDestination() {
-        return hasAction(Action.WARP) ? ((WarpAction) getAction(Action.WARP)).getValue() : null;
-    }
-
-    public Portal setDestination(Destination destination) {
-        if(destination == null) removeAction(Action.WARP);
-        else addAction(new WarpAction(destination));
-        return this;
-    }
-
-    public Portal createDestinationIfAbsent() {
-        if(getDestination() == null) setDestination(new Destination());
-        return this;
-    }
-
-    public Portal createTeleportSoundIfAbsent() {
-        if(!hasAction(Action.TELEPORT_SOUND)) addAction(new TeleportSoundAction(TeleportSoundPage.createStandard()));
-        return this;
     }
 
     public String getDisplayName() {

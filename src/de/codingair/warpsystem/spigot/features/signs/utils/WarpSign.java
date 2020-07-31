@@ -38,15 +38,6 @@ public class WarpSign extends FeatureObject {
         return location;
     }
 
-    public Destination getDestination() {
-        return hasAction(Action.WARP) ? ((WarpAction) getAction(Action.WARP)).getValue() : null;
-    }
-
-    public void setDestination(Destination destination) {
-        if(destination == null) removeAction(Action.WARP);
-        else addAction(new WarpAction(destination));
-    }
-
     @Override
     public boolean read(DataWriter d) throws Exception {
         super.read(d);

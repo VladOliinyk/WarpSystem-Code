@@ -9,11 +9,11 @@ public enum Action {
     COSTS(2, CostsAction.class),
     BOUND_TO_WORLD(3, BoundAction.class),
     MESSAGE(4, MessageAction.class),
-    TELEPORT_SOUND(5, TeleportSoundAction.class),
+    SOUND(5, SoundAction.class),
     ;
 
-    private int id;
-    private Class<? extends ActionObject<?>> clazz;
+    private final int id;
+    private final Class<? extends ActionObject<?>> clazz;
 
     Action(int id, Class<? extends ActionObject<?>> clazz) {
         this.id = id;

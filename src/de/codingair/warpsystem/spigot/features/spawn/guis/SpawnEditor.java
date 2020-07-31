@@ -1,8 +1,5 @@
 package de.codingair.warpsystem.spigot.features.spawn.guis;
 
-import de.codingair.codingapi.server.sounds.MusicData;
-import de.codingair.codingapi.server.sounds.Sound;
-import de.codingair.codingapi.server.sounds.SoundData;
 import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.items.XMaterial;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
@@ -55,14 +52,6 @@ public class SpawnEditor extends Editor<Spawn> {
                 clone.destroy();
             }
         }, () -> new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE).setHideName(true).getItem(), new POptions(p, clone));
-
-        setCancelSound(new SoundData(Sound.ENTITY_ITEM_BREAK, 0.7F, 1F));
-        setOpenSound(new SoundData(Sound.ENTITY_PLAYER_LEVELUP, 0.7F, 1.5F));
-
-        MusicData music0 = new MusicData(Sound.ENTITY_PLAYER_LEVELUP, 0.7F, 0.9F, 0);
-        MusicData music1 = new MusicData(Sound.ENTITY_PLAYER_LEVELUP, 0.7F, 1.2F, 1);
-        music0.setFollower(music1);
-        setSuccessSound(music0);
     }
 
     public static String getMainTitle() {

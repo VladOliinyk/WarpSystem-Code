@@ -60,10 +60,6 @@ public class Shortcut extends FeatureObject {
         return true;
     }
 
-    public Destination getDestination() {
-        return hasAction(Action.WARP) ? ((WarpAction) getAction(Action.WARP)).getValue() : null;
-    }
-
     public String getDisplayName() {
         return displayName;
     }

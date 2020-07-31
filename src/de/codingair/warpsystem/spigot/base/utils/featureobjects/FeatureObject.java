@@ -1,7 +1,6 @@
 package de.codingair.warpsystem.spigot.base.utils.featureobjects;
 
 import com.google.common.base.CharMatcher;
-import de.codingair.codingapi.server.sounds.Sound;
 import de.codingair.codingapi.server.sounds.SoundData;
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.io.JSON.JSON;
@@ -12,13 +11,14 @@ import de.codingair.codingapi.tools.io.utils.DataWriter;
 import de.codingair.codingapi.tools.io.utils.Serializable;
 import de.codingair.codingapi.utils.ImprovedDouble;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
+import de.codingair.warpsystem.spigot.base.guis.editor.pages.SoundPage;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.base.managers.TeleportManager;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Action;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.ActionObject;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.ActionObjectReadException;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.CostsAction;
-import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.TeleportSoundAction;
+import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.SoundAction;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.WarpAction;
 import de.codingair.warpsystem.spigot.base.utils.money.Bank;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Origin;
@@ -70,7 +70,9 @@ public abstract class FeatureObject implements Serializable {
     }
 
     public FeatureObject perform(Player player) {
-        return perform(player, hasAction(Action.WARP) ? getAction(WarpAction.class).getValue().getId() : null, hasAction(Action.WARP) ? getAction(WarpAction.class).getValue() : null, new SoundData(Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 1F), skip, true);
+        WarpAction warp = getAction(WarpAction.class);
+        if(warp != null) return perform(player, warp.getValue().getId(), warp.getValue(), SoundPage.createStandard(), skip, true);
+        else return perform(player, null, null, SoundPage.createStandard(), skip, true);
     }
 
     public FeatureObject perform(Player player, String destName, Destination dest, SoundData sound, boolean skip, boolean afterEffects) {
@@ -91,9 +93,7 @@ public abstract class FeatureObject implements Serializable {
     public void prepareTeleportOptions(String player, TeleportOptions options) {
         if(options.getDestination() == null) options.setDestination(hasAction(Action.WARP) ? getAction(WarpAction.class).getValue() : null);
         if(options.getDisplayName() == null) options.setDisplayName(hasAction(Action.WARP) ? getAction(WarpAction.class).getValue().getId() : null);
-        if(options.getTeleportSound() == null) {
-            if(hasAction(Action.TELEPORT_SOUND)) options.setTeleportSound(getAction(TeleportSoundAction.class).getValue());
-        }
+        if(hasAction(Action.SOUND)) options.setTeleportSound(getAction(SoundAction.class).getValue());
 
         if(options.getSkip() == null) options.setSkip(isSkip());
 
@@ -112,7 +112,7 @@ public abstract class FeatureObject implements Serializable {
                         if(p == null) return;
 
                         for(ActionObject<?> action : actions) {
-                            if(action.getType() == Action.WARP || action.getType() == Action.COSTS || action.getType() == Action.TELEPORT_SOUND || !action.usable()) continue;
+                            if(action.getType() == Action.WARP || action.getType() == Action.COSTS || action.getType() == Action.SOUND || !action.usable()) continue;
                             action.perform(p);
                         }
                     }
@@ -342,6 +342,26 @@ public abstract class FeatureObject implements Serializable {
     @Override
     public int hashCode() {
         throw new IllegalStateException("Outdated feature object");
+    }
+
+    public Destination getDestination() {
+        return hasAction(Action.WARP) ? ((WarpAction) getAction(Action.WARP)).getValue() : null;
+    }
+
+    public <T extends FeatureObject> T setDestination(Destination destination) {
+        if(destination == null) removeAction(Action.WARP);
+        else addAction(new WarpAction(destination));
+        return (T) this;
+    }
+
+    public <T extends FeatureObject> T createDestinationIfAbsent() {
+        if(getDestination() == null) setDestination(new Destination());
+        return (T) this;
+    }
+
+    public <T extends FeatureObject> T createTeleportSoundIfAbsent() {
+        if(!hasAction(Action.SOUND)) addAction(new SoundAction(SoundPage.createStandard()));
+        return (T) this;
     }
 
     public <T extends ActionObject<?>> T getAction(Action action) {

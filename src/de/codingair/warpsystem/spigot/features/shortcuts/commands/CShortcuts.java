@@ -6,8 +6,6 @@ import de.codingair.codingapi.server.commands.builder.special.MultiCommandCompon
 import de.codingair.warpsystem.spigot.api.WSCommandBuilder;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;
-import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.WarpAction;
-import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
 import de.codingair.warpsystem.spigot.features.shortcuts.guis.GEditor;
 import de.codingair.warpsystem.spigot.features.shortcuts.managers.ShortcutManager;
 import de.codingair.warpsystem.spigot.features.shortcuts.utils.Shortcut;
@@ -59,10 +57,7 @@ public class CShortcuts extends WSCommandBuilder {
             @Override
             public boolean runCommand(CommandSender sender, String label, String argument, String[] args) {
                 Shortcut shortcut = new Shortcut(null, argument.toLowerCase());
-                Shortcut clone = shortcut.clone();
-                clone.addAction(new WarpAction(new Destination()));
-
-                new GEditor((Player) sender, shortcut, clone).open();
+                new GEditor((Player) sender, shortcut).open();
                 return false;
             }
         }.setOnlyPlayers(true));
@@ -92,10 +87,7 @@ public class CShortcuts extends WSCommandBuilder {
                     return false;
                 }
 
-                Shortcut clone = shortcut.clone();
-                if(clone.getDestination() == null) clone.addAction(new WarpAction(new Destination()));
-
-                new GEditor((Player) sender, shortcut, clone).open();
+                new GEditor((Player) sender, shortcut).open();
                 return false;
             }
         }.setOnlyPlayers(true));

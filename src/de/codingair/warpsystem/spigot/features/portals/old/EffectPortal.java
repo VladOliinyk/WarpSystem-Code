@@ -8,10 +8,10 @@ import de.codingair.codingapi.tools.Location;
 import de.codingair.codingapi.tools.io.utils.DataWriter;
 import de.codingair.codingapi.utils.Removable;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
-import de.codingair.warpsystem.spigot.base.guis.editor.pages.TeleportSoundPage;
+import de.codingair.warpsystem.spigot.base.guis.editor.pages.SoundPage;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.FeatureObject;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Action;
-import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.TeleportSoundAction;
+import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.SoundAction;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.WarpAction;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.DestinationType;
@@ -63,7 +63,7 @@ public class EffectPortal extends FeatureObject implements Removable {
         portal.getHologram().setHeight(0);
         portal.getHologram().setVisible(holoStatus);
 
-        if(!TeleportSoundPage.isStandardSound(teleportSound)) portal.addAction(new TeleportSoundAction(teleportSound));
+        if(!SoundPage.isStandardSound(teleportSound)) portal.addAction(new SoundAction(teleportSound));
 
         return portal;
     }
@@ -229,10 +229,6 @@ public class EffectPortal extends FeatureObject implements Removable {
 
     public boolean useLink() {
         return useLink && link != null;
-    }
-
-    public Destination getDestination() {
-        return hasAction(Action.WARP) ? getAction(WarpAction.class).getValue() : null;
     }
 
     public boolean hasDestinationPortal() {

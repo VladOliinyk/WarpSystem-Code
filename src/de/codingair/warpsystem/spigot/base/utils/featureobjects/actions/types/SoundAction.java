@@ -3,16 +3,17 @@ package de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types;
 import de.codingair.codingapi.server.sounds.Sound;
 import de.codingair.codingapi.server.sounds.SoundData;
 import de.codingair.codingapi.tools.io.utils.DataWriter;
+import de.codingair.warpsystem.spigot.base.guis.editor.pages.SoundPage;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Action;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.ActionObject;
 import org.bukkit.entity.Player;
 
-public class TeleportSoundAction extends ActionObject<SoundData> {
-    public TeleportSoundAction(SoundData value) {
-        super(Action.TELEPORT_SOUND, value);
+public class SoundAction extends ActionObject<SoundData> {
+    public SoundAction(SoundData value) {
+        super(Action.SOUND, value);
     }
 
-    public TeleportSoundAction() {
+    public SoundAction() {
         this(null);
     }
 
@@ -24,12 +25,12 @@ public class TeleportSoundAction extends ActionObject<SoundData> {
 
     @Override
     public ActionObject<SoundData> clone() {
-        return new TeleportSoundAction(new SoundData(getValue().getSound(), getValue().getVolume(), getValue().getPitch()));
+        return new SoundAction(new SoundData(getValue().getSound(), getValue().getVolume(), getValue().getPitch()));
     }
 
     @Override
     public boolean usable() {
-        return getValue() != null && getValue().getSound() != null;
+        return getValue() != null && getValue().getSound() != null && !SoundPage.isStandardSound(getValue());
     }
 
     @Override

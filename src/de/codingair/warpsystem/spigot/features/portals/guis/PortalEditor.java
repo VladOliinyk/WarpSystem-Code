@@ -2,19 +2,15 @@ package de.codingair.warpsystem.spigot.features.portals.guis;
 
 import de.codingair.codingapi.API;
 import de.codingair.codingapi.player.gui.inventory.gui.simple.SyncButton;
-import de.codingair.codingapi.server.sounds.MusicData;
-import de.codingair.codingapi.server.sounds.Sound;
-import de.codingair.codingapi.server.sounds.SoundData;
 import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.items.XMaterial;
 import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.warpsystem.spigot.base.guis.editor.Backup;
 import de.codingair.warpsystem.spigot.base.guis.editor.Editor;
 import de.codingair.warpsystem.spigot.base.guis.editor.pages.DestinationPage;
-import de.codingair.warpsystem.spigot.base.guis.editor.pages.TeleportSoundPage;
+import de.codingair.warpsystem.spigot.base.guis.editor.pages.SoundPage;
 import de.codingair.warpsystem.spigot.base.language.Lang;
-import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Action;
-import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.TeleportSoundAction;
+import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.SoundAction;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Origin;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.DestinationType;
 import de.codingair.warpsystem.spigot.features.portals.guis.pages.PAnimations;
@@ -43,9 +39,6 @@ public class PortalEditor extends Editor<Portal> {
         super(p, clone, new Backup<Portal>(portal) {
             @Override
             public void applyTo(Portal value) {
-                if(clone.getDestination() != null && clone.getDestination().getId() == null) clone.setDestination(null);
-                if(clone.hasAction(Action.TELEPORT_SOUND) && TeleportSoundPage.isStandardSound(clone.getAction(TeleportSoundAction.class).getValue())) clone.removeAction(Action.TELEPORT_SOUND);
-
                 String oldName = ChatColor.stripColor(portal.getDisplayName());
                 String newName = ChatColor.stripColor(clone.getDisplayName());
 
@@ -130,19 +123,11 @@ public class PortalEditor extends Editor<Portal> {
             public boolean canClick(ClickType click) {
                 return click == ClickType.LEFT || click == ClickType.RIGHT;
             }
-        }), new TeleportSoundPage(p, getMainTitle(), clone.getAction(TeleportSoundAction.class).getValue()));
+        }), new SoundPage(p, getMainTitle(), clone.getAction(SoundAction.class).getValue()));
 
         portal.setEditing(clone);
         this.clone = clone;
         updateControllButtons();
-
-        setCancelSound(new SoundData(Sound.ENTITY_ITEM_BREAK, 0.7F, 1F));
-        setOpenSound(new SoundData(Sound.ENTITY_PLAYER_LEVELUP, 0.7F, 1.5F));
-
-        MusicData music0 = new MusicData(Sound.ENTITY_PLAYER_LEVELUP, 0.7F, 0.9F, 0);
-        MusicData music1 = new MusicData(Sound.ENTITY_PLAYER_LEVELUP, 0.7F, 1.2F, 1);
-        music0.setFollower(music1);
-        setSuccessSound(music0);
     }
 
     public static String getMainTitle() {
