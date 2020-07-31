@@ -954,6 +954,10 @@ public class PermissionPlayer implements Player {
         return 0;
     }
 
+    public float getAttackCooldown() {
+        return 0;
+    }
+
     public double getEyeHeight() {
         return 0;
     }
@@ -1124,6 +1128,10 @@ public class PermissionPlayer implements Player {
 
     public boolean isCollidable() {
         return false;
+    }
+
+    public Set<UUID> getCollidableExemptions() {
+        return null;
     }
 
     public void setCollidable(boolean b) {

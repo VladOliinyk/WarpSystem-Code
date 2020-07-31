@@ -6,8 +6,8 @@ import de.codingair.codingapi.files.FileManager;
 import de.codingair.codingapi.server.reflections.IReflection;
 import de.codingair.codingapi.server.specification.Type;
 import de.codingair.codingapi.server.specification.Version;
-import de.codingair.codingapi.time.TimeFetcher;
-import de.codingair.codingapi.time.Timer;
+import de.codingair.codingapi.tools.time.TimeFetcher;
+import de.codingair.codingapi.tools.time.Timer;
 import de.codingair.codingapi.utils.Value;
 import de.codingair.warpsystem.spigot.api.SpigotAPI;
 import de.codingair.warpsystem.spigot.base.commands.CWarpSystem;
@@ -29,7 +29,6 @@ import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
 import de.codingair.warpsystem.transfer.packets.spigot.RequestInitialPacket;
 import de.codingair.warpsystem.transfer.spigot.SpigotDataHandler;
 import de.codingair.warpsystem.utils.Manager;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -239,10 +238,8 @@ public class WarpSystem extends JavaPlugin {
             this.startAutoSaver();
             afterOnEnable();
 
-            timer.stop();
-
             log(" ");
-            log("Finished (" + timer.getLastStoppedTime() + "s)");
+            log("Finished (" + timer.result() + ")");
             log(" ");
             log("__________________________________________________________");
             log(" ");
@@ -345,10 +342,6 @@ public class WarpSystem extends JavaPlugin {
 
         API.getInstance().onDisable(this);
         SpigotAPI.getInstance().onDisable(this);
-
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            PlaceholderAPI.unregisterPlaceholderHook("warpsystem");
-        }
 
         save(false);
         teleportManager.getTeleports().forEach(t -> t.cancel(Result.CANCELLED_BY_SYSTEM));
@@ -476,10 +469,8 @@ public class WarpSystem extends JavaPlugin {
                 this.teleportManager.save();
 
                 if(!saver) {
-                    timer.stop();
-
                     log(" ");
-                    log("Finished (" + timer.getLastStoppedTime() + "s)");
+                    log("Finished (" + timer.result() + ")");
                     log(" ");
                     log("__________________________________________________________");
                     log(" ");

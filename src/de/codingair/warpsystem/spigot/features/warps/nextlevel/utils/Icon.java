@@ -80,6 +80,10 @@ public class Icon extends FeatureObject {
             return this;
         }
 
+        if(hasAction(Action.WARP)) {
+            player.closeInventory();
+        }
+
         return super.perform(player);
     }
 

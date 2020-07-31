@@ -2,8 +2,8 @@ package de.codingair.warpsystem.bungee.base;
 
 import de.codingair.codingapi.bungeecord.BungeeAPI;
 import de.codingair.codingapi.bungeecord.files.FileManager;
-import de.codingair.codingapi.time.TimeFetcher;
-import de.codingair.codingapi.time.Timer;
+import de.codingair.codingapi.tools.time.TimeFetcher;
+import de.codingair.codingapi.tools.time.Timer;
 import de.codingair.warpsystem.bungee.api.chatinput.ChatInputManager;
 import de.codingair.warpsystem.bungee.base.commands.CWarpSystem;
 import de.codingair.warpsystem.bungee.base.language.Lang;
@@ -104,10 +104,8 @@ public class WarpSystem extends Plugin {
 
         this.startAutoSaver();
 
-        timer.stop();
-
         log(" ");
-        log("Done (" + timer.getLastStoppedTime() + "s)");
+        log("Done (" + timer.result() + ")");
         log(" ");
         log("________________________________________________________");
         log(" ");
@@ -118,7 +116,7 @@ public class WarpSystem extends Plugin {
         this.dataHandler.onDisable();
         save(false);
         destroy();
-        BungeeAPI.getInstance().onDisable();
+        BungeeAPI.getInstance().onDisable(this);
     }
 
     private void startAutoSaver() {
@@ -150,10 +148,8 @@ public class WarpSystem extends Plugin {
             this.dataManager.save(saver);
 
             if(!saver) {
-                timer.stop();
-
                 log(" ");
-                log("Done (" + timer.getLastStoppedTime() + "s)");
+                log("Done (" + timer.result() + ")");
                 log(" ");
                 log("________________________________________________________");
                 log(" ");

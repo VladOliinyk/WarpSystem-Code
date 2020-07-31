@@ -2,7 +2,7 @@ package de.codingair.warpsystem.spigot.api.players;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import de.codingair.codingapi.player.data.gameprofile.GameProfileUtils;
+import de.codingair.codingapi.player.data.GameProfileUtils;
 import de.codingair.codingapi.tools.items.ItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

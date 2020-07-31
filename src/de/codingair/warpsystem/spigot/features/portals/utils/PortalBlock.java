@@ -1,8 +1,9 @@
 package de.codingair.warpsystem.spigot.features.portals.utils;
 
-import de.codingair.codingapi.server.specification.Version;
 import de.codingair.codingapi.server.blocks.ModernBlock;
 import de.codingair.codingapi.server.blocks.data.Orientable;
+import de.codingair.codingapi.server.reflections.IReflection;
+import de.codingair.codingapi.server.specification.Version;
 import de.codingair.codingapi.tools.Area;
 import de.codingair.codingapi.tools.Location;
 import de.codingair.codingapi.tools.io.utils.DataWriter;
@@ -18,6 +19,7 @@ public class PortalBlock implements Serializable {
     private Location location;
     private BlockType type;
     private de.codingair.warpsystem.spigot.api.blocks.utils.Block instance = null;
+    private IReflection.MethodAccessor setData = null;
 
     public PortalBlock() {
     }
@@ -94,8 +96,13 @@ public class PortalBlock implements Serializable {
         } else {
             ItemBuilder builder = type.getEditMaterial();
             b.setType(builder.getType(), false);
-            b.setData(builder.getData(), false);
+            setData().invoke(b, builder.getData(), false);
         }
+    }
+
+    private IReflection.MethodAccessor setData() {
+        if(setData == null) setData = IReflection.getMethod(Block.class, "setData", new Class[] {byte.class, boolean.class});
+        return setData;
     }
 
     public boolean touches(LivingEntity e) {
