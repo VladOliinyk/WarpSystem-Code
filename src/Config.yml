@@ -32,8 +32,8 @@ WarpSystem:
     #Priority list for economy systems
     #Available values: EXP, Essentials, Vault, GemsEconomy, PlayerPoints
     priority:
-      - Essentials
       - Vault
+      - Essentials
       - GemsEconomy
       - PlayerPoints
       - EXP

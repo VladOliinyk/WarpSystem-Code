@@ -339,7 +339,7 @@ public class CPlayerWarps extends WarpSystemCommandBuilder {
             if(!PWEditor.canPay(player, paid.doubleValue())) {
                 player.sendMessage(Lang.getPrefix() + Lang.get("Not_enough_Money").replace("%AMOUNT%", new ImprovedDouble(paid.doubleValue()).toString()));
                 return;
-            }
+            } else Bank.withdraw(player, paid.doubleValue());
 
             PlayerWarpManager.getManager().add(w);
 
