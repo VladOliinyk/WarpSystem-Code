@@ -179,6 +179,11 @@ public class TeleportCommandManager implements Manager, BungeeFeature, Collectib
         List<Location> locations = this.backHistory.get(player.getName());
         if(locations == null) return false;
 
+        if(locations.isEmpty()) {
+            this.backHistory.remove(player.getName());
+            return false;
+        }
+
         Location l = locations.remove(0);
 
         TeleportOptions options = new TeleportOptions(new Destination(new LocationAdapter(l)), Lang.get("Last_Position"));
