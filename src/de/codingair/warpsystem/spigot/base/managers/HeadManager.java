@@ -20,6 +20,7 @@ public class HeadManager {
     }
 
     public String getSkinId(UUID uuid) {
+        if(uuid == null) return null;
         checkFile();
         return this.file.getConfig().getString(uuid.toString());
     }
