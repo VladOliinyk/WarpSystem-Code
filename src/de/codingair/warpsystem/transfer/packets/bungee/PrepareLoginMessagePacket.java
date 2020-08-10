@@ -21,13 +21,15 @@ public class PrepareLoginMessagePacket implements Packet {
     @Override
     public void write(DataOutputStream out) throws IOException {
         out.writeUTF(player);
-        out.writeUTF(message);
+        out.writeBoolean(message != null);
+        if(message != null) out.writeUTF(message);
     }
 
     @Override
     public void read(DataInputStream in) throws IOException {
         player = in.readUTF();
-        message = in.readUTF();
+        if(in.readBoolean()) message = in.readUTF();
+        else message = null;
     }
 
     public String getPlayer() {
