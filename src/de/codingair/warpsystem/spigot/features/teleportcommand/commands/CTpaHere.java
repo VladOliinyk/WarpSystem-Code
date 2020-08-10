@@ -55,7 +55,6 @@ public class CTpaHere extends WSCommandBuilder {
                 Player p = (Player) sender;
                 if(WarpSystem.getInstance().isOnBungeeCord()) {
                     suggestions.add(TabCompleterListener.ID_TPA_HERE); //key for bungeecord
-                    if(WarpSystem.hasPermission(sender, WarpSystem.PERMISSION_USE_TELEPORT_COMMAND_TP)) suggestions.add(TabCompleterListener.ACCESS);
 
                     StringBuilder builder = new StringBuilder("tpahere");
                     for(String arg : args) {
