@@ -9,6 +9,7 @@ import de.codingair.codingapi.server.specification.Version;
 import de.codingair.codingapi.tools.time.TimeFetcher;
 import de.codingair.codingapi.tools.time.Timer;
 import de.codingair.codingapi.utils.Value;
+import de.codingair.warpsystem.spigot.api.PAPI;
 import de.codingair.warpsystem.spigot.api.SpigotAPI;
 import de.codingair.warpsystem.spigot.base.commands.CWarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;
@@ -18,7 +19,7 @@ import de.codingair.warpsystem.spigot.base.setupassistant.SetupAssistantManager;
 import de.codingair.warpsystem.spigot.base.setupassistant.utils.SetupAssistantListener;
 import de.codingair.warpsystem.spigot.base.utils.BungeeFeature;
 import de.codingair.warpsystem.spigot.base.utils.Notifier;
-import de.codingair.warpsystem.spigot.base.utils.UpdateNotifier;
+import de.codingair.warpsystem.spigot.base.utils.updates.UpdateNotifier;
 import de.codingair.warpsystem.spigot.base.utils.options.OptionBundle;
 import de.codingair.warpsystem.spigot.base.utils.options.Options;
 import de.codingair.warpsystem.spigot.base.utils.options.specific.GeneralOptions;
@@ -26,6 +27,7 @@ import de.codingair.warpsystem.spigot.base.utils.options.specific.PortalOptions;
 import de.codingair.warpsystem.spigot.base.utils.options.specific.WarpGUIOptions;
 import de.codingair.warpsystem.spigot.base.utils.options.specific.WarpSignOptions;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
+import de.codingair.warpsystem.spigot.base.utils.updates.UpdateReader;
 import de.codingair.warpsystem.transfer.packets.spigot.RequestInitialPacket;
 import de.codingair.warpsystem.transfer.spigot.SpigotDataHandler;
 import de.codingair.warpsystem.utils.Manager;
@@ -245,7 +247,7 @@ public class WarpSystem extends JavaPlugin {
             log(" ");
 
             activated = true;
-            startUpdateNotifier();
+            UpdateReader.start();
 
             this.ERROR = false;
 
@@ -333,7 +335,8 @@ public class WarpSystem extends JavaPlugin {
         Bukkit.getScheduler().runTaskLater(this, () -> {
             //update command dispatcher for players to synchronize CommandList
             Bukkit.getScheduler().runTask(this, WarpSystem::updateCommandList);
-        }, 20);
+            PAPI.register();
+        }, 1);
     }
 
     @Override
@@ -393,28 +396,6 @@ public class WarpSystem extends JavaPlugin {
         for(Options option : this.options.getOptions()) {
             option.write();
         }
-    }
-
-    private void startUpdateNotifier() {
-        Value<BukkitTask> task = new Value<>(null);
-        Runnable runnable = () -> {
-            updateAvailable = WarpSystem.this.updateNotifier.read();
-
-            if(updateAvailable) {
-                String v = updateNotifier.getVersion();
-                if(!v.startsWith("v")) v = "v" + v;
-
-                log("-----< WarpSystem >-----");
-                log("New update available [" + v + " - " + WarpSystem.this.updateNotifier.getUpdateInfo() + "].");
-                log("Download it on\n\n" + updateNotifier.getDownload() + "\n");
-                log("------------------------");
-
-                Notifier.notifyPlayers(null);
-                task.getValue().cancel();
-            }
-        };
-
-        task.setValue(Bukkit.getScheduler().runTaskTimerAsynchronously(WarpSystem.getInstance(), runnable, 20L * 5, 5 * 60 * 20L));
     }
 
     public void reload(boolean save) {

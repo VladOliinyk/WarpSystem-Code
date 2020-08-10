@@ -1,8 +1,7 @@
 package de.codingair.warpsystem.spigot.api.blocks.listeners;
 
-import de.codingair.codingapi.API;
 import de.codingair.codingapi.tools.time.TimeSet;
-import de.codingair.warpsystem.spigot.api.blocks.StaticLavaBlock;
+import de.codingair.warpsystem.spigot.api.blocks.utils.Position;
 import de.codingair.warpsystem.spigot.api.blocks.utils.StaticBlock;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -18,10 +17,12 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class RuleListener implements Listener {
     private static TimeSet<Entity> NO_DAMAGE;
+    public static HashMap<Position, StaticBlock> BLOCKS = new HashMap<>();
 
     public RuleListener() {
         if(NO_DAMAGE == null) NO_DAMAGE = new TimeSet<>();
@@ -33,44 +34,20 @@ public class RuleListener implements Listener {
 
     @EventHandler
     public void onChange(BlockPhysicsEvent e) {
-        List<StaticBlock> l = API.getRemovables(null, StaticBlock.class);
-        for(StaticBlock loc : l) {
-            if(!(loc instanceof StaticLavaBlock)) continue;
-
-            StaticLavaBlock lava = (StaticLavaBlock) loc;
-            org.bukkit.block.Block b = lava.getLocation().getBlock();
-            if(b.getWorld().getName().equals(e.getBlock().getLocation().getWorld().getName()) && b.getLocation().getBlockX() == e.getBlock().getLocation().getBlockX() && b.getLocation().getBlockY() == e.getBlock().getLocation().getBlockY() && b.getLocation().getBlockZ() == e.getBlock().getLocation().getBlockZ()) {
-                e.setCancelled(true);
-            }
-        }
-        l.clear();
+        if(e.getBlock() == null) return;
+        if(BLOCKS.containsKey(new Position(e.getBlock().getLocation()))) e.setCancelled(true);
     }
 
     @EventHandler
     public void onFlow(BlockFromToEvent e) {
-        List<StaticBlock> l = API.getRemovables(null, StaticBlock.class);
-        for(StaticBlock loc : l) {
-            org.bukkit.block.Block b = loc.getLocation().getBlock();
-            if(b.getWorld().getName().equals(e.getBlock().getLocation().getWorld().getName()) && b.getLocation().getBlockX() == e.getBlock().getLocation().getBlockX() && b.getLocation().getBlockY() == e.getBlock().getLocation().getBlockY() && b.getLocation().getBlockZ() == e.getBlock().getLocation().getBlockZ()) {
-                e.setCancelled(true);
-            }
-        }
-        l.clear();
+        if(e.getBlock() == null) return;
+        if(BLOCKS.containsKey(new Position(e.getBlock().getLocation()))) e.setCancelled(true);
     }
 
     @EventHandler
     public void onBurn(BlockIgniteEvent e) {
         if(e.getIgnitingBlock() == null) return;
-        List<StaticLavaBlock> l = API.getRemovables(null, StaticLavaBlock.class);
-        for(StaticLavaBlock lava : l) {
-            if(lava.isSpreadFire()) continue;
-
-            org.bukkit.block.Block b = lava.getLocation().getBlock();
-            if(b.getWorld().getName().equals(e.getIgnitingBlock().getLocation().getWorld().getName()) && b.getLocation().getBlockX() == e.getIgnitingBlock().getLocation().getBlockX() && b.getLocation().getBlockY() == e.getIgnitingBlock().getLocation().getBlockY() && b.getLocation().getBlockZ() == e.getIgnitingBlock().getLocation().getBlockZ()) {
-                e.setCancelled(true);
-            }
-        }
-        l.clear();
+        if(BLOCKS.containsKey(new Position(e.getIgnitingBlock().getLocation()))) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -104,7 +81,7 @@ public class RuleListener implements Listener {
     }
 
     private void addTo(List<Location> list, Location origin, Location toAdd) {
-        if(!origin.getBlock().getLocation().equals(toAdd.getBlock().getLocation())) list.add(toAdd);
+        if(!origin.getBlock().equals(toAdd.getBlock())) list.add(toAdd);
     }
 
     private List<Location> getBlocksAround(Entity e) {
@@ -134,21 +111,13 @@ public class RuleListener implements Listener {
         if(locs.isEmpty()) return false;
 
         boolean result = false;
-        List<StaticBlock> l = API.getRemovables(null, StaticBlock.class);
-        for(StaticBlock staticBlock : l) {
-            if(result) break;
 
-            for(Location loc : locs) {
-                org.bukkit.block.Block b = staticBlock.getLocation().getBlock();
-
-                if(b.getWorld().getName().equals(loc.getWorld().getName()) && b.getLocation().getBlockX() == loc.getBlockX() && b.getLocation().getBlockY() == loc.getBlockY() && b.getLocation().getBlockZ() == loc.getBlockZ()) {
-                    result = true;
-                    break;
-                }
+        for(Location l : locs) {
+            if(BLOCKS.containsKey(new Position(l))) {
+                result = true;
+                break;
             }
         }
-        l.clear();
-
         locs.clear();
 
         return result;

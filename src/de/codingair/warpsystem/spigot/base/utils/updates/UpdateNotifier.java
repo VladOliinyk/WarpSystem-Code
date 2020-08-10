@@ -1,4 +1,4 @@
-package de.codingair.warpsystem.spigot.base.utils;
+package de.codingair.warpsystem.spigot.base.utils.updates;
 
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 
@@ -16,7 +16,7 @@ public class UpdateNotifier {
     private String download = null;
     private String updateInfo = null;
     private boolean needsUpdate = false;
-    private UpdateCheckerAdapter adapter;
+    private final UpdateCheckerAdapter adapter;
 
     public UpdateNotifier() {
         this.adapter = new FreeUpdateChecker();
