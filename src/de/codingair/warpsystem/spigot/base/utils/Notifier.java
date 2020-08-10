@@ -1,6 +1,5 @@
 package de.codingair.warpsystem.spigot.base.utils;
 
-import com.earth2me.essentials.Warps;
 import de.codingair.codingapi.files.ConfigFile;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;
