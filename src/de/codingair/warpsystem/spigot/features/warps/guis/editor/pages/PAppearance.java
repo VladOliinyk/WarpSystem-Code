@@ -2,7 +2,6 @@ package de.codingair.warpsystem.spigot.features.warps.guis.editor.pages;
 
 import de.codingair.codingapi.player.gui.inventory.gui.itembutton.ItemButtonOption;
 import de.codingair.codingapi.player.gui.inventory.gui.simple.SyncButton;
-import de.codingair.codingapi.server.Color;
 import de.codingair.codingapi.server.sounds.Sound;
 import de.codingair.codingapi.server.sounds.SoundData;
 import de.codingair.codingapi.tools.items.ItemBuilder;
@@ -11,9 +10,8 @@ import de.codingair.codingapi.utils.Value;
 import de.codingair.warpsystem.spigot.base.guis.editor.Editor;
 import de.codingair.warpsystem.spigot.base.guis.editor.PageItem;
 import de.codingair.warpsystem.spigot.base.guis.editor.buttons.LoreButton;
-import de.codingair.warpsystem.spigot.base.guis.editor.buttons.NameButton;
 import de.codingair.warpsystem.spigot.base.language.Lang;
-import de.codingair.warpsystem.spigot.features.warps.managers.IconManager;
+import de.codingair.warpsystem.spigot.features.warps.guis.editor.pages.utils.NameButton;
 import de.codingair.warpsystem.spigot.features.warps.nextlevel.utils.Icon;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -22,14 +20,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PAppearance extends PageItem {
-    private final String startName;
     private final Icon icon;
 
     public PAppearance(Player p, Icon icon) {
         super(p, Editor.TITLE_COLOR + Lang.get("Item_Editing"), new ItemBuilder(XMaterial.ITEM_FRAME).setName(Editor.ITEM_TITLE_COLOR + Lang.get("Appearance")).getItem(), false);
 
         this.icon = icon;
-        this.startName = this.icon.getName();
         initialize(p);
     }
 
@@ -75,32 +71,17 @@ public class PAppearance extends PageItem {
             }
         }.setOption(option));
 
-        addButton(new NameButton(2, 2, true, new Value<>(icon.getName())) {
-            @Override
-            public String acceptName(String name) {
-                if(name == null) return null;
-
-                name = Color.removeColor(Color.translateAlternateColorCodes('&', name));
-                if(startName != null && startName.equalsIgnoreCase(name)) return null;
-
-                if(icon.isPage()) {
-                    if((icon.getName() == null || !icon.getName().equalsIgnoreCase(name)) && IconManager.getInstance().existsPage(name)) {
-                        return Lang.getPrefix() + Lang.get("Name_Already_Exists");
-                    }
-                } else {
-                    if((icon.getName() == null || !icon.getNameWithoutColor().equalsIgnoreCase(name)) && IconManager.getInstance().existsIcon(name)) {
-                        return Lang.getPrefix() + Lang.get("Name_Already_Exists");
-                    }
-                }
-
-                return null;
-            }
-
+        addButton(new NameButton(2, 2, icon) {
             @Override
             public String onChange(String old, String name) {
                 icon.setName(name);
                 getLast().updateShowIcon();
                 return name;
+            }
+
+            @Override
+            public void updateShowItem() {
+                getLast().updateShowIcon();
             }
         });
 

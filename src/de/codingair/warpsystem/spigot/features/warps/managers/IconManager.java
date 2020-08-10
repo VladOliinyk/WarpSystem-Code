@@ -37,10 +37,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @AvailableForSetupAssistant(type = "WarpGUI", config = "Config")
 @Function(name = "Enabled", defaultValue = "true", configPath = "WarpSystem.Functions.WarpGUI", clazz = Boolean.class)
@@ -56,7 +53,7 @@ public class IconManager implements Manager {
     }
 
     public static IconManager getInstance() {
-        return ((IconManager) WarpSystem.getInstance().getDataManager().getManager(FeatureType.WARP_GUI));
+        return WarpSystem.getInstance().getDataManager().getManager(FeatureType.WARP_GUI);
     }
 
     public boolean load(boolean loader) {

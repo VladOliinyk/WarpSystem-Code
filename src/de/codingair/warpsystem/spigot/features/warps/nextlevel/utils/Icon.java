@@ -29,6 +29,7 @@ public class Icon extends FeatureObject {
             get(key).getCallback().accept(Result.ERROR);
         }
     };
+    private boolean hideName;
     private String name;
     private ItemStack item;
     private int slot;
@@ -40,6 +41,8 @@ public class Icon extends FeatureObject {
 
     public Icon(Icon icon) {
         super(icon);
+
+        this.hideName = icon.hideName;
         this.name = icon.getName();
         this.item = icon.getItem().clone();
         this.slot = icon.getSlot();
@@ -110,6 +113,7 @@ public class Icon extends FeatureObject {
     public void apply(Icon icon) {
         super.apply(icon);
 
+        this.hideName = icon.hideName;
         this.name = icon.getName();
         this.item = icon.getItem();
         this.slot = icon.getSlot();
@@ -133,6 +137,7 @@ public class Icon extends FeatureObject {
     public boolean read(DataWriter d) throws Exception {
         super.read(d);
 
+        this.hideName = d.getBoolean("hide", false);
         this.name = d.getString("name");
         this.item = d.getItemStack("item");
 
@@ -158,6 +163,7 @@ public class Icon extends FeatureObject {
     public void write(DataWriter d) {
         super.write(d);
 
+        d.put("hide", this.hideName);
         d.put("name", this.name);
         d.put("item", this.item);
         d.put("slot", this.slot);
@@ -209,11 +215,12 @@ public class Icon extends FeatureObject {
     }
 
     public ItemBuilder getItemBuilder() {
-        return new ItemBuilder(item).setName(this.name == null ? null : "§r" + ChatColor.translateAlternateColorCodes('&', this.name)).setHideName(name == null);
+        return new ItemBuilder(item).setName(this.name == null ? null : "§r" + ChatColor.translateAlternateColorCodes('&', this.name)).setHideName(name == null || hideName);
     }
 
     public ItemBuilder getItemBuilderWithPlaceholders(Player player) {
         ItemBuilder builder = getItemBuilder().checkFirstLine();
+        if(hideName) builder.setHideName(true);
 
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             if(builder.getName() != null) builder.setName(PlaceholderAPI.setPlaceholders(player, builder.getName()));
@@ -270,6 +277,14 @@ public class Icon extends FeatureObject {
 
     public void setPage(boolean category) {
         isPage = category;
+    }
+
+    public boolean isHideName() {
+        return hideName;
+    }
+
+    public void setHideName(boolean hideName) {
+        this.hideName = hideName;
     }
 
     private class PaymentConfirmation {

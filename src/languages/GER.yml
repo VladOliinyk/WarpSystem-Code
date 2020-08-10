@@ -537,3 +537,4 @@ Blocks_added: '&7Füge &e%AMOUNT% block(s) &7 hinzu.'
 Cooldown_Info: '&7Sie müssen noch &e%TIME% &7warten, bevor Sie dies wieder benutzen können.'
 Cooldown: Cooldown
 Syntax_info: '&7Bitte nutze folgende Syntax: &e%SYNTAX%'
+Hide: 'Verstecken'

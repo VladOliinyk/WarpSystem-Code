@@ -16,8 +16,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class NameButton extends SyncAnvilGUIButton {
-    private final Value<String> name;
-    private final boolean acceptNull;
+    protected Value<String> name;
+    private boolean acceptNull;
+
+    protected NameButton(int x, int y, ClickType... trigger) {
+        super(x, y, trigger);
+    }
 
     public NameButton(int x, int y, boolean acceptNull, Value<String> name) {
         super(x, y, ClickType.LEFT);
