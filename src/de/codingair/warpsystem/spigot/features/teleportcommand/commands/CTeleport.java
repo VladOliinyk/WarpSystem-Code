@@ -159,7 +159,6 @@ public class CTeleport extends WSCommandBuilder {
 
             if(WarpSystem.getInstance().isOnBungeeCord()) {
                 suggestions.add(TabCompleterListener.ID_TP);
-                suggestions.add(TabCompleterListener.ACCESS);
 
                 StringBuilder builder = new StringBuilder(s);
                 for(String arg : args) {
