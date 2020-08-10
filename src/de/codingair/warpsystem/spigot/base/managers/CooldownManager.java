@@ -63,13 +63,19 @@ public class CooldownManager implements PacketListener {
         long time = System.currentTimeMillis();
 
         List<Integer> originList = new ArrayList<>();
-        if(!WarpSystem.getInstance().isOnBungeeCord()) {
-            originList.add(Origin.TeleportRequest.hashCode());
-            originList.add(Origin.TeleportCommand.hashCode());
-            originList.add(Origin.RandomTP.hashCode());
+        if(WarpSystem.getInstance().isOnBungeeCord()) {
+            //add to avoid saving them here
+            originList.add(Origin.TeleportRequest.ordinal());
+            originList.add(Origin.TeleportCommand.ordinal());
+            originList.add(Origin.RandomTP.ordinal());
         }
 
         cache.entrySet().removeIf(entry -> {
+            if(entry == null) return true;
+
+            UUID id = entry.getKey();
+            if(id == null || entry.getValue() == null) return true;
+
             List<JSON> configData = new ArrayList<>();
             HashMap<Integer, Long> data = entry.getValue();
 
@@ -86,12 +92,11 @@ public class CooldownManager implements PacketListener {
                 return false;
             });
 
-            if(!configData.isEmpty()) config.set(entry.getKey().toString(), configData);
+            if(!configData.isEmpty()) config.set(id.toString(), configData);
             return data.isEmpty();
         });
 
         if(!cache.isEmpty()) config.set("Date", time);
-
         file.saveConfig();
     }
 
@@ -100,14 +105,11 @@ public class CooldownManager implements PacketListener {
         if(data == null) return 0;
 
         Long cooldown = data.get(hashCode);
-        System.out.println("cooldown: " + cooldown);
         if(cooldown != null && cooldown < System.currentTimeMillis()) {
             data.remove(cooldown);
             if(data.isEmpty()) cache.remove(uuid);
             cooldown = null;
         }
-
-        System.out.println("cooldown2: " + cooldown);
 
         return cooldown == null ? 0 : cooldown;
     }
@@ -126,7 +128,6 @@ public class CooldownManager implements PacketListener {
 
     public void register(Player player, long time, int hash) {
         if(player.hasPermission(WarpSystem.PERMISSION_ByPass_Teleport_Cooldown) || time == 0) return;
-        System.out.println("registering");
         add(new Cooldown(WarpSystem.getInstance().getUUIDManager().get(player), System.currentTimeMillis() + time, hash));
     }
 
