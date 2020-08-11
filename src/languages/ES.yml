@@ -536,3 +536,4 @@ Cooldown_Info: '&7Tienes que esperar &e%TIME% &7antes de poder usar esto de nuev
 Cooldown: Cooldown
 Syntax_info: '&7Por favor, use la siguiente sintaxis: %SYNTAX%'
 Hide: 'Ocultar'
+RTP_Not_available_in_this_world: '&7Los teletransportes aleatorios son &cno están disponibles &7en este mundo.'

@@ -16,6 +16,7 @@ public class WorldOption implements Serializable {
     private final World world;
     private double startX, startY, startZ, min, max;
     private List<String> target;
+    private boolean disabled;
 
     public WorldOption(String worldName) {
         this.worldName = worldName;
@@ -32,6 +33,7 @@ public class WorldOption implements Serializable {
         this.min = d.getDouble("min_range", RandomTeleporterManager.getInstance().getDefValues().min);
         this.max = d.getDouble("max_range", RandomTeleporterManager.getInstance().getDefValues().max);
         this.target = d.getList("target_worlds");
+        this.disabled = d.getBoolean("disabled", false);
         return true;
     }
 
@@ -46,6 +48,7 @@ public class WorldOption implements Serializable {
                 ", min=" + min +
                 ", max=" + max +
                 ", target_worlds=" + (this.target == null ? "null" : Arrays.toString(this.target.toArray(new String[0]))) +
+                ", disabled=" + disabled +
                 '}';
     }
 
@@ -122,5 +125,9 @@ public class WorldOption implements Serializable {
         execution = l.get((int) (Math.random() * l.size()));
         l.clear();
         return execution;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
     }
 }

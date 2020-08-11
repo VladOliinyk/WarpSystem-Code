@@ -539,3 +539,4 @@ Cooldown_Info : '&7Vous devez attendre &e%TIME% &7avant de pouvoir l''utiliser �
 Cooldown: Cooldown
 Syntax_info: '&7Veuillez utiliser la syntaxe suivante: %SYNTAX%'
 Hide: 'Cacher'
+RTP_Not_available_in_this_world: '&7Les téléports aléatoires ne sont &cpas disponibles &7dans ce monde.'

@@ -15,7 +15,7 @@ RandomTeleport:
     #Ignored values (like in "Example") will be replaced by default values
     # Ignored start values will be replaced by default values. World spawn will be used if startX=-1, startY=-1 & startZ=-1
     # Ignored range values will be replaced by general range values at the top
-    # Values: startX, startY, startZ, min_range, max_range, target_worlds
+    # Values: startX, startY, startZ, min_range, max_range, target_worlds, disabled
     Default:
       startX: -1
       startY: -1
@@ -34,6 +34,8 @@ RandomTeleport:
           max_range: 10000
       - Example:
           startY: 70
+      - DisabledWorld:
+          disabled: true
   Block_Blacklist:
     Enabled: true
     List:

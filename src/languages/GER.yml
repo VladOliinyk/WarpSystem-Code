@@ -538,3 +538,4 @@ Cooldown_Info: '&7Sie müssen noch &e%TIME% &7warten, bevor Sie dies wieder benu
 Cooldown: Cooldown
 Syntax_info: '&7Bitte nutze folgende Syntax: &e%SYNTAX%'
 Hide: 'Verstecken'
+RTP_Not_available_in_this_world: '&7Zufällige Teleportationen sind in dieser Welt &cnicht verfügbar&7.'

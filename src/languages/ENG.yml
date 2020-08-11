@@ -538,3 +538,4 @@ Cooldown_Info: '&7You have to wait &e%TIME% &7before you can use this again.'
 Cooldown: Cooldown
 Syntax_info: '&7Please use following syntax: &e%SYNTAX%'
 Hide: 'Hide'
+RTP_Not_available_in_this_world: '&7Random teleports are &cnot available &7in this world.'

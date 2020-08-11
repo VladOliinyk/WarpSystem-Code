@@ -199,7 +199,12 @@ public class RandomTeleporterManager implements Manager, BungeeFeature {
     public void onConnect() {
         List<String> worlds = new ArrayList<>();
         for(World world : Bukkit.getWorlds()) {
-            if(!worlds.contains(world.getName())) worlds.add(world.getName());
+            if(world == null) continue;
+
+            WorldOption option = getOption(world, defValues);
+            if(option.isDisabled()) continue;
+
+            worlds.add(world.getName());
         }
 
         WarpSystem.getInstance().getDataHandler().send(new RandomTPWorldsPacket(worlds));
@@ -291,7 +296,7 @@ public class RandomTeleporterManager implements Manager, BungeeFeature {
         return amount;
     }
 
-    private WorldOption getOption(World world, WorldOption def) {
+    public WorldOption getOption(World world, WorldOption def) {
         for(WorldOption worldOption : this.worldOptions) {
             if(worldOption.getWorldName().equalsIgnoreCase(world.getName())) return worldOption;
         }
@@ -307,9 +312,15 @@ public class RandomTeleporterManager implements Manager, BungeeFeature {
         });
     }
 
-    public void search(Player player, World target, Callback<Location> callback) {
+    public void search(Player player, World target, WorldOption option, Callback<Location> callback) {
         Preconditions.checkNotNull(target);
-        WorldOption option = getOption(target, defValues);
+        Preconditions.checkNotNull(option);
+
+        if(option.isDisabled()) {
+            callback.accept(null);
+            return;
+        }
+
         org.bukkit.Location start = new Location();
         option.prepareStart(start, target);
 
@@ -355,7 +366,14 @@ public class RandomTeleporterManager implements Manager, BungeeFeature {
             return;
         }
 
-        search(player, target, new Callback<Location>() {
+        WorldOption option = getOption(target, defValues);
+
+        if(option.isDisabled()) {
+            player.sendMessage(Lang.getPrefix() + Lang.get("RTP_Not_available_in_this_world"));
+            return;
+        }
+
+        search(player, target, option, new Callback<Location>() {
             @Override
             public void accept(Location loc) {
                 if(loc == null) {
