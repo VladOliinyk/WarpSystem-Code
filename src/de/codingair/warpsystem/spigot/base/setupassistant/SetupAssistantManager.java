@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 @Function(name = "CMD argument color", configPath = "WarpSystem.Command_Suggestions.Argument", defaultValue = "&e", clazz = String.class, since = "v4.2.8")
 @Function(name = "Economy", description = "§7Economy §etype §7must be changed in §eConfig.yml", configPath = "WarpSystem.Economy.Enabled", defaultValue = "true", clazz = Boolean.class, since = "v4.2.8")
 @Function(name = "Currency name", configPath = "WarpSystem.Economy.Name", defaultValue = "Coin(s)", clazz = String.class, since = "v4.2.8")
+@Function(name = "Teleport interceptions", configPath = "WarpSystem.Teleport.Teleport_Interceptions", defaultValue = "true", clazz = Boolean.class, since = "v4.2.9")
 public class SetupAssistantManager {
     private SetupAssistant assistant = null;
     private List<Value> cachedFunctions = null;

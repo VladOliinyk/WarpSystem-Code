@@ -12,69 +12,62 @@ import de.codingair.warpsystem.transfer.packets.general.*;
 import de.codingair.warpsystem.transfer.packets.spigot.*;
 
 public enum PacketType {
-    ERROR(0, null),
-    UploadIconPacket(1, UploadIconPacket.class),
-    DeployIconPacket(2, DeployIconPacket.class),
-    InitialPacket(3, InitialPacket.class),
-    RequestInitialPacket(4, RequestInitialPacket.class),
-    RequestServerStatusPacket(5, RequestServerStatusPacket.class),
-    ChatInputGUITogglePacket(6, ChatInputGUITogglePacket.class),
-    SendGlobalSpawnOptionsPacket(7, SendGlobalSpawnOptionsPacket.class),
-    TeleportSpawnPacket(8, TeleportSpawnPacket.class),
-    PacketVanishInfo(9, PacketVanishInfo.class),
+    InitialPacket(InitialPacket.class),
+    RequestInitialPacket(RequestInitialPacket.class),
+    RequestServerStatusPacket(RequestServerStatusPacket.class),
+    ChatInputGUITogglePacket(ChatInputGUITogglePacket.class),
+    SendGlobalSpawnOptionsPacket(SendGlobalSpawnOptionsPacket.class),
+    TeleportSpawnPacket(TeleportSpawnPacket.class),
+    PacketVanishInfo(PacketVanishInfo.class),
 
-    PublishGlobalWarpPacket(10, PublishGlobalWarpPacket.class),
-    GlobalWarpTeleportPacket(11, GlobalWarpTeleportPacket.class),
-    TeleportPacket(12, GlobalWarpTeleportPacket.class),
-    DeleteGlobalWarpPacket(13, DeleteGlobalWarpPacket.class),
-    RequestGlobalWarpNamesPacket(14, RequestGlobalWarpNamesPacket.class),
-    SendGlobalWarpNamesPacket(15, SendGlobalWarpNamesPacket.class),
-    UpdateGlobalWarpPacket(16, UpdateGlobalWarpPacket.class),
-    PerformCommandOnSpigotPacket(17, PerformCommandOnSpigotPacket.class),
-    PerformCommandOnBungeePacket(18, PerformCommandOnBungeePacket.class),
-    RequestUUIDPacket(19, RequestUUIDPacket.class),
-    SendUUIDPacket(20, SendUUIDPacket.class),
-    TeleportPlayerToPlayerPacket(21, TeleportPlayerToPlayerPacket.class),
-    PrepareServerSwitchPacket(23, PrepareServerSwitchPacket.class),
-    PrepareLoginMessagePacket(24, PrepareLoginMessagePacket.class),
-    MessagePacket(25, MessagePacket.class),
-    CooldownPacket(26, CooldownPacket.class),
-    CooldownDataPacket(27, CooldownDataPacket.class),
+    PublishGlobalWarpPacket(PublishGlobalWarpPacket.class),
+    GlobalWarpTeleportPacket(GlobalWarpTeleportPacket.class),
+    TeleportPacket(GlobalWarpTeleportPacket.class),
+    DeleteGlobalWarpPacket(DeleteGlobalWarpPacket.class),
+    RequestGlobalWarpNamesPacket(RequestGlobalWarpNamesPacket.class),
+    SendGlobalWarpNamesPacket(SendGlobalWarpNamesPacket.class),
+    UpdateGlobalWarpPacket(UpdateGlobalWarpPacket.class),
+    PerformCommandOnSpigotPacket(PerformCommandOnSpigotPacket.class),
+    PerformCommandOnBungeePacket(PerformCommandOnBungeePacket.class),
+    RequestUUIDPacket(RequestUUIDPacket.class),
+    SendUUIDPacket(SendUUIDPacket.class),
+    TeleportPlayerToPlayerPacket(TeleportPlayerToPlayerPacket.class),
+    PrepareServerSwitchPacket(PrepareServerSwitchPacket.class),
+    PrepareLoginMessagePacket(PrepareLoginMessagePacket.class),
+    MessagePacket(MessagePacket.class),
+    CooldownPacket(CooldownPacket.class),
+    CooldownDataPacket(CooldownDataPacket.class),
+    ToggleForceTeleportsPacket(ToggleForceTeleportsPacket.class),
 
-    ToggleForceTeleportsPacket(35, ToggleForceTeleportsPacket.class),
+    SendPlayerWarpsPacket(SendPlayerWarpsPacket.class),
+    RegisterServerForPlayerWarpsPacket(RegisterServerForPlayerWarpsPacket.class),
+    MoveLocalPlayerWarpsPacket(MoveLocalPlayerWarpsPacket.class),
+    SendPlayerWarpUpdatesPacket(SendPlayerWarpUpdatePacket.class),
+    PrepareCoordinationTeleportPacket(PrepareCoordinationTeleportPacket.class),
+    SendPlayerWarpOptionsPacket(SendPlayerWarpOptionsPacket.class),
+    DeletePlayerWarpPacket(DeletePlayerWarpPacket.class),
+    PlayerWarpTeleportProcessPacket(PlayerWarpTeleportProcessPacket.class),
+    RandomTPWorldsPacket(RandomTPWorldsPacket.class),
+    ToggleSetupAssistantPacket(ToggleSetupAssistantPacket.class),
+    SetupAssistantStorePacket(SetupAssistantStorePacket.class),
 
-    SendPlayerWarpsPacket(40, SendPlayerWarpsPacket.class),
-    RegisterServerForPlayerWarpsPacket(41, RegisterServerForPlayerWarpsPacket.class),
-    MoveLocalPlayerWarpsPacket(42, MoveLocalPlayerWarpsPacket.class),
-    SendPlayerWarpUpdatesPacket(43, SendPlayerWarpUpdatePacket.class),
-    PrepareCoordinationTeleportPacket(44, PrepareCoordinationTeleportPacket.class),
-    SendPlayerWarpOptionsPacket(45, SendPlayerWarpOptionsPacket.class),
-    DeletePlayerWarpPacket(46, DeletePlayerWarpPacket.class),
-    PlayerWarpTeleportProcessPacket(47, PlayerWarpTeleportProcessPacket.class),
+    IsOperatorPacket(IsOperatorPacket.class),
+    SendDisablePacket(SendDisablePacket.class),
+    IsOnlinePacket(IsOnlinePacket.class),
+    GetOnlineCountPacket(GetOnlineCountPacket.class),
 
-    RandomTPWorldsPacket(51, RandomTPWorldsPacket.class),
-    ToggleSetupAssistantPacket(53, ToggleSetupAssistantPacket.class),
-    SetupAssistantStorePacket(54, SetupAssistantStorePacket.class),
-  
-    IsOperatorPacket(60, IsOperatorPacket.class),
-    SendDisablePacket(61, SendDisablePacket.class),
-    IsOnlinePacket(62, IsOnlinePacket.class),
-    GetOnlineCountPacket(63, GetOnlineCountPacket.class),
+    ApplyUUIDPacket(ApplyUUIDPacket.class),
 
-    ApplyUUIDPacket(75, ApplyUUIDPacket.class),
+    BooleanPacket(BooleanPacket.class),
+    IntegerPacket(IntegerPacket.class),
+    LongPacket(LongPacket.class),
 
-    BooleanPacket(100, BooleanPacket.class),
-    IntegerPacket(101, IntegerPacket.class),
-    LongPacket(102, LongPacket.class),
-
-    AnswerPacket(200, AnswerPacket.class),
+    AnswerPacket(AnswerPacket.class),
     ;
 
-    private int id;
-    private Class<?> packet;
+    private final Class<?> packet;
 
-    PacketType(int id, Class<?> packet) {
-        this.id = id;
+    PacketType(Class<?> packet) {
         this.packet = packet;
     }
 
@@ -83,23 +76,21 @@ public enum PacketType {
             if(packetType.getId() == id) return packetType;
         }
 
-        return ERROR;
+        return null;
     }
 
     public static PacketType getByObject(Object packet) {
-        if(packet == null) return ERROR;
+        if(packet == null) return null;
 
         for(PacketType packetType : values()) {
-            if(packetType.equals(ERROR)) continue;
-
             if(packetType.getPacket().equals(packet.getClass())) return packetType;
         }
 
-        return ERROR;
+        return null;
     }
 
     public int getId() {
-        return id;
+        return ordinal();
     }
 
     public Class<?> getPacket() {

@@ -196,7 +196,7 @@ public class Lang {
 
         for(String s : l) {
             if(s == null) prepared.add(null);
-            else prepared.add(ChatColor.translateAlternateColorCodes('&', s));
+            else prepared.add(prepare(s));
         }
 
         return prepared;

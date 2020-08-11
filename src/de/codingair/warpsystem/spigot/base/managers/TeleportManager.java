@@ -30,7 +30,7 @@ public class TeleportManager {
      */
     public boolean load() {
         boolean success = true;
-        this.teleports = CacheBuilder.newBuilder().expireAfterAccess(WarpSystem.opt().getTeleportDelay(), TimeUnit.SECONDS).build();
+        this.teleports = CacheBuilder.newBuilder().expireAfterAccess(WarpSystem.opt().getTeleportDelay() * 2, TimeUnit.SECONDS).build();
         return success;
     }
 
@@ -65,7 +65,9 @@ public class TeleportManager {
             }
         });
 
-        this.teleports.put(player.getName(), new Teleport(player, options).start());
+        Teleport t = new Teleport(player, options);
+        this.teleports.put(player.getName(), t);
+        t.start();
     }
 
     public void cancelTeleport(Player player) {

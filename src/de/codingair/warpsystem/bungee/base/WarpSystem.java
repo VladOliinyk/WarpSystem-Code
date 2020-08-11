@@ -13,7 +13,7 @@ import de.codingair.warpsystem.bungee.base.managers.CooldownManager;
 import de.codingair.warpsystem.bungee.base.managers.DataManager;
 import de.codingair.warpsystem.bungee.base.managers.ServerManager;
 import de.codingair.warpsystem.bungee.base.managers.VanishManager;
-import de.codingair.warpsystem.transfer.bungee.BungeeDataHandler;
+import de.codingair.warpsystem.transfer.bungee.BungeeHandler;
 import de.codingair.warpsystem.utils.Manager;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -29,7 +29,7 @@ public class WarpSystem extends Plugin {
     public static final String PERMISSION_MODIFY_SYSTEM = "warpsystem.modify.system";
 
     private static WarpSystem instance;
-    private final BungeeDataHandler dataHandler = new BungeeDataHandler(this);
+    private final BungeeHandler dataHandler = new BungeeHandler(this);
     private final FileManager fileManager = new FileManager(this);
     private final ServerManager serverManager = new ServerManager();
     private final VanishManager vanishManager = new VanishManager();
@@ -213,7 +213,7 @@ public class WarpSystem extends Plugin {
         }
     }
 
-    public BungeeDataHandler getDataHandler() {
+    public BungeeHandler getDataHandler() {
         return dataHandler;
     }
 

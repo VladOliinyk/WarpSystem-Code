@@ -13,6 +13,8 @@ public class PAPI {
     }
 
     public static String convert(String s, Player player) {
+        if(s == null) return null;
+
         if(papi()) {
             return PlaceholderAPI.setPlaceholders(player, s);
         } else return s;

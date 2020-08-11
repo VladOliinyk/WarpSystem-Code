@@ -65,7 +65,7 @@ public class TeleportOptions {
         this.waitForTeleport = false;
         this.payMessage = Lang.getPrefix() + Lang.get("Money_Paid");
         this.paymentDeniedMessage = Lang.getPrefix() + Lang.get("Payment_denied");
-        this.message = Lang.getPrefix() + (displayName == null ? Lang.get("Teleported_To") : Lang.get("Teleported_To"));
+        this.message = Lang.getPrefix() + Lang.get("Teleported_To");
         this.serverNotOnline = Lang.getPrefix() + Lang.get("Server_Is_Not_Online");
         this.silent = false;
         this.teleportSound = null;

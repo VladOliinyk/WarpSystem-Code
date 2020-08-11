@@ -8,7 +8,6 @@ import de.codingair.codingapi.server.specification.Type;
 import de.codingair.codingapi.server.specification.Version;
 import de.codingair.codingapi.tools.time.TimeFetcher;
 import de.codingair.codingapi.tools.time.Timer;
-import de.codingair.codingapi.utils.Value;
 import de.codingair.warpsystem.spigot.api.PAPI;
 import de.codingair.warpsystem.spigot.api.SpigotAPI;
 import de.codingair.warpsystem.spigot.base.commands.CWarpSystem;
@@ -18,8 +17,6 @@ import de.codingair.warpsystem.spigot.base.managers.*;
 import de.codingair.warpsystem.spigot.base.setupassistant.SetupAssistantManager;
 import de.codingair.warpsystem.spigot.base.setupassistant.utils.SetupAssistantListener;
 import de.codingair.warpsystem.spigot.base.utils.BungeeFeature;
-import de.codingair.warpsystem.spigot.base.utils.Notifier;
-import de.codingair.warpsystem.spigot.base.utils.updates.UpdateNotifier;
 import de.codingair.warpsystem.spigot.base.utils.options.OptionBundle;
 import de.codingair.warpsystem.spigot.base.utils.options.Options;
 import de.codingair.warpsystem.spigot.base.utils.options.specific.GeneralOptions;
@@ -27,9 +24,10 @@ import de.codingair.warpsystem.spigot.base.utils.options.specific.PortalOptions;
 import de.codingair.warpsystem.spigot.base.utils.options.specific.WarpGUIOptions;
 import de.codingair.warpsystem.spigot.base.utils.options.specific.WarpSignOptions;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
+import de.codingair.warpsystem.spigot.base.utils.updates.UpdateNotifier;
 import de.codingair.warpsystem.spigot.base.utils.updates.UpdateReader;
 import de.codingair.warpsystem.transfer.packets.spigot.RequestInitialPacket;
-import de.codingair.warpsystem.transfer.spigot.SpigotDataHandler;
+import de.codingair.warpsystem.transfer.spigot.SpigotHandler;
 import de.codingair.warpsystem.utils.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -38,7 +36,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -122,7 +119,7 @@ public class WarpSystem extends JavaPlugin {
     private boolean ERROR = true;
     private boolean shouldSave = true;
     private String oldVersion = null;
-    private final SpigotDataHandler dataHandler = new SpigotDataHandler(this);
+    private final SpigotHandler dataHandler = new SpigotHandler(this);
     private final UUIDManager uuidManager = new UUIDManager();
 
     public static boolean hasPermission(CommandSender sender, String permission) {
@@ -226,6 +223,7 @@ public class WarpSystem extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new TeleportListener(), this);
             Bukkit.getPluginManager().registerEvents(new NotifyListener(), this);
             Bukkit.getPluginManager().registerEvents(new CommandListener(), this);
+            Bukkit.getPluginManager().registerEvents(new TeleportInterceptionListener(), this);
 
             UUIDManager.UUIDListener uuidListener = uuidManager.listener();
             Bukkit.getPluginManager().registerEvents(uuidListener, this);
@@ -563,7 +561,7 @@ public class WarpSystem extends JavaPlugin {
         return old;
     }
 
-    public SpigotDataHandler getDataHandler() {
+    public SpigotHandler getDataHandler() {
         return dataHandler;
     }
 

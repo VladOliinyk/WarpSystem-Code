@@ -47,6 +47,8 @@ WarpSystem:
     Allow_Move: false
     #Values: ACTION_BAR, TITLE (separate lines with '\n')
     Delay_Display: ACTION_BAR
+    #Cancels teleports from other plugins and replaces them with own teleport procedure to add teleport delay, particles, sounds and potion effects
+    Teleport_Interceptions: true
 
   #PREMIUM
   #ByPass: warpsystem.bypass.cooldown
@@ -84,7 +86,7 @@ WarpSystem:
     RandomTeleports: true
     TeleportCommand: true
     PlayerWarps: true
-    Spawn: false
+    Spawn: true
 
   #'TeleportCommand' in 'Functions' (above) have to be toggled to true as well, if you want to use this feature.
   TeleportCommands:

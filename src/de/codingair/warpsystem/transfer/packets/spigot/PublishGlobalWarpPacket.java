@@ -1,8 +1,8 @@
 package de.codingair.warpsystem.transfer.packets.spigot;
 
 import de.codingair.codingapi.tools.Callback;
-import de.codingair.warpsystem.transfer.packets.utils.RequestPacket;
 import de.codingair.warpsystem.transfer.serializeable.SGlobalWarp;
+import de.codingair.warpsystem.transfer.packets.utils.RequestPacket;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

@@ -27,6 +27,7 @@ public enum Origin {
     Portal(Portal.class, "Portals"),
     Spawn(Spawn.class, "Spawn"),
     RandomTP(null, "RandomTp"),
+    TeleportInterception,
     UNKNOWN;
 
     private Class<? extends FeatureObject> clazz = null;

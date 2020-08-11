@@ -18,6 +18,7 @@ public class GeneralOptions extends Options {
     private Option<String> cmdSugColor = new Option<>("WarpSystem.Command_Suggestions.Color", "&7");
     private Option<String> cmdArgColor = new Option<>("WarpSystem.Command_Suggestions.Argument", "&e");
     private Option<String> delayDisplay = new Option<>("WarpSystem.Teleport.Delay_Display", "ACTION_BAR");
+    private Option<Boolean> teleportInterceptions = new Option<>("WarpSystem.Teleport.Teleport_Interceptions", true);
 
     public GeneralOptions() {
         super("Config");
@@ -38,6 +39,7 @@ public class GeneralOptions extends Options {
         set(cmdSugColor);
         set(cmdArgColor);
         set(delayDisplay);
+        set(teleportInterceptions);
         save();
     }
 
@@ -51,6 +53,7 @@ public class GeneralOptions extends Options {
         get(cmdSugColor);
         get(cmdArgColor);
         get(delayDisplay);
+        get(teleportInterceptions);
 
         IntPredicate test = new IntPredicate() {
             private boolean color = false;
@@ -93,6 +96,7 @@ public class GeneralOptions extends Options {
             this.cmdSugColor = o.cmdSugColor.clone();
             this.cmdArgColor = o.cmdArgColor.clone();
             this.delayDisplay = o.delayDisplay.clone();
+            this.teleportInterceptions = o.teleportInterceptions.clone();
         }
     }
 
@@ -143,5 +147,9 @@ public class GeneralOptions extends Options {
   
     public long getCooldown(Origin origin) {
         return 0;
+    }
+
+    public boolean isTeleportInterceptions() {
+        return teleportInterceptions.getValue();
     }
 }

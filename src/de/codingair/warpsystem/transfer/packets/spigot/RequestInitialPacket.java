@@ -9,11 +9,9 @@ import java.io.IOException;
 public class RequestInitialPacket implements Packet {
     @Override
     public void write(DataOutputStream out) throws IOException {
-
     }
 
     @Override
     public void read(DataInputStream in) throws IOException {
-
     }
 }
