@@ -13,6 +13,7 @@ import de.codingair.codingapi.server.reflections.IReflection;
 import de.codingair.codingapi.tools.Location;
 import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.items.XMaterial;
+import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.warpsystem.spigot.api.chatinput.ChatInputEvent;
 import de.codingair.warpsystem.spigot.api.chatinput.ChatInputGUI;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
@@ -25,7 +26,6 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -239,7 +239,7 @@ public class HologramEditor extends HotbarGUI {
 
         String text = hologram.getText();
         if(text != null && text.length() > 60) text = text.substring(0, 60) + "§f...";
-        setItem(3, new ItemComponent(new ItemBuilder(Material.NAME_TAG).setName("§7" + Lang.get("Hologram_Text") + ": " + (hologram.getText() == null ? "§c-" : "'§f" + ChatColor.translateAlternateColorCodes('&', text) + "§7'")).getItem(), new ItemListener() {
+        setItem(3, new ItemComponent(new ItemBuilder(Material.NAME_TAG).setName("§7" + Lang.get("Hologram_Text") + ": " + (hologram.getText() == null ? "§c-" : "'§f" + ChatColor.translateAll('&', text) + "§7'")).getItem(), new ItemListener() {
             @Override
             public void onClick(HotbarGUI gui, ItemComponent ic, Player player, ClickType clickType) {
                 if(clickType != ClickType.LEFT_CLICK) return;
@@ -268,7 +268,7 @@ public class HologramEditor extends HotbarGUI {
 
                         String text = e.getText();
                         if(text.length() > 60) text = text.substring(0, 60) + "§f...";
-                        updateDisplayName(ic, "§7" + Lang.get("Hologram_Text") + ": '§f" + ChatColor.translateAlternateColorCodes('&', text) + "§7'");
+                        updateDisplayName(ic, "§7" + Lang.get("Hologram_Text") + ": '§f" + ChatColor.translateAll('&', text) + "§7'");
                     }
 
                     @Override

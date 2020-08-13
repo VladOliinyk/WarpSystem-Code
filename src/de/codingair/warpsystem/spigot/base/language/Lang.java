@@ -7,13 +7,13 @@ import de.codingair.codingapi.files.ConfigFile;
 import de.codingair.codingapi.player.MessageAPI;
 import de.codingair.codingapi.player.gui.inventory.gui.GUI;
 import de.codingair.codingapi.tools.time.TimeList;
+import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.money.Bank;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -222,7 +222,7 @@ public class Lang {
 
     private static String prepare(String s) {
         s = s.replace("\\n", "\n");
-        s = ChatColor.translateAlternateColorCodes('&', s);
+        s = ChatColor.translateAll('&', s);
         s = s.replace("%CURRENCY%", Bank.name());
         return s;
     }

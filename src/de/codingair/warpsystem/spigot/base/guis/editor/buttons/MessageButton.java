@@ -6,6 +6,7 @@ import de.codingair.codingapi.player.gui.anvil.AnvilSlot;
 import de.codingair.codingapi.player.gui.inventory.gui.simple.SyncAnvilGUIButton;
 import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.items.XMaterial;
+import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.FeatureObject;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Action;
@@ -38,7 +39,7 @@ public class MessageButton extends SyncAnvilGUIButton {
 
         if(messages != null) {
             for(String msg : messages) {
-                messageInfo.add("§7- '§f" + msg + "§7'");
+                messageInfo.add("§7- '§f" + ChatColor.translateAll('&', msg) + "§7'");
             }
         }
 

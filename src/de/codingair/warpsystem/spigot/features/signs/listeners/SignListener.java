@@ -2,6 +2,7 @@ package de.codingair.warpsystem.spigot.features.signs.listeners;
 
 import de.codingair.codingapi.API;
 import de.codingair.codingapi.tools.Location;
+import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
@@ -37,7 +38,7 @@ public class SignListener implements Listener {
                 if(!e.getPlayer().isSneaking() && e.getPlayer().hasPermission(WarpSystem.PERMISSION_MODIFY_WARP_SIGNS) && e.getPlayer().getItemInHand().getType().name().toLowerCase().contains("sign")) {
                     String[] lines = s.getLines();
                     for(int i = 0; i < 4; i++) {
-                        lines[i] = lines[i].replace("§", "&");
+                        lines[i] = ChatColor.toLegacy('&', lines[i]);
                         s.setLine(i, lines[i]);
                     }
 

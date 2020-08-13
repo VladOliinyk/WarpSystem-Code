@@ -5,6 +5,7 @@ import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.io.utils.DataWriter;
 import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.time.TimeMap;
+import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.codingapi.utils.ImprovedDouble;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.FeatureObject;
@@ -15,7 +16,6 @@ import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
 import de.codingair.warpsystem.spigot.features.warps.managers.IconManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -215,7 +215,7 @@ public class Icon extends FeatureObject {
     }
 
     public ItemBuilder getItemBuilder() {
-        return new ItemBuilder(item).setName(this.name == null ? null : "§r" + ChatColor.translateAlternateColorCodes('&', this.name)).setHideName(name == null || hideName);
+        return new ItemBuilder(item).setName(this.name == null ? null : "§r" + ChatColor.translateAll('&', this.name)).setHideName(name == null || hideName);
     }
 
     public ItemBuilder getItemBuilderWithPlaceholders(Player player) {

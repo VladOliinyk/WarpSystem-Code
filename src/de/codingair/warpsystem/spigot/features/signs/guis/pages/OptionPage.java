@@ -55,7 +55,7 @@ public class OptionPage extends PageItem {
                 builder.setLore("§3" + Lang.get("Current") + ":");
 
                 for(String line : lines == null ? s.getLines() : lines) {
-                    builder.addLore("§7- '§f" + (line == null ? "" : ChatColor.translateAlternateColorCodes('&', line)) + "§7'");
+                    builder.addLore("§7- '§f" + (line == null ? "" : ChatColor.translateAll('&', line)) + "§7'");
                 }
 
                 builder.addLore("", "§3" + Lang.get("Leftclick") + ": §a" + Lang.get("Edit"));

@@ -41,8 +41,8 @@ public class MessageAction extends ActionObject<List<String>> {
     @Override
     public boolean perform(Player player) {
         for(String message : getValue()) {
-            if(message == null) player.sendMessage(message);
-            else player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+            if(message == null) player.sendMessage(" ");
+            else player.sendMessage(ChatColor.translateAll('&', message));
         }
 
         return true;

@@ -6,10 +6,10 @@ import de.codingair.codingapi.player.gui.anvil.AnvilSlot;
 import de.codingair.codingapi.player.gui.inventory.gui.simple.SyncAnvilGUIButton;
 import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.items.XMaterial;
+import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.codingapi.utils.Value;
 import de.codingair.warpsystem.spigot.base.guis.editor.Editor;
 import de.codingair.warpsystem.spigot.base.language.Lang;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -42,7 +42,7 @@ public abstract class NameButton extends SyncAnvilGUIButton {
 
         return new ItemBuilder(XMaterial.NAME_TAG)
                 .setName(Editor.ITEM_TITLE_COLOR + Lang.get("Name"))
-                .setLore("§3" + Lang.get("Current") + ": " + (name.getValue() == null ? "§c" + Lang.get("Not_Set") : "§7'§f" + ChatColor.translateAlternateColorCodes('&', name.getValue()) + "§7'"),
+                .setLore("§3" + Lang.get("Current") + ": " + (name.getValue() == null ? "§c" + Lang.get("Not_Set") : "§7'§f" + ChatColor.translateAll('&', name.getValue()) + "§7'"),
                         "", (name.getValue() == null ? "§3" + Lang.get("Leftclick") + ": §a" + Lang.get("Set_Name") : "§3" + Lang.get("Leftclick") + ": §a" + Lang.get("Change_Name")),
                         (name.getValue() == null || !acceptNull ? null : "§3" + Lang.get("Rightclick") + ": §c" + Lang.get("Remove")))
                 .getItem();

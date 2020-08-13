@@ -77,7 +77,7 @@ public class Hologram implements Serializable {
 
         if(this.hologram != null) {
             this.hologram.setVisible(this.visible);
-            this.hologram.setText(ChatColor.translateAlternateColorCodes('&', this.text));
+            this.hologram.setText(ChatColor.translateAll('&', this.text));
             this.hologram.teleport(this.location.clone().add(0, height, 0));
             this.hologram.update();
             this.hologram.addAll();

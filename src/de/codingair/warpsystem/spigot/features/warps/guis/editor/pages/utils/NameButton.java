@@ -3,12 +3,12 @@ package de.codingair.warpsystem.spigot.features.warps.guis.editor.pages.utils;
 import de.codingair.codingapi.server.Color;
 import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.items.XMaterial;
+import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.codingapi.utils.Value;
 import de.codingair.warpsystem.spigot.base.guis.editor.Editor;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.features.warps.managers.IconManager;
 import de.codingair.warpsystem.spigot.features.warps.nextlevel.utils.Icon;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -39,7 +39,7 @@ public abstract class NameButton extends de.codingair.warpsystem.spigot.base.gui
 
         return new ItemBuilder(XMaterial.NAME_TAG)
                 .setName(Editor.ITEM_TITLE_COLOR + Lang.get("Name"))
-                .setLore("§3" + Lang.get("Current") + ": " + (name.getValue() == null ? "§c" + Lang.get("Not_Set") : "§7'§f" + ChatColor.translateAlternateColorCodes('&', name.getValue()) + "§7'"),
+                .setLore("§3" + Lang.get("Current") + ": " + (name.getValue() == null ? "§c" + Lang.get("Not_Set") : "§7'§f" + ChatColor.translateAll('&', name.getValue()) + "§7'"),
                         "", (name.getValue() == null ? "§3" + Lang.get("Leftclick") + ": §a" + Lang.get("Set_Name") : "§3" + Lang.get("Leftclick") + ": §a" + Lang.get("Change_Name") + " §8(§e" + (icon.isHideName() ? Lang.get("Show") : Lang.get("Hide")) + "§8)"))
                 .getItem();
     }

@@ -6,8 +6,8 @@ import de.codingair.codingapi.player.gui.anvil.AnvilSlot;
 import de.codingair.codingapi.player.gui.inventory.gui.simple.SyncAnvilGUIButton;
 import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.items.XMaterial;
+import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.warpsystem.spigot.base.language.Lang;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -80,7 +80,7 @@ public abstract class LoreButton extends SyncAnvilGUIButton {
 
         e.setClose(true);
 
-        toChange.addLore(ChatColor.WHITE + ChatColor.translateAlternateColorCodes('&', input));
+        toChange.addLore(ChatColor.WHITE + ChatColor.translateAll('&', input));
         updatingLore(toChange);
         update();
     }
