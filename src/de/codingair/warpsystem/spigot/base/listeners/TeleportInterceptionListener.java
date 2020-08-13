@@ -14,6 +14,7 @@ public class TeleportInterceptionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onTeleport(PlayerTeleportEvent e) {
+        if(!e.getPlayer().isOnline()) return; //catch fake players
         if(!WarpSystem.opt().isTeleportInterceptions() || TeleportManager.getInstance().isTeleporting(e.getPlayer())) return;
 
         e.setCancelled(true);

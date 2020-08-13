@@ -7,13 +7,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class VanishManager implements BungeeFeature {
     private BukkitRunnable runnable;
-    private final List<Player> vanished = new ArrayList<>();
+    private final Set<Player> vanished = new HashSet<>();
 
     private BukkitRunnable build() {
         return new BukkitRunnable() {
@@ -60,5 +60,9 @@ public class VanishManager implements BungeeFeature {
             runnable.cancel();
             this.runnable = null;
         }
+    }
+
+    public boolean isVanished(Player player) {
+        return vanished.contains(player);
     }
 }
