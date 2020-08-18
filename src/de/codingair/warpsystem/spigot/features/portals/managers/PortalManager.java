@@ -12,6 +12,7 @@ import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.base.setupassistant.annotations.AvailableForSetupAssistant;
 import de.codingair.warpsystem.spigot.base.setupassistant.annotations.Function;
+import de.codingair.warpsystem.spigot.base.utils.teleport.Origin;
 import de.codingair.warpsystem.spigot.base.utils.teleport.v2.Teleport;
 import de.codingair.warpsystem.spigot.features.FeatureType;
 import de.codingair.warpsystem.spigot.features.playerwarps.managers.PlayerWarpManager;
@@ -222,7 +223,7 @@ public class PortalManager implements Manager {
             @Override
             public void onLeave(Player player) {
                 Teleport t = WarpSystem.getInstance().getTeleportManager().getTeleport(player);
-                if(t != null && t.getDestination().equals(portal.getDestination())) {
+                if(t != null && t.getOptions().getOrigin() == Origin.Portal) {
                     WarpSystem.getInstance().getTeleportManager().cancelTeleport(player);
                 }
             }

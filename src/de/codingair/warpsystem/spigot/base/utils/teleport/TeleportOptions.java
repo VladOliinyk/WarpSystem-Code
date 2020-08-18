@@ -21,27 +21,27 @@ public class TeleportOptions {
     private final List<Callback<Result>> callback = new ArrayList<>();
     private Origin origin;
     private Destination destination;
-    
+
     private String displayName;
     private String permission;
     private double costs;
     private int delay;
-    
+
     private Boolean skip;
     private boolean noDelayByPass = false;
     private boolean canMove;
     private boolean waitForTeleport; //Waiting for walking teleports
     private boolean confirmPayment = true;
     private boolean silent;
-    
+
     private String payMessage;
     private String paymentDeniedMessage;
     private String message;
     private String serverNotOnline;
-    
+
     private SoundData teleportSound;
     private SoundData cancelSound;
-    
+
     private boolean afterEffects;
     private boolean publicAnimations;
     private boolean teleportAnimation = true;
@@ -86,8 +86,9 @@ public class TeleportOptions {
         return origin;
     }
 
-    public void setOrigin(Origin origin) {
+    public TeleportOptions setOrigin(Origin origin) {
         this.origin = origin;
+        return this;
     }
 
     public Destination getDestination() {
@@ -202,9 +203,10 @@ public class TeleportOptions {
         return this.callback.isEmpty();
     }
 
-    public void addCallback(Callback<Result> callback) {
-        if(callback == null) return;
+    public TeleportOptions addCallback(Callback<Result> callback) {
+        if(callback == null) return this;
         this.callback.add(callback);
+        return this;
     }
 
     public String getPayMessage() {

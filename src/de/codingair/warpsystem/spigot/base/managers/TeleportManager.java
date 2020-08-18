@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class TeleportManager {
     private static TeleportManager instance;
     public static final String NO_PERMISSION = "%NO_PERMISSION%";
-    private Cache<String, Teleport> teleports;
+    private Cache<Player, Teleport> teleports;
 
     private TeleportManager() {
     }
@@ -61,21 +61,28 @@ public class TeleportManager {
         options.addCallback(new Callback<Result>() {
             @Override
             public void accept(de.codingair.warpsystem.spigot.base.utils.teleport.Result result) {
-                teleports.invalidate(player.getName());
+                teleports.invalidate(player);
             }
         });
 
         Teleport t = new Teleport(player, options);
-        this.teleports.put(player.getName(), t);
+        registerTeleport(player, t);
         t.start();
+    }
+
+    public synchronized void registerTeleport(Player player, Teleport t) {
+        this.teleports.put(player, t);
+    }
+
+    public void invalidate(Player player) {
+        this.teleports.invalidate(player);
     }
 
     public void cancelTeleport(Player player) {
         if(!isTeleporting(player)) return;
-
         Teleport teleport = getTeleport(player);
         teleport.cancel(Result.CANCELLED_BY_SYSTEM);
-        this.teleports.invalidate(player.getName());
+        invalidate(player);
 
         if(WarpSystem.getInstance().getFileManager().getFile("Config").getConfig().getBoolean("WarpSystem.Send.Teleport_Cancel_Message", true)) {
             if(WarpSystem.opt().getDelayDisplay() == TeleportDelay.Display.TITLE) MessageAPI.sendTitle(player, " ", " ", 0, 1, 0);
@@ -84,7 +91,7 @@ public class TeleportManager {
     }
 
     public Teleport getTeleport(Player player) {
-        Teleport t = teleports.getIfPresent(player.getName());
+        Teleport t = teleports.getIfPresent(player);
         return t == null || t.expired() ? null : t;
     }
 

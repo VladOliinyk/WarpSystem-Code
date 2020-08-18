@@ -2,6 +2,7 @@ package de.codingair.warpsystem.spigot.base.utils.featureobjects;
 
 import com.google.common.base.CharMatcher;
 import de.codingair.codingapi.server.sounds.SoundData;
+import de.codingair.codingapi.tools.Call;
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.io.JSON.JSON;
 import de.codingair.codingapi.tools.io.JSON.JSONParser;
@@ -10,6 +11,7 @@ import de.codingair.codingapi.tools.io.lib.ParseException;
 import de.codingair.codingapi.tools.io.utils.DataWriter;
 import de.codingair.codingapi.tools.io.utils.Serializable;
 import de.codingair.codingapi.utils.ImprovedDouble;
+import de.codingair.codingapi.utils.Value;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.guis.editor.pages.SoundPage;
 import de.codingair.warpsystem.spigot.base.language.Lang;
@@ -26,12 +28,15 @@ import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
 import de.codingair.warpsystem.spigot.base.utils.teleport.TeleportOptions;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
 import de.codingair.warpsystem.spigot.base.utils.teleport.v2.ConfirmPayment;
+import de.codingair.warpsystem.spigot.base.utils.teleport.v2.Teleport;
+import de.codingair.warpsystem.spigot.base.utils.teleport.v2.TeleportDummy;
 import de.codingair.warpsystem.spigot.base.utils.teleport.v2.WaitForTeleport;
 import de.codingair.warpsystem.spigot.features.shortcuts.utils.Shortcut;
 import de.codingair.warpsystem.spigot.features.warps.nextlevel.exceptions.IconReadException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -121,13 +126,8 @@ public abstract class FeatureObject implements Serializable {
         }
     }
 
-    protected void confirmPayment(Player player, double costs, Callback<Result> callback) {
-        ConfirmPayment.confirm(player, costs, new Callback<Result>() {
-            @Override
-            public void accept(Result result) {
-                callback.accept(result);
-            }
-        });
+    protected Call confirmPayment(Player player, double costs, Callback<Result> callback) {
+        return ConfirmPayment.confirm(player, costs, callback);
     }
 
     public FeatureObject perform(Player player, TeleportOptions options) {
@@ -156,20 +156,57 @@ public abstract class FeatureObject implements Serializable {
         if(hasAction(Action.WARP)) {
             WarpSystem.getInstance().getTeleportManager().teleport(player, options);
             return this;
-        } else if(costs > 0) {
+        }
+
+        Value<BukkitRunnable> waiting = new Value<>(null);
+        Value<Call> payment = new Value<>(null);
+
+        if(TeleportManager.getInstance().isTeleporting(player)) {
+            Teleport teleport = TeleportManager.getInstance().getTeleport(player);
+            long diff = System.currentTimeMillis() - teleport.getStartTime();
+            if(diff > 50)
+                player.sendMessage(Lang.getPrefix() + Lang.get("Player_Is_Already_Teleporting"));
+            return this;
+        }
+
+        //register dummy to cache this perform instance
+        TeleportManager.getInstance().registerTeleport(player, new TeleportDummy(player, getOrigin(), new Callback<Result>() {
+            @Override
+            public void accept(Result result) {
+                if(waiting.getValue() != null) waiting.getValue().cancel();
+                else if(payment.getValue() != null) payment.getValue().proceed();
+            }
+        }));
+
+        //invalidating purpose
+        options.addCallback(new Callback<Result>() {
+            @Override
+            public void accept(Result result) {
+                TeleportManager.getInstance().invalidate(player);
+            }
+        });
+
+        if(costs > 0) {
             if(!Bank.isReady() || Bank.adapter().getMoney(player) < costs) {
                 player.sendMessage(Lang.getPrefix() + Lang.get("Not_Enough_Money").replace("%AMOUNT%", options.getFinalCosts(player).toString()));
                 return this;
             }
 
-            WaitForTeleport.wait(player, new Callback<Result>() {
+            waiting.setValue(WaitForTeleport.wait(player, new Callback<Result>() {
                 @Override
                 public void accept(Result result) {
-                    if(result != Result.SUCCESS) return;
+                    if(result != Result.SUCCESS) {
+                        options.fireCallbacks(result);
+                        return;
+                    }
 
-                    confirmPayment(player, costs, new Callback<Result>() {
+                    waiting.setValue(null);
+
+                    payment.setValue(confirmPayment(player, costs, new Callback<Result>() {
                         @Override
                         public void accept(Result result) {
+                            payment.setValue(null);
+
                             if(result == Result.SUCCESS) {
                                 for(ActionObject<?> action : actions) {
                                     if(action.getType() == Action.WARP || action.getType() == Action.COSTS) continue;
@@ -185,9 +222,9 @@ public abstract class FeatureObject implements Serializable {
 
                             options.fireCallbacks(result);
                         }
-                    });
+                    }));
                 }
-            });
+            }));
         } else {
             for(ActionObject<?> action : this.actions) {
                 if(action.getType() == Action.WARP || action.getType() == Action.COSTS) continue;

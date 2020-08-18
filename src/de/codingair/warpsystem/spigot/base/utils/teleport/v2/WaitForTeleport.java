@@ -34,8 +34,8 @@ public class WaitForTeleport extends TeleportStage {
         });
     }
 
-    public static void wait(Player player, Callback<Result> callback) {
-        new BukkitRunnable() {
+    public static BukkitRunnable wait(Player player, Callback<Result> callback) {
+        BukkitRunnable r = new BukkitRunnable() {
             int notMoving = 0;
             int shakeTicks = 0;
             boolean shake = false;
@@ -49,7 +49,10 @@ public class WaitForTeleport extends TeleportStage {
                     return;
                 }
 
-                if(location.distance(player.getLocation()) <= 0.01) notMoving++;
+                double diff = Math.abs(location.getX() - player.getLocation().getX()) + Math.abs(location.getZ() - player.getLocation().getZ());
+                double diffY = Math.abs(location.getY() - player.getLocation().getY());
+
+                if(diff <= 0.01 && diffY < 0.11) notMoving++;
                 else {
                     notMoving = 0;
                     location = player.getLocation();
@@ -68,6 +71,9 @@ public class WaitForTeleport extends TeleportStage {
                     callback.accept(Result.SUCCESS);
                 }
             }
-        }.runTaskTimer(WarpSystem.getInstance(), 2, 2);
+        };
+
+        r.runTaskTimer(WarpSystem.getInstance(), 2, 2);
+        return r;
     }
 }

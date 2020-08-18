@@ -108,18 +108,9 @@ public class TeleportListener implements Listener {
         Teleport t = TeleportManager.getInstance().getTeleport(p);
         if(t == null || t.isCanMove()) return;
 
-        Block exact = p.getLocation().getBlock();
-        Block below = p.getLocation().subtract(0, 0.5, 0).getBlock();
+        double diff = Math.abs(e.getFrom().getX() - e.getTo().getX()) + Math.abs(e.getFrom().getZ() - e.getTo().getZ());
+        double diffY = Math.abs(e.getFrom().getY() - e.getTo().getY());
 
-        if(exact.getType().name().contains("WATER") || below.getType().name().contains("WATER")
-                || exact.getType().name().contains("LAVA") || below.getType().name().contains("LAVA")
-                || exact.getType().name().contains("KELP") || below.getType().name().contains("KELP")
-                || exact.getType().name().contains("SEAGRASS") || below.getType().name().contains("SEAGRASS")
-        ) {
-            Vector v = e.getTo().subtract(e.getFrom()).toVector();
-            if(Math.abs(v.getX()) + Math.abs(v.getZ()) <= 0.05 && Math.abs(v.getY()) < 0.25) return;
-        }
-
-        WarpSystem.getInstance().getTeleportManager().cancelTeleport(p);
+        if(diff > 0.01 || diffY >= 0.11) WarpSystem.getInstance().getTeleportManager().cancelTeleport(p);
     }
 }

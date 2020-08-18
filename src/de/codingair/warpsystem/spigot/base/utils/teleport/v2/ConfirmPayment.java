@@ -3,6 +3,7 @@ package de.codingair.warpsystem.spigot.base.utils.teleport.v2;
 import de.codingair.codingapi.player.MessageAPI;
 import de.codingair.codingapi.server.events.PlayerWalkEvent;
 import de.codingair.codingapi.server.sounds.Sound;
+import de.codingair.codingapi.tools.Call;
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.utils.ImprovedDouble;
 import de.codingair.codingapi.utils.Value;
@@ -38,15 +39,15 @@ public class ConfirmPayment extends TeleportStage {
         });
     }
 
-    public static void confirm(Player player, double costs, Callback<Result> callback) {
+    public static Call confirm(Player player, double costs, Callback<Result> callback) {
         if(costs <= 0) {
             callback.accept(Result.SUCCESS);
-            return;
+            return null;
         }
 
         if(!Bank.isReady() || Bank.adapter().getMoney(player) < costs) {
             callback.accept(Result.NOT_ENOUGH_MONEY);
-            return;
+            return null;
         }
 
         Value<Listener> listenerValue = new Value<>(null);
@@ -83,10 +84,15 @@ public class ConfirmPayment extends TeleportStage {
             @EventHandler
             public void onWalk(PlayerWalkEvent e) {
                 if(e.getPlayer().equals(player)) {
-                    //deny!
-                    runnable.cancel();
-                    confirmation.accept(Result.DENIED_PAYMENT);
-                    HandlerList.unregisterAll(this);
+                    double diff = Math.abs(e.getFrom().getX() - e.getTo().getX()) + Math.abs(e.getFrom().getZ() - e.getTo().getZ());
+                    double diffY = Math.abs(e.getFrom().getY() - e.getTo().getY());
+
+                    if(diff > 0.01 || diffY >= 0.11) {
+                        //deny!
+                        runnable.cancel();
+                        confirmation.accept(Result.DENIED_PAYMENT);
+                        HandlerList.unregisterAll(this);
+                    }
                 }
             }
 
@@ -105,5 +111,12 @@ public class ConfirmPayment extends TeleportStage {
         runnable.runTaskLater(WarpSystem.getInstance(), timeOut + 5); //title fadeIn = 5
         Sound.BLOCK_NOTE_BLOCK_HARP.playSound(player, 0.7F, 1.1F);
         MessageAPI.sendTitle(player, "§e" + Lang.get("Sneak_to_confirm"), "§6" + Lang.get("Costs") + ": §7" + new ImprovedDouble(costs) + " " + Lang.get("Coins"), 5, timeOut, 5);
+        return () -> {
+            try {
+                runnable.cancel();
+                confirmation.accept(Result.DENIED_PAYMENT);
+            } catch(IllegalStateException ignored) {
+            }
+        };
     }
 }

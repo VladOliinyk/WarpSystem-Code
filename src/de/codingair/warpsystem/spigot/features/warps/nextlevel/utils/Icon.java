@@ -1,6 +1,7 @@
 package de.codingair.warpsystem.spigot.features.warps.nextlevel.utils;
 
 import de.codingair.codingapi.server.Color;
+import de.codingair.codingapi.tools.Call;
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.io.utils.DataWriter;
 import de.codingair.codingapi.tools.items.ItemBuilder;
@@ -95,14 +96,21 @@ public class Icon extends FeatureObject {
     }
 
     @Override
-    protected void confirmPayment(Player player, double costs, Callback<Result> callback) {
+    protected Call confirmPayment(Player player, double costs, Callback<Result> callback) {
         if(Bank.adapter().getMoney(player) < costs) {
             callback.accept(Result.NOT_ENOUGH_MONEY);
-            return;
+            return null;
         }
 
         confirm.put(player, new PaymentConfirmation(callback, costs), 2000);
         player.sendMessage(Lang.getPrefix() + Lang.get("Icon_Costs_Confirm").replace("%AMOUNT%", new ImprovedDouble(costs).toString()));
+        return () -> {
+            PaymentConfirmation pc = confirm.remove(player);
+            if(pc != null) {
+                //confirm
+                pc.getCallback().accept(Result.CANCELLED);
+            }
+        };
     }
 
     public Icon clone() {
