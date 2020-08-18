@@ -58,7 +58,7 @@ public class SimpleWarp implements Serializable {
 
     @Override
     public boolean read(DataWriter d) throws Exception {
-        this.name = d.getString("Name").replace(" ", "_");
+        this.name = d.getString("Name");
         this.permission = d.getString("Permission");
         this.location = d.getLocation("Location");
         this.created = d.getDate("Created");
@@ -104,7 +104,7 @@ public class SimpleWarp implements Serializable {
     }
 
     public String getFormattedName() {
-        return ChatColor.translateAlternateColorCodes('&', name.replace("_", " "));
+        return ChatColor.translateAlternateColorCodes('&', name);
     }
 
     public String getName(boolean stripColors) {
@@ -112,7 +112,7 @@ public class SimpleWarp implements Serializable {
     }
 
     public String getPermission() {
-        if(this.name != null && SimpleWarpManager.getInstance().isOverwritePermissions()) return SimpleWarpManager.PERMISSION.replace("%WARP%", ChatColor.stripColor(this.name).replace(" ", "_"));
+        if(this.name != null && SimpleWarpManager.getInstance().isOverwritePermissions()) return SimpleWarpManager.PERMISSION.replace("%WARP%", ChatColor.stripColor(this.name));
         return permission;
     }
 
