@@ -25,8 +25,8 @@ import java.util.Objects;
 public class Icon extends FeatureObject {
     private final TimeMap<Player, PaymentConfirmation> confirm = new TimeMap<Player, PaymentConfirmation>(){
         @Override
-        public void timeout(Player key) {
-            get(key).getCallback().accept(Result.ERROR);
+        public void timeout(Player key, PaymentConfirmation pc) {
+            pc.getCallback().accept(Result.ERROR);
         }
     };
     private boolean hideName;
@@ -78,6 +78,10 @@ public class Icon extends FeatureObject {
             } else {
                 Bank.adapter().withdraw(player, pc.getCosts());
                 pc.getCallback().accept(Result.SUCCESS);
+
+                if(hasAction(Action.COMMAND)) {
+                    player.closeInventory();
+                }
             }
 
             return this;

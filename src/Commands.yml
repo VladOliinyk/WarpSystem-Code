@@ -31,10 +31,10 @@ Shortcuts:
   Name: shortcuts
   Aliases:
     - shortcut
-DeleteWarps:
-  Name: deletewarps
+DeleteWarp:
+  Name: delwarp
   Aliases:
-    - delwarps
+    - deletewarps
 EditWarp:
   Name: editwarp
   Aliases: []
