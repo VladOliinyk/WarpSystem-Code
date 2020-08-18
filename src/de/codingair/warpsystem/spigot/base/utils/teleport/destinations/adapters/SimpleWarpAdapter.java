@@ -1,6 +1,7 @@
 package de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters;
 
 import de.codingair.codingapi.tools.Callback;
+import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.base.listeners.TeleportListener;
 import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
@@ -8,6 +9,7 @@ import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.DestinationAdapter;
 import de.codingair.warpsystem.spigot.features.simplewarps.SimpleWarp;
 import de.codingair.warpsystem.spigot.features.simplewarps.managers.SimpleWarpManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -39,7 +41,7 @@ public class SimpleWarpAdapter extends DestinationAdapter {
 
             if(silent) TeleportListener.TELEPORTS.put(player, finalLoc);
             warp.increaseTeleports();
-            player.teleport(finalLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            Bukkit.getScheduler().runTask(WarpSystem.getInstance(), () -> player.teleport(finalLoc, PlayerTeleportEvent.TeleportCause.PLUGIN));
             if(callback != null) callback.accept(Result.SUCCESS);
             return true;
         }
