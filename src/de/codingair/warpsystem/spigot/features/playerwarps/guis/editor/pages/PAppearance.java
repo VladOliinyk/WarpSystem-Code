@@ -335,7 +335,7 @@ public class PAppearance extends PageItem {
 
             addButton(new TargetPositionButton(slot++, warp, original, editing, this, p).setOption(option));
 
-            if(PlayerWarpManager.getManager().isEconomy() && warp.isTimeDependent()) addButton(new ActiveTimeButton(slot++, warp, original, editing, this, p).setOption(option));
+            if(PlayerWarpManager.getManager().isTime() && warp.isTimeDependent()) addButton(new ActiveTimeButton(slot++, warp, original, editing, this, p).setOption(option));
         }
     }
 

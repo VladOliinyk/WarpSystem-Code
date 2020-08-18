@@ -10,6 +10,9 @@ PlayerWarps:
     BungeeCord: false
     #PREMIUM | Disables all types of costs, active time selector, teleport costs
     Economy: true
+    #PREMIUM | Enables/disables time for player warps (auto. disabled when economy=false)
+    #   !! Already created player warps remain time bounded, please clear PlayerWarp data after toggling this option !!
+    Time_Bound: true
     #PREMIUM | The item of PlayerWarp is automatically the head of its owner and cannot be changed
     Force_Player_Head: true
     #PREMIUM

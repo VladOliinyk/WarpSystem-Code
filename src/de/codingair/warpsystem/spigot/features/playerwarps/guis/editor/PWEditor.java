@@ -43,11 +43,11 @@ public class PWEditor extends Editor<PlayerWarp> implements Ticker {
     private Number paid = 0;
 
     public PWEditor(Player p, String name) {
-        this(p, new PlayerWarp(p, name).setPublic(PlayerWarpManager.getManager().isAllowPublicWarps() && PlayerWarpManager.getManager().isFirstPublic()).setTime(PlayerWarpManager.getManager().getTimeStandardValue()));
+        this(p, new PlayerWarp(p, name).setPublic(PlayerWarpManager.getManager().isAllowPublicWarps() && PlayerWarpManager.getManager().isFirstPublic()).setTimeIfEnabled(PlayerWarpManager.getManager().getTimeStandardValue()));
     }
 
     public PWEditor(Player p, PlayerWarp warp) {
-        this(p, warp, warp.clone().setTime(Math.max(warp.getLeftTime(), warp.isTimeDependent() ? 1 : 0)).setStarted(0));
+        this(p, warp, warp.clone().setTimeIfEnabled(Math.max(warp.getLeftTime(), warp.isTimeDependent() ? 1 : 0)).setStarted(0));
     }
 
     private PWEditor(Player p, PlayerWarp warp, PlayerWarp clone) {
@@ -96,8 +96,10 @@ public class PWEditor extends Editor<PlayerWarp> implements Ticker {
         this.original = warp;
         this.warp = clone;
 
-        if(clone.getTime() == 1) clone.setTime(PlayerWarpManager.getManager().getTimeStandardValue());
-        else if(clone.getLeftTime() < PlayerWarpManager.getManager().getMinTime()) clone.setTime(PlayerWarpManager.getManager().getMinTime());
+        if(clone.isTimeDependent()) {
+            if(clone.getTime() == 1) clone.setTime(PlayerWarpManager.getManager().getTimeStandardValue());
+            else if(clone.getLeftTime() < PlayerWarpManager.getManager().getMinTime()) clone.setTime(PlayerWarpManager.getManager().getMinTime());
+        }
 
         this.creating = warp.isOwner(getPlayer()) && !PlayerWarpManager.getManager().existsOwn(p, warp.getName());
 
@@ -203,16 +205,17 @@ public class PWEditor extends Editor<PlayerWarp> implements Ticker {
         //target position
         if(!original.getAction(WarpAction.class).getValue().equals(warp.getAction(WarpAction.class).getValue())) costs[6] = PlayerWarpManager.getManager().getPositionChangeCosts();
 
-
         //active time
-        if(creating || original.getLeftTime() <= 500) costs[7] = warp.getTime() / 60000D * PlayerWarpManager.getManager().getActiveTimeCosts();
-        else {
-            long diff;
-            if(warp.getLeftTime() <= 0) diff = -original.getLeftTime();
-            else diff = warp.getTime() - original.getLeftTime();
+        if(warp.isTimeDependent()) {
+            if(creating || original.getLeftTime() <= 500) costs[7] = warp.getTime() / 60000D * PlayerWarpManager.getManager().getActiveTimeCosts();
+            else {
+                long diff;
+                if(warp.getLeftTime() <= 0) diff = -original.getLeftTime();
+                else diff = warp.getTime() - original.getLeftTime();
 
-            if(diff > 0) costs[7] = (diff / 60000D) * PlayerWarpManager.getManager().getActiveTimeCosts();
-            else if(diff < 0) costs[7] = (diff / 60000D) * PlayerWarpManager.getManager().getActiveTimeCosts() * PlayerWarpManager.getManager().getActiveTimeRefund() * original.getRefundFactor();
+                if(diff > 0) costs[7] = (diff / 60000D) * PlayerWarpManager.getManager().getActiveTimeCosts();
+                else if(diff < 0) costs[7] = (diff / 60000D) * PlayerWarpManager.getManager().getActiveTimeCosts() * PlayerWarpManager.getManager().getActiveTimeRefund() * original.getRefundFactor();
+            }
         }
 
         //trusted members

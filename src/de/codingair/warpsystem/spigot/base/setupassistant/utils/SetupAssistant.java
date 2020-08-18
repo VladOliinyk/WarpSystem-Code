@@ -62,7 +62,6 @@ public class SetupAssistant {
                     return true;
                 } else if(packet.getClass().equals(oPacketClass)) { //got output message from bungee
                     //queue for later
-                    System.out.println("SETUP_ASSISTANT: got packet!");
                     queue.add(packet);
                 }
                 return false;
@@ -353,7 +352,7 @@ public class SetupAssistant {
                 if(value.getDescription().isEmpty()) info.setColor(net.md_5.bungee.api.ChatColor.YELLOW);
                 else {
                     info.setItalic(true);
-                    if(Version.get().isBiggerThan(15)) info.setColor(net.md_5.bungee.api.ChatColor.of(new Color(252, 227, 3)));
+                    if(Version.get().isBiggerThan(15)) info.setColor(net.md_5.bungee.api.ChatColor.of(new Color(193, 252, 0)));
                     else info.setColor(net.md_5.bungee.api.ChatColor.YELLOW);
                 }
                 if(!value.getDescription().isEmpty()) {

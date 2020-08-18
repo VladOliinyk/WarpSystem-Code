@@ -332,7 +332,7 @@ public class CPlayerWarps extends WarpSystemCommandBuilder {
                 fallBack.changeGUI(g, true);
             } else new PWEditor(player, name).open();
         } else {
-            PlayerWarp w = new PlayerWarp(player, name).setPublic(PlayerWarpManager.getManager().isFirstPublic()).setTime(PlayerWarpManager.getManager().getTimeStandardValue());
+            PlayerWarp w = new PlayerWarp(player, name).setPublic(PlayerWarpManager.getManager().isFirstPublic()).setTimeIfEnabled(PlayerWarpManager.getManager().getTimeStandardValue());
 
             Number paid = PWEditor.calculateCosts(true, w, w);
 

@@ -117,6 +117,7 @@ public class PlayerWarpManager implements Manager, Ticker, Collectible {
     private boolean allowTrustedMembers;
     private boolean allowTeleportMessage;
     private boolean allowDescription;
+    private boolean time;
 
     public static boolean hasPermission(Player player) {
         int warps = PlayerWarpManager.getManager().getOwnWarps(player).size();
@@ -277,6 +278,7 @@ public class PlayerWarpManager implements Manager, Ticker, Collectible {
         this.allowTrustedMembers = config.getBoolean("PlayerWarps.General.Allow_Trusted_Members", true);
         this.allowTeleportMessage = config.getBoolean("PlayerWarps.General.Allow_Teleport_Messages", true);
         this.allowDescription = config.getBoolean("PlayerWarps.General.Allow_Description", true);
+        this.time = true;
 
         //Costs - Editing
         this.nameChangeCosts = config.getDouble("PlayerWarps.Costs.Editing.Name", 400);
@@ -383,7 +385,7 @@ public class PlayerWarpManager implements Manager, Ticker, Collectible {
         imported.clear();
 
         if(!bungeeCord) WarpSystem.log("    ...got " + size + " PlayerWarp(s)");
-        if(economy) API.addTicker(this);
+        if(economy && time) API.addTicker(this);
 
         Bukkit.getPluginManager().registerEvents(this.listener, WarpSystem.getInstance());
 
@@ -1094,5 +1096,9 @@ public class PlayerWarpManager implements Manager, Ticker, Collectible {
 
     public boolean isAllowDescription() {
         return allowDescription;
+    }
+
+    public boolean isTime() {
+        return time;
     }
 }

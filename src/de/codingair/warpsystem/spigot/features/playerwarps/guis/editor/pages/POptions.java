@@ -47,7 +47,7 @@ public class POptions extends PageItem {
 
         addButton(new TargetPositionButton(slot++, warp, original, isEditing, this, p).setOption(option));
 
-        if(PlayerWarpManager.getManager().isEconomy() && warp.isTimeDependent())
+        if(PlayerWarpManager.getManager().isTime() && warp.isTimeDependent())
             addButton(new ActiveTimeButton(slot++, warp, original, isEditing, this, p).setOption(option));
     }
 
@@ -55,6 +55,6 @@ public class POptions extends PageItem {
         return (PlayerWarpManager.getManager().isAllowPublicWarps() ? 1 : 0)
                 + (PlayerWarpManager.getManager().isEconomy() && PlayerWarpManager.getManager().isCustomTeleportCosts() && PlayerWarpManager.getManager().isAllowPublicWarps() ? 1 : 0)
                 + 1
-                + (PlayerWarpManager.getManager().isEconomy() && warp.isTimeDependent() ? 1 : 0);
+                + (PlayerWarpManager.getManager().isTime() && warp.isTimeDependent() ? 1 : 0);
     }
 }
