@@ -30,7 +30,7 @@ public class TeleportManager {
      */
     public boolean load() {
         boolean success = true;
-        this.teleports = CacheBuilder.newBuilder().expireAfterAccess(WarpSystem.opt().getTeleportDelay() * 2, TimeUnit.SECONDS).build();
+        this.teleports = CacheBuilder.newBuilder().expireAfterAccess(WarpSystem.opt().getTeleportDelay() + 5, TimeUnit.SECONDS).build();
         return success;
     }
 
