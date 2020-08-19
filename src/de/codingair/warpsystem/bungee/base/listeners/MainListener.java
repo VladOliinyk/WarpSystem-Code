@@ -1,12 +1,12 @@
 package de.codingair.warpsystem.bungee.base.listeners;
 
 import de.codingair.codingapi.tools.Callback;
-import de.codingair.codingapi.transfer.packets.general.BooleanPacket;
-import de.codingair.codingapi.transfer.packets.general.IntegerPacket;
 import de.codingair.warpsystem.bungee.base.WarpSystem;
 import de.codingair.warpsystem.bungee.base.managers.ServerManager;
 import de.codingair.warpsystem.transfer.packets.bungee.ApplyUUIDPacket;
 import de.codingair.warpsystem.transfer.packets.bungee.PrepareLoginMessagePacket;
+import de.codingair.warpsystem.transfer.packets.general.BooleanPacket;
+import de.codingair.warpsystem.transfer.packets.general.IntegerPacket;
 import de.codingair.warpsystem.transfer.packets.general.PrepareCoordinationTeleportPacket;
 import de.codingair.warpsystem.transfer.packets.spigot.*;
 import de.codingair.warpsystem.transfer.packets.utils.Packet;
