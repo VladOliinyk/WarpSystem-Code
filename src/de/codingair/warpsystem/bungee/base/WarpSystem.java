@@ -9,10 +9,7 @@ import de.codingair.warpsystem.bungee.base.commands.CWarpSystem;
 import de.codingair.warpsystem.bungee.base.language.Lang;
 import de.codingair.warpsystem.bungee.base.listeners.MainListener;
 import de.codingair.warpsystem.bungee.base.listeners.SetupAssistantListener;
-import de.codingair.warpsystem.bungee.base.managers.CooldownManager;
-import de.codingair.warpsystem.bungee.base.managers.DataManager;
-import de.codingair.warpsystem.bungee.base.managers.ServerManager;
-import de.codingair.warpsystem.bungee.base.managers.VanishManager;
+import de.codingair.warpsystem.bungee.base.managers.*;
 import de.codingair.warpsystem.transfer.bungee.BungeeHandler;
 import de.codingair.warpsystem.utils.Manager;
 import net.md_5.bungee.BungeeCord;
@@ -35,6 +32,7 @@ public class WarpSystem extends Plugin {
     private final VanishManager vanishManager = new VanishManager();
     private final DataManager dataManager = new DataManager();
     private final CooldownManager cooldownManager = new CooldownManager();
+    private final JarManager jarManager = new JarManager();
     private final Timer timer = new Timer();
 
     public static WarpSystem getInstance() {
@@ -87,6 +85,7 @@ public class WarpSystem extends Plugin {
         this.dataHandler.register(l);
 
         this.serverManager.run();
+        this.dataHandler.register(serverManager);
 
         new ChatInputManager();
 
@@ -231,5 +230,9 @@ public class WarpSystem extends Plugin {
 
     public static VanishManager getVanishManager() {
         return getInstance().vanishManager;
+    }
+
+    public JarManager getJarManager() {
+        return jarManager;
     }
 }

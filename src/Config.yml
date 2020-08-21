@@ -9,6 +9,13 @@ WarpSystem:
     Color: '&7'
     Argument: '&e'
 
+  BungeeCord:
+    #If your BungeeCord has a newer jar than your Spigot, there is an option to deliver this jar directly to your Spigot without FTP access.
+    #  Does not work on Windows or Mac.
+    #  Works only if a player is on your target Spigot server.
+    #Values: 0=Disabled, 1=Ask_on_Enable, 2=Automatically
+    Fetch_Updated_Jars: 1
+
   GUI:
     #false: The WarpGUI is identical on the entire server in all worlds
     #true: The WarpGUI is different in every world

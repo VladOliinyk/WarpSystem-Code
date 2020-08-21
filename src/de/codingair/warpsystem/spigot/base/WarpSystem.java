@@ -26,6 +26,7 @@ import de.codingair.warpsystem.spigot.base.utils.options.specific.WarpSignOption
 import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
 import de.codingair.warpsystem.spigot.base.utils.updates.UpdateNotifier;
 import de.codingair.warpsystem.spigot.base.utils.updates.UpdateReader;
+import de.codingair.warpsystem.transfer.jar.JarReceiver;
 import de.codingair.warpsystem.transfer.packets.spigot.RequestInitialPacket;
 import de.codingair.warpsystem.transfer.spigot.SpigotHandler;
 import de.codingair.warpsystem.utils.Manager;
@@ -225,6 +226,9 @@ public class WarpSystem extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new NotifyListener(), this);
             Bukkit.getPluginManager().registerEvents(new CommandListener(), this);
 //            Bukkit.getPluginManager().registerEvents(new TeleportInterceptionListener(), this); TODO improve TeleportInterceptions and mark this as BETA function
+
+            //register Jar receiver
+            dataHandler.register(new JarReceiver());
 
             UUIDManager.UUIDListener uuidListener = uuidManager.listener();
             Bukkit.getPluginManager().registerEvents(uuidListener, this);

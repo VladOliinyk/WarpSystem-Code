@@ -4,19 +4,24 @@ import com.google.common.base.Preconditions;
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.warpsystem.bungee.base.WarpSystem;
 import de.codingair.warpsystem.bungee.base.utils.ServerInitializeEvent;
+import de.codingair.warpsystem.bungee.base.utils.ServerProvideOptionsEvent;
+import de.codingair.warpsystem.transfer.packets.spigot.SendOptionsPacket;
+import de.codingair.warpsystem.transfer.packets.utils.PacketType;
+import de.codingair.warpsystem.transfer.serializeable.ServerOptions;
 import de.codingair.warpsystem.transfer.packets.bungee.InitialPacket;
+import de.codingair.warpsystem.transfer.packets.utils.Packet;
+import de.codingair.warpsystem.transfer.utils.PacketListener;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class ServerManager implements Listener {
-    private final List<ServerInfo> onlineServer = new ArrayList<>();
+public class ServerManager implements Listener, PacketListener {
+    private final HashMap<ServerInfo, ServerOptions> options = new HashMap<>();
+    private final Set<ServerInfo> onlineServer = new HashSet<>();
     private final HashMap<ServerInfo, List<Callback<ServerInfo>>> waiting = new HashMap<>();
 
     public static void sendPlayerTo(ServerInfo server, ProxiedPlayer player, Callback<ServerInfo> c) {
@@ -37,7 +42,7 @@ public class ServerManager implements Listener {
         l.add(c);
     }
 
-    public List<ServerInfo> getOnlineServer() {
+    public Set<ServerInfo> getOnlineServer() {
         return onlineServer;
     }
 
@@ -67,6 +72,27 @@ public class ServerManager implements Listener {
     public void setStatus(ServerInfo info, boolean online) {
         if(!online) {
             this.onlineServer.remove(info);
-        } else if(!this.onlineServer.contains(info)) this.onlineServer.add(info);
+            options.remove(info);
+        } else this.onlineServer.add(info);
+    }
+
+    public ServerOptions getOptions(ServerInfo info) {
+        return options.get(info);
+    }
+
+    @Override
+    public void onReceive(Packet packet, String extra) {
+        if(packet.getType() == PacketType.SendOptionsPacket) {
+            ServerInfo info = WarpSystem.getInstance().getProxy().getServerInfo(extra);
+
+            SendOptionsPacket p = (SendOptionsPacket) packet;
+            options.put(info, p.getOptions());
+            WarpSystem.getInstance().getProxy().getPluginManager().callEvent(new ServerProvideOptionsEvent(info, p.getOptions()));
+        }
+    }
+
+    @Override
+    public boolean onSend(Packet packet) {
+        return false;
     }
 }
