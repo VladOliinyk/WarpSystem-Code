@@ -9,6 +9,17 @@ WarpSystem:
     Color: '&7'
     Argument: '&e'
 
+  #The beta area is there to make updates as easy as possible.
+  #Here you decide whether you want to participate in beta functions and help to test new features.
+  # !! Warning: Beta stuff is not 100% tested and may cause issues. Please visit my Discord or DM me with issues!
+  Beta:
+    Participate: false
+    #true: When a function is determined as official feature it automatically gets activated with the next update.
+    Activate_Afterwards: true
+    Functions:
+      #Cancels teleports from other plugins and replaces them with own teleport procedures to add teleport delays, particles, sounds and potion effects
+      Teleport_Interceptions: false
+
   BungeeCord:
     #If your BungeeCord has a newer jar than your Spigot, there is an option to deliver this jar directly to your Spigot without FTP access.
     #  Does not work on Windows or Mac.
@@ -54,8 +65,6 @@ WarpSystem:
     Allow_Move: false
     #Values: ACTION_BAR, TITLE (separate lines with '\n')
     Delay_Display: ACTION_BAR
-    #Cancels teleports from other plugins and replaces them with own teleport procedure to add teleport delay, particles, sounds and potion effects
-    Teleport_Interceptions: true
 
   #PREMIUM
   #ByPass: warpsystem.bypass.cooldown

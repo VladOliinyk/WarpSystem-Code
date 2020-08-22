@@ -356,12 +356,7 @@ public class SetupAssistant {
                     else info.setColor(net.md_5.bungee.api.ChatColor.YELLOW);
                 }
                 if(!value.getDescription().isEmpty()) {
-                    List<String> description = TextAlignment.lineBreak(value.getDescription(), 200);
-                    BaseComponent[] components = new BaseComponent[description.size()];
-                    for(int i = 0; i < description.size(); i++) {
-                        components[i] = new TextComponent(description.get(i));
-                    }
-                    info.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, components));
+                    info.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(value.getDescription())}));
                 }
                 m.add(info);
 

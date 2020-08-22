@@ -24,13 +24,12 @@ import java.util.concurrent.TimeUnit;
 @Function(name = "Walking in teleports", configPath = "WarpSystem.Teleport.Allow_Move", defaultValue = "false", clazz = Boolean.class)
 @Function(name = "Teleport Delay", configPath = "WarpSystem.Teleport.Delay", defaultValue = "3", clazz = Integer.class)
 @Function(name = "Animation after teleports", configPath = "WarpSystem.Teleport.Animation_After_Teleport.Enabled", defaultValue = "true", clazz = Boolean.class)
-@Function(name = "Public animations", description = "§7Only visible for players who\n§esee you §8(§7Vanish§8)", configPath = "WarpSystem.Teleport.Public_Animations", defaultValue = "true", clazz = Boolean.class)
+@Function(name = "Public animations", description = "§7Only visible for players who §esee you §8(§7Vanish§8)", configPath = "WarpSystem.Teleport.Public_Animations", defaultValue = "true", clazz = Boolean.class)
 @Function(name = "CMD suggestion color", configPath = "WarpSystem.Command_Suggestions.Color", defaultValue = "&7", clazz = String.class, since = "v4.2.8")
 @Function(name = "CMD argument color", configPath = "WarpSystem.Command_Suggestions.Argument", defaultValue = "&e", clazz = String.class, since = "v4.2.8")
 @Function(name = "Economy", description = "§7Economy §etype §7must be changed in §eConfig.yml", configPath = "WarpSystem.Economy.Enabled", defaultValue = "true", clazz = Boolean.class, since = "v4.2.8")
 @Function(name = "Currency name", configPath = "WarpSystem.Economy.Name", defaultValue = "Coin(s)", clazz = String.class, since = "v4.2.8")
-@Function(name = "Teleport interceptions", description = "§cTemporary removed.", configPath = "WarpSystem.Teleport.Teleport_Interceptions", defaultValue = "true", clazz = Boolean.class, since = "v4.2.9")
-@Function(name = "BungeeCord Update Fetching", description = "If your BungeeCord has a newer jar than your\nSpigot, there is an option to deliver this jar\ndirectly to your Spigot without FTP access.\n\nValues: 0=Disabled, 1=Ask_on_Enable, 2=Auto.", configPath = "WarpSystem.BungeeCord.Fetch_Updated_Jars", defaultValue = "1", clazz = Integer.class, since = "v4.2.11")
+@Function(name = "BungeeCord Update Fetching", description = "If your BungeeCord has a newer jar than your Spigot, there is an option to deliver this jar directly to your Spigot without FTP access.  Values: 0=Disabled, 1=Ask_on_Enable, 2=Auto.", configPath = "WarpSystem.BungeeCord.Fetch_Updated_Jars", defaultValue = "1", clazz = Integer.class, since = "v4.2.11")
 public class SetupAssistantManager {
     private SetupAssistant assistant = null;
     private List<Value> cachedFunctions = null;
@@ -91,7 +90,7 @@ public class SetupAssistantManager {
                     m.destroy();
                 }
             });
-            m.add("§8]\n" + Lang.getPrefix() + "§7The chat will be §cunavailable §7during the setup.");
+            m.add("§8] " + Lang.getPrefix() + "§7The chat will be §cunavailable §7during the setup.");
 
             m.setTimeOut(60);
             m.send(player);
@@ -99,7 +98,7 @@ public class SetupAssistantManager {
     }
 
     public void onDisable() {
-        if(this.assistant != null){
+        if(this.assistant != null) {
             this.assistant.onQuit();
         }
     }

@@ -22,8 +22,7 @@ public abstract class Options {
         this(WarpSystem.getInstance().getFileManager().getFile(name));
 
         if(this.file == null) {
-            WarpSystem.getInstance().getFileManager().loadFile(name, path);
-            this.file = WarpSystem.getInstance().getFileManager().getFile(name);
+            this.file = WarpSystem.getInstance().getFileManager().loadFile(name, path);
         }
     }
 

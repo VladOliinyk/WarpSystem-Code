@@ -4,6 +4,7 @@ import de.codingair.codingapi.files.ConfigFile;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.bstats.MetricsManager;
 import de.codingair.warpsystem.spigot.features.animations.AnimationManager;
+import de.codingair.warpsystem.spigot.features.beta.BetaManager;
 import de.codingair.warpsystem.spigot.features.globalwarps.managers.GlobalWarpManager;
 import de.codingair.warpsystem.spigot.features.playerwarps.managers.PlayerWarpManager;
 import de.codingair.warpsystem.spigot.features.portals.managers.PortalManager;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum FeatureType {
+    BETA(BetaManager.class, Priority.ALWAYS_ON, "Beta"),
     WARP_GUI(IconManager.class, Priority.HIGH, "WarpGUI"),
     GLOBAL_WARPS(GlobalWarpManager.class, Priority.LOW, "GlobalWarps"),
     SIGNS(SignManager.class, Priority.LOWEST, "WarpSigns"),

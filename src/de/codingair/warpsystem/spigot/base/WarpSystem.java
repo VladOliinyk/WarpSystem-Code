@@ -3,6 +3,7 @@ package de.codingair.warpsystem.spigot.base;
 import de.codingair.codingapi.API;
 import de.codingair.codingapi.files.ConfigFile;
 import de.codingair.codingapi.files.FileManager;
+import de.codingair.codingapi.files.loader.UTFConfig;
 import de.codingair.codingapi.server.reflections.IReflection;
 import de.codingair.codingapi.server.specification.Type;
 import de.codingair.codingapi.server.specification.Version;
@@ -32,6 +33,7 @@ import de.codingair.warpsystem.transfer.spigot.SpigotHandler;
 import de.codingair.warpsystem.utils.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.InvalidDescriptionException;
@@ -43,7 +45,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class WarpSystem extends JavaPlugin {
@@ -123,6 +127,7 @@ public class WarpSystem extends JavaPlugin {
     private String oldVersion = null;
     private final SpigotHandler dataHandler = new SpigotHandler(this);
     private final UUIDManager uuidManager = new UUIDManager();
+    private UTFConfig oldConfig = null;
 
     public static boolean hasPermission(CommandSender sender, String permission) {
         return permission == null || sender.hasPermission(permission);
@@ -167,6 +172,8 @@ public class WarpSystem extends JavaPlugin {
         timer.start();
 
         instance = this;
+        copyConfig();
+
         this.dataManager = new DataManager();
         this.dataManager.preLoad();
 
@@ -189,7 +196,7 @@ public class WarpSystem extends JavaPlugin {
             log("MC-Version: " + Version.get().fullVersion());
             log(" ");
 
-            if(this.fileManager.getFile("Config") == null) this.fileManager.loadFile("Config", "/");
+            this.fileManager.loadFile("Config", "/");
             Lang.initPreDefinedLanguages(this);
 
             oldVersion = fileManager.getFile("Config").getConfig().getString("Do_Not_Edit.Last_Version", "0");
@@ -225,7 +232,6 @@ public class WarpSystem extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new TeleportListener(), this);
             Bukkit.getPluginManager().registerEvents(new NotifyListener(), this);
             Bukkit.getPluginManager().registerEvents(new CommandListener(), this);
-//            Bukkit.getPluginManager().registerEvents(new TeleportInterceptionListener(), this); TODO improve TeleportInterceptions and mark this as BETA function
 
             //register Jar receiver
             dataHandler.register(new JarReceiver());
@@ -311,6 +317,18 @@ public class WarpSystem extends JavaPlugin {
             this.ERROR = true;
             Bukkit.getPluginManager().disablePlugin(this);
         }
+    }
+
+    private void copyConfig() {
+        ConfigFile file = this.fileManager.loadFile("Config", "/", false);
+
+        IReflection.FieldAccessor<Map<String, Object>> map = IReflection.getField(MemorySection.class, "map");
+        Map<String, Object> copy = new HashMap<>(map.get(file.getConfig()));
+
+        this.oldConfig = (UTFConfig) IReflection.getConstructor(UTFConfig.class).newInstance();
+        map.set(oldConfig, copy);
+
+        this.fileManager.unloadFile(file);
     }
 
     private void checkPermissions() {
@@ -620,5 +638,9 @@ public class WarpSystem extends JavaPlugin {
 
     public VanishManager getVanishManager() {
         return vanishManager;
+    }
+
+    public UTFConfig getOldConfig() {
+        return oldConfig;
     }
 }
