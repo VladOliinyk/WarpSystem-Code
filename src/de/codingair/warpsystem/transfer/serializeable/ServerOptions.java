@@ -7,7 +7,9 @@ import java.io.IOException;
 public class ServerOptions implements Serializable {
     private String version;
     private int updateFetching;
+
     private boolean fetched = false;
+    private boolean sameVersion = false;
 
     public ServerOptions() {
     }
@@ -43,5 +45,13 @@ public class ServerOptions implements Serializable {
 
     public void setFetched(boolean fetched) {
         this.fetched = fetched;
+    }
+
+    public boolean sameVersion() {
+        return sameVersion;
+    }
+
+    public void setSameVersion(boolean sameVersion) {
+        this.sameVersion = sameVersion;
     }
 }

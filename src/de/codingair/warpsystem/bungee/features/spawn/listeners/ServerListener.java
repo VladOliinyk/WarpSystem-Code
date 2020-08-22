@@ -4,7 +4,7 @@ import de.codingair.codingapi.tools.Callback;
 import de.codingair.warpsystem.bungee.base.WarpSystem;
 import de.codingair.warpsystem.bungee.base.language.Lang;
 import de.codingair.warpsystem.bungee.base.managers.ServerManager;
-import de.codingair.warpsystem.bungee.base.utils.ServerInitializeEvent;
+import de.codingair.warpsystem.bungee.base.utils.ServerProvideOptionsEvent;
 import de.codingair.warpsystem.bungee.features.spawn.managers.SpawnManager;
 import de.codingair.warpsystem.transfer.packets.general.SendGlobalSpawnOptionsPacket;
 import de.codingair.warpsystem.transfer.packets.general.TeleportSpawnPacket;
@@ -21,7 +21,8 @@ import net.md_5.bungee.event.EventHandler;
 public class ServerListener implements Listener, PacketListener {
 
     @EventHandler
-    public void onInit(ServerInitializeEvent e) {
+    public void onInit(ServerProvideOptionsEvent e) {
+        if(!e.getOptions().sameVersion()) return;
         WarpSystem.getInstance().getDataHandler().send(SpawnManager.getInstance().getInfoPacket(), e.getInfo());
     }
 

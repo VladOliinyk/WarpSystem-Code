@@ -87,6 +87,7 @@ public class ServerManager implements Listener, PacketListener {
 
             SendOptionsPacket p = (SendOptionsPacket) packet;
             options.put(info, p.getOptions());
+            p.getOptions().setSameVersion(WarpSystem.getInstance().getDescription().getVersion().equals(p.getOptions().getVersion()));
             WarpSystem.getInstance().getProxy().getPluginManager().callEvent(new ServerProvideOptionsEvent(info, p.getOptions()));
         }
     }

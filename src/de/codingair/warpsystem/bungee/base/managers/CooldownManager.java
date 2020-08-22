@@ -3,7 +3,7 @@ package de.codingair.warpsystem.bungee.base.managers;
 import de.codingair.codingapi.bungeecord.files.ConfigFile;
 import de.codingair.codingapi.tools.io.JSON.BungeeJSON;
 import de.codingair.warpsystem.bungee.base.WarpSystem;
-import de.codingair.warpsystem.bungee.base.utils.ServerInitializeEvent;
+import de.codingair.warpsystem.bungee.base.utils.ServerProvideOptionsEvent;
 import de.codingair.warpsystem.spigot.base.utils.cooldown.Cooldown;
 import de.codingair.warpsystem.spigot.base.utils.cooldown.CooldownDataPacket;
 import de.codingair.warpsystem.spigot.base.utils.cooldown.CooldownPacket;
@@ -87,7 +87,8 @@ public class CooldownManager implements Listener, PacketListener {
     }
 
     @EventHandler
-    public void onInit(ServerInitializeEvent e) {
+    public void onInit(ServerProvideOptionsEvent e) {
+        if(!e.getOptions().sameVersion()) return;
         cache.forEach(((uuid, data) -> WarpSystem.getInstance().getDataHandler().send(new CooldownDataPacket(data.toArray(new Cooldown[0])), e.getInfo())));
     }
 
