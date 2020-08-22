@@ -17,7 +17,6 @@ import java.util.Set;
 @AvailableForSetupAssistant(type = "Beta", config = "Config")
 @Function(name = "Participate", description = "The beta area is there to make updates as easy as possible. Here, you decide whether you want to participate in beta functions and help to test new features.\n\n" +
         "§c§lWarning: §fBeta stuff is §cnot 100% tested §rand §cmay cause issues§r. Please visit my §bDiscord §ror DM me with issues! ", defaultValue = "false", configPath = "WarpSystem.Beta.Participate", clazz = Boolean.class, since = "v4.2.11")
-@Function(name = "Activate Afterwards", description = "§e§ltrue§r: When a function is determined as official feature it automatically gets activated with the next update.", defaultValue = "true", clazz = Boolean.class, configPath = "WarpSystem.Beta.Activate_Afterwards", since = "v4.2.11")
 @Function(name = "Teleport interceptions", description = "Cancels teleports from other plugins and replaces them with own teleport procedures to add teleport delays, particles, sounds and potion effects", configPath = "WarpSystem.Beta.Functions.Teleport_Interceptions", defaultValue = "false", clazz = Boolean.class, since = "v4.2.11")
 public class BetaManager implements Manager {
     private static final HashMap<String, Beta> BETA = new HashMap<>();
@@ -39,20 +38,20 @@ public class BetaManager implements Manager {
 
         ConfigFile file = WarpSystem.getInstance().getFileManager().getFile("Config");
         UTFConfig config = file.getConfig();
-        boolean activate = config.getBoolean("WarpSystem.Beta.Activate_Afterwards", false);
+        boolean participate = config.getBoolean("WarpSystem.Beta.Participate");
 
         for(String function : functions) {
             if(!config.contains("WarpSystem.Beta.Functions." + function)) {
                 //moved from beta to official feature
-                //check 'Activate_Afterwards'
-                config.set(BETA.get(function).getFinalConfigTag(), activate);
+                //activate only if already participating on BETA and function was enabled during BETA stage
+                config.set(BETA.get(function).getFinalConfigTag(), participate && config.getBoolean("WarpSystem.Beta.Functions." + function));
             }
         }
 
         file.saveConfig();
         functions.clear();
 
-        if(!config.getBoolean("WarpSystem.Beta.Participate")) return true;
+        if(!participate) return true;
 
         WarpSystem.log("  > Loading BETA features - Thank you for your help!");
 

@@ -14,8 +14,6 @@ WarpSystem:
   # !! Warning: Beta stuff is not 100% tested and may cause issues. Please visit my Discord or DM me with issues!
   Beta:
     Participate: false
-    #true: When a function is determined as official feature it automatically gets activated with the next update.
-    Activate_Afterwards: true
     Functions:
       #Cancels teleports from other plugins and replaces them with own teleport procedures to add teleport delays, particles, sounds and potion effects
       Teleport_Interceptions: false
