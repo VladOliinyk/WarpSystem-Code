@@ -19,7 +19,7 @@ public class UpdateNotifier {
     private final UpdateCheckerAdapter adapter;
 
     public UpdateNotifier() {
-        this.adapter = new PremiumUpdateChecker();
+        this.adapter = new FreeUpdateChecker();
     }
 
     public boolean read() {
