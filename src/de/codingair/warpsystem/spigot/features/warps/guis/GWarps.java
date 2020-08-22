@@ -363,6 +363,8 @@ public class GWarps extends GUI {
                                             if(e.isSubmitted())
                                                 e.setPost(() -> {
                                                     Icon icon = new Icon(input, item, GWarps.this.page, slot, null);
+                                                    if(world != null) icon.addAction(new BoundAction(world));
+
                                                     icon.setPage(category);
                                                     new GEditor(p, icon).setFallbackGUI(GWarps.this).setUseFallbackGUI(true).open();
                                                 });
