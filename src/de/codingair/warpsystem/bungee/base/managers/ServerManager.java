@@ -8,7 +8,6 @@ import de.codingair.warpsystem.bungee.base.utils.ServerProvideOptionsEvent;
 import de.codingair.warpsystem.transfer.packets.spigot.SendOptionsPacket;
 import de.codingair.warpsystem.transfer.packets.utils.PacketType;
 import de.codingair.warpsystem.transfer.serializeable.ServerOptions;
-import de.codingair.warpsystem.bungee.features.teleport.managers.TeleportManager;
 import de.codingair.warpsystem.transfer.packets.bungee.InitialPacket;
 import de.codingair.warpsystem.transfer.packets.utils.Packet;
 import de.codingair.warpsystem.transfer.utils.PacketListener;
@@ -73,7 +72,6 @@ public class ServerManager implements Listener, PacketListener {
     public void setStatus(ServerInfo info, boolean online) {
         if(!online) {
             this.onlineServer.remove(info);
-            TeleportManager.getInstance().removeOptions(info);
             options.remove(info);
         } else this.onlineServer.add(info);
     }
