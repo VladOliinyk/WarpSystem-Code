@@ -133,7 +133,7 @@ public class Lang {
             InputStream is = plugin.getResource("languages/" + language);
 
             File file = new File(plugin.getDataFolder() + "/Languages/", language);
-            if(!file.exists()) {
+            if(!file.exists() || file.length() == 0) {
                 file.createNewFile();
                 copy(is, new FileOutputStream(file));
             }

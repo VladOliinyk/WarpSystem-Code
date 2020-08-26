@@ -87,7 +87,7 @@ Change_Name_Long: '&7» Cliquez ici pour changer le nom.'
 Change_Name: 'Changer le nom'
 Move_Help: '&7Déplacer: Clique droit sur la catégorie pour la modifier comme ceci.'
 Set_Icon: 'Définir l''icône'
-Coins: %CURRENCY%
+Coins: "%CURRENCY%"
 Costs: Coût
 WarpSign_Choose_Warp: 'Choisissez un warp pour la pancarte!'
 WarpSign_Choose_Warp_GUI: '&4&lChoisissez un warp!'
@@ -122,7 +122,7 @@ Air_Portal: '&ePortail en air'
 Nether_Portal: '&4Portail du nether'
 End_Portal: '&9Portail de l''end'
 Custom_Portal: '&6Portail personnalisé'
-NativePortal_Material: Material Portail
+NativePortal_Material: 'Material Portail'
 Teleport_Link: 'Lien de téléportation'
 Portal_Blocks: 'Bloc du Portail'
 Not_Ready_For_Saving: '&cLe portail ne peut pas être sauvegardé maintenant'
@@ -506,7 +506,7 @@ First_Join: 'Première adhésion'
 Spawn: 'Spawn'
 Use_For_Respawn: 'Utilisation pour le repeuplement'
 Already_linked: 'Déjà liés'
-Fireworks: 'Feux d''artifice'Start
+Fireworks: 'Feux d''artifice''Start'
 Broadcaster: 'Broadcaster'
 Spawn_Name_Button_hint: '&7Astuce : les commandes Spawn\n&7sont modifiables (Config.yml)'
 Permission_overwritten_by_config: 'Les autorisations sont écrasées par la configuration'
