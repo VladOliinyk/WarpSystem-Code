@@ -64,8 +64,10 @@ public enum PacketType {
     BooleanPacket(BooleanPacket.class),
     IntegerPacket(IntegerPacket.class),
     LongPacket(LongPacket.class),
+    StringPacket(StringPacket.class),
 
     AnswerPacket(AnswerPacket.class),
+    RequestFullNamePacket(RequestFullNamePacket.class),
     ;
 
     private final Class<?> packet;

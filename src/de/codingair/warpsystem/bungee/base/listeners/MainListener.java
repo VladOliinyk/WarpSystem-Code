@@ -1,6 +1,7 @@
 package de.codingair.warpsystem.bungee.base.listeners;
 
 import de.codingair.codingapi.tools.Callback;
+import de.codingair.warpsystem.bungee.api.Players;
 import de.codingair.warpsystem.bungee.base.WarpSystem;
 import de.codingair.warpsystem.bungee.base.language.Lang;
 import de.codingair.warpsystem.bungee.base.managers.ServerManager;
@@ -11,7 +12,11 @@ import de.codingair.warpsystem.transfer.packets.bungee.PrepareLoginMessagePacket
 import de.codingair.warpsystem.transfer.packets.general.BooleanPacket;
 import de.codingair.warpsystem.transfer.packets.general.IntegerPacket;
 import de.codingair.warpsystem.transfer.packets.general.PrepareCoordinationTeleportPacket;
-import de.codingair.warpsystem.transfer.packets.spigot.*;
+import de.codingair.warpsystem.transfer.packets.general.StringPacket;
+import de.codingair.warpsystem.transfer.packets.spigot.MessagePacket;
+import de.codingair.warpsystem.transfer.packets.spigot.PrepareServerSwitchPacket;
+import de.codingair.warpsystem.transfer.packets.spigot.RequestFullNamePacket;
+import de.codingair.warpsystem.transfer.packets.spigot.RequestServerStatusPacket;
 import de.codingair.warpsystem.transfer.packets.utils.Packet;
 import de.codingair.warpsystem.transfer.packets.utils.PacketType;
 import de.codingair.warpsystem.transfer.utils.PacketListener;
@@ -241,6 +246,24 @@ public class MainListener implements Listener, PacketListener {
                     WarpSystem.getInstance().getDataHandler().send(answer, server);
                 }
                 break;
+            }
+
+            case RequestFullNamePacket: {
+                RequestFullNamePacket p = (RequestFullNamePacket) packet;
+
+                StringPacket answer = new StringPacket();
+                p.applyAsAnswer(answer);
+
+                if(p.getName() == null) {
+                    answer.setValue(null);
+                    WarpSystem.getInstance().getDataHandler().send(answer, server);
+                    return;
+                }
+
+                ProxiedPlayer pp = Players.getPlayer(p.getName());
+
+                answer.setValue(pp == null ? null : pp.getName());
+                WarpSystem.getInstance().getDataHandler().send(answer, server);
             }
         }
     }

@@ -68,12 +68,12 @@ public class CTeleport extends WSCommandBuilder {
                     } else if((args.length == 3 && !args[2].isEmpty()) || (args.length == 4 && !args[3].isEmpty())) {
                         //player to coords
 
+                        double x = 0;
+                        double y = 0;
+                        double z = 0;
+
                         if(args.length == 3) {
                             //Teleport sender to coords
-                            double x = 0;
-                            double y = 0;
-                            double z = 0;
-
                             args[0] = args[0].replace(",", ".");
                             args[1] = args[1].replace(",", ".");
                             args[2] = args[2].replace(",", ".");
@@ -100,10 +100,6 @@ public class CTeleport extends WSCommandBuilder {
                             tp(p.getName(), p.getName(), x, y, z);
                         } else {
                             //Teleport 0 to coords
-                            double x = 0;
-                            double y = 0;
-                            double z = 0;
-
                             args[1] = args[1].replace(",", ".");
                             args[2] = args[2].replace(",", ".");
                             args[3] = args[3].replace(",", ".");

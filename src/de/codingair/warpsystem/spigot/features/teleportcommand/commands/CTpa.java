@@ -83,8 +83,8 @@ public class CTpa extends WSCommandBuilder {
                 }
 
                 if(WarpSystem.cooldown().checkPlayer((Player) sender, Origin.TeleportRequest)) return false;
-                
-		if(other == null && WarpSystem.hasPermission(sender, WarpSystem.PERMISSION_USE_TELEPORT_COMMAND_TP)) {
+
+                if(other == null && WarpSystem.hasPermission(sender, WarpSystem.PERMISSION_USE_TELEPORT_COMMAND_TP)) {
                     WarpSystem.getInstance().getDataHandler().send(new IsOnlinePacket(new Callback<Boolean>() {
                         @Override
                         public void accept(Boolean online) {
@@ -105,11 +105,11 @@ public class CTpa extends WSCommandBuilder {
                         int sent = result.intValue();
 
                         if(handled == 0) sender.sendMessage(Lang.getPrefix() + Lang.get("Player_is_not_online"));
-                        else if(handled == -1) sender.sendMessage(Lang.getPrefix() + Lang.get("TeleportRequest_denied_sender").replace("%PLAYER%", ChatColor.stripColor(argument)));
+                        else if(handled == -1) sender.sendMessage(Lang.getPrefix() + Lang.get("TeleportRequest_denied_sender").replace("%PLAYER%", ChatColor.stripColor(other != null ? other.getName() : argument)));
                         else if(sent == 0) sender.sendMessage(Lang.getPrefix() + Lang.get("TeleportRequest_already_sent"));
-                        else sender.sendMessage(Lang.getPrefix() + Lang.get("TeleportRequest_sent").replace("%PLAYER%", ChatColor.stripColor(argument)));
+                        else sender.sendMessage(Lang.getPrefix() + Lang.get("TeleportRequest_sent").replace("%PLAYER%", ChatColor.stripColor(other != null ? other.getName() : argument)));
                     }
-                }, argument);
+                }, other != null ? other.getName() : argument);
                 return false;
             }
         });
