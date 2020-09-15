@@ -44,6 +44,8 @@ import java.util.*;
 @Function(name = "World border", defaultValue = "true", configPath = "RandomTeleport.Support.WorldBorder", clazz = Boolean.class)
 @Function(name = "Block blacklist", defaultValue = "true", configPath = "RandomTeleport.Block_Blacklist.Enabled", description = "§eBlocks §7» §6RTPConfig.yml", clazz = Boolean.class)
 @Function(name = "Biome filter", defaultValue = "false", configPath = "RandomTeleport.Support.Biome.Enabled", description = "§eBiomes §7» §6RTPConfig.yml", clazz = Boolean.class)
+@Function(name = "Max uses", defaultValue = "4", configPath = "RandomTeleport.Max", description = "§cONLY §rif permissions in the main §eConfig.yml §rare §cdisabled", clazz = Integer.class)
+@Function(name = "Free uses", defaultValue = "1", configPath = "RandomTeleport.Free", description = "§cONLY §rif permissions in the main §eConfig.yml §rare §cdisabled", clazz = Integer.class)
 public class RandomTeleporterManager implements Manager, BungeeFeature {
     private boolean buyable;
     private double costs;
@@ -56,6 +58,8 @@ public class RandomTeleporterManager implements Manager, BungeeFeature {
 
     private int netherHeight;
     private int endHeight;
+    private int max;
+    private int free;
 
     private final List<Location> interactBlocks = new ArrayList<>();
     private final InteractListener listener = new InteractListener();
@@ -80,6 +84,9 @@ public class RandomTeleporterManager implements Manager, BungeeFeature {
 
         this.buyable = config.getBoolean("RandomTeleport.Buyable.Enabled", true);
         this.costs = config.getDouble("RandomTeleport.Buyable.Costs", 500.0);
+
+        this.max = config.getInt("RandomTeleport.Max", 4);
+        this.free = config.getInt("RandomTeleport.Free", 1);
 
         if(this.defValues != null) this.defValues.destroy();
         this.defValues = new WorldOption("§DEF§");
@@ -246,54 +253,57 @@ public class RandomTeleporterManager implements Manager, BungeeFeature {
     public int getMaxTeleportAmount(Player player) {
         if(player.isOp()) return -1;
 
-        int amount = 0;
-        for(PermissionAttachmentInfo effectivePermission : player.getEffectivePermissions()) {
-            if(!effectivePermission.getValue()) continue;
-            String perm = effectivePermission.getPermission();
+        if(WarpSystem.PERMISSION_USE_RANDOM_TELEPORTER != null) {
+            int amount = 0;
+            for(PermissionAttachmentInfo effectivePermission : player.getEffectivePermissions()) {
+                if(!effectivePermission.getValue()) continue;
+                String perm = effectivePermission.getPermission();
 
-            if(perm.equals("*") || perm.toLowerCase().startsWith("warpsystem.*")
-                    || perm.toLowerCase().startsWith("warpsystem.randomteleporters.*")) return -1;
+                if(perm.equals("*") || perm.toLowerCase().startsWith("warpsystem.*")
+                        || perm.toLowerCase().startsWith("warpsystem.randomteleporters.*")) return -1;
 
-            if(perm.toLowerCase().startsWith("warpsystem.randomteleporters.max.")) {
-                String s = perm.substring(33);
-                if(s.equals("*") || s.equalsIgnoreCase("n")) return -1;
+                if(perm.toLowerCase().startsWith("warpsystem.randomteleporters.max.")) {
+                    String s = perm.substring(33);
+                    if(s.equals("*") || s.equalsIgnoreCase("n")) return -1;
 
-                try {
-                    int i = Integer.parseInt(s);
-                    if(i > amount) amount = i;
-                } catch(Throwable ignored) {
+                    try {
+                        int i = Integer.parseInt(s);
+                        if(i > amount) amount = i;
+                    } catch(Throwable ignored) {
+                    }
                 }
+
             }
 
-        }
-
-        return amount;
+            return amount;
+        } else return max;
     }
 
     public int getFreeTeleportAmount(Player player) {
         if(player.isOp()) return -1;
 
-        int amount = 0;
-        for(PermissionAttachmentInfo effectivePermission : player.getEffectivePermissions()) {
-            if(!effectivePermission.getValue()) continue;
-            String perm = effectivePermission.getPermission();
+        if(WarpSystem.PERMISSION_USE_RANDOM_TELEPORTER != null) {
+            int amount = 0;
+            for(PermissionAttachmentInfo effectivePermission : player.getEffectivePermissions()) {
+                if(!effectivePermission.getValue()) continue;
+                String perm = effectivePermission.getPermission();
 
-            if(perm.equals("*") || perm.toLowerCase().startsWith("warpsystem.*")
-                    || perm.toLowerCase().startsWith("warpsystem.randomteleporters.*")) return -1;
+                if(perm.equals("*") || perm.toLowerCase().startsWith("warpsystem.*")
+                        || perm.toLowerCase().startsWith("warpsystem.randomteleporters.*")) return -1;
 
-            if(perm.toLowerCase().startsWith("warpsystem.randomteleporters.free.")) {
-                String s = perm.substring(34);
-                if(s.equals("*") || s.equalsIgnoreCase("n")) return -1;
+                if(perm.toLowerCase().startsWith("warpsystem.randomteleporters.free.")) {
+                    String s = perm.substring(34);
+                    if(s.equals("*") || s.equalsIgnoreCase("n")) return -1;
 
-                try {
-                    int i = Integer.parseInt(s);
-                    if(i > amount) amount = i;
-                } catch(Throwable ignored) {
+                    try {
+                        int i = Integer.parseInt(s);
+                        if(i > amount) amount = i;
+                    } catch(Throwable ignored) {
+                    }
                 }
             }
-        }
-
-        return amount;
+            return amount;
+        } else return free;
     }
 
     public WorldOption getOption(World world, WorldOption def) {

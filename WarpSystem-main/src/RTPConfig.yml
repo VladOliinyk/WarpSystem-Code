@@ -2,6 +2,9 @@
 #"warpsystem.randomteleporters.free.1" » This permissions means, that the player with that permission has a standard amount of 1 free random teleports
 #"warpsystem.randomteleporters.max.2" » This permissions means, that the player with that permission has a max amount of 2 random teleports, so he could buy one, if it's enabled
 RandomTeleport:
+  #Max/Free RTPs - ONLY if permissions in the main Config.yml are disabled
+  Max: 4
+  Free: 1
   #Costs for one extra teleport (buyable with commands)
   Buyable:
     Enabled: true
