@@ -18,7 +18,7 @@ public class GeneralOptions extends Options {
     private Option<String> cmdSugColor = new Option<>("WarpSystem.Command_Suggestions.Color", "&7");
     private Option<String> cmdArgColor = new Option<>("WarpSystem.Command_Suggestions.Argument", "&e");
     private Option<String> delayDisplay = new Option<>("WarpSystem.Teleport.Delay_Display", "ACTION_BAR");
-    private Option<Boolean> teleportInterceptions = new Option<>("WarpSystem.Teleport.Teleport_Interceptions", true);
+    private Option<Boolean> teleportInterceptions = new Option<>("WarpSystem.Beta.Functions.Teleport_Interceptions", false);
     private Option<Integer> fetchUpdates = new Option<>("WarpSystem.BungeeCord.Fetch_Updated_Jars", 1);
 
     public GeneralOptions() {
