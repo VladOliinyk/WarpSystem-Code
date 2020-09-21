@@ -38,7 +38,7 @@ public class CEditWarp extends WSCommandBuilder {
                 sender.sendMessage(Lang.getPrefix() + WarpSystem.opt().cmdSug() + Lang.get("Use") + ": /" + label + " " + WarpSystem.opt().cmdArg() + "<warp>");
                 return false;
             }
-        });
+        }.setOnlyPlayers(true));
 
         SimpleWarpManager m = WarpSystem.getInstance().getDataManager().getManager(FeatureType.SIMPLE_WARPS);
 

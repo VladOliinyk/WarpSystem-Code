@@ -38,6 +38,9 @@ DeleteWarp:
 EditWarp:
   Name: editwarp
   Aliases: []
+ModifyWarp:
+  Name: modifywarp
+  Aliases: []
 SetWarp:
   Name: setwarp
   Aliases: []

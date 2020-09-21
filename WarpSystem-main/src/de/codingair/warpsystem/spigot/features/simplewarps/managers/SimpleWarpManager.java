@@ -5,10 +5,7 @@ import de.codingair.codingapi.tools.io.JSON.JSON;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.features.FeatureType;
 import de.codingair.warpsystem.spigot.features.simplewarps.SimpleWarp;
-import de.codingair.warpsystem.spigot.features.simplewarps.commands.CDeleteWarp;
-import de.codingair.warpsystem.spigot.features.simplewarps.commands.CEditWarp;
-import de.codingair.warpsystem.spigot.features.simplewarps.commands.CSetWarp;
-import de.codingair.warpsystem.spigot.features.simplewarps.commands.CWarp;
+import de.codingair.warpsystem.spigot.features.simplewarps.commands.*;
 import de.codingair.warpsystem.utils.Manager;
 import org.bukkit.ChatColor;
 
@@ -74,6 +71,7 @@ public class SimpleWarpManager implements Manager {
         new CWarp().register();
         new CSetWarp().register();
         new CEditWarp().register();
+        new CModifyWarp().register();
         new CDeleteWarp().register();
 
         return !errors;
