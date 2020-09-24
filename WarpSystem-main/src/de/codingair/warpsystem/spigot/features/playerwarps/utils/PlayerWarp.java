@@ -489,7 +489,7 @@ public class PlayerWarp extends FeatureObject {
     }
 
     public boolean canTeleport(Player player) {
-        return isPublic || isOwner(player) || isTrusted(player);
+        return isPublic || isOwner(player) || isTrusted(player) || player.hasPermission(WarpSystem.PERMISSION_MODIFY_PLAYER_WARPS);
     }
 
     public String getName() {

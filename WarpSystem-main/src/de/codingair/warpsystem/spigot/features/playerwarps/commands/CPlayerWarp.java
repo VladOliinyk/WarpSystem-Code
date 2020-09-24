@@ -46,21 +46,31 @@ public class CPlayerWarp extends WarpSystemCommandBuilder {
         getBaseComponent().addChild(new PWMultiCommandComponent() {
             @Override
             public void addArguments(CommandSender sender, String[] args, List<String> suggestions) {
-                List<PlayerWarp> l = new ArrayList<>(PlayerWarpManager.getManager().getOwnWarps((Player) sender));
+                if(sender.hasPermission(WarpSystem.PERMISSION_MODIFY_PLAYER_WARPS)) {
+                    PlayerWarpManager.getManager().getWarps().values().forEach(warps -> warps.forEach(w -> {
+                        if(w.isExpired()) return;
 
-                for(PlayerWarp warp : l) {
-                    if(warp.isExpired()) continue;
-                    String name = warp.getName(false).replace(" ", "_");
-                    suggestions.add(name);
-                }
+                        if(w.getOwner().getId().equals(((Player) sender).getUniqueId())) {
+                            suggestions.add(w.getName(false).replace(" ", "_"));
+                        } else suggestions.add(w.getOwner().getName() + "." + w.getName(false).replace(" ", "_"));
+                    }));
+                } else {
+                    List<PlayerWarp> l = new ArrayList<>(PlayerWarpManager.getManager().getOwnWarps((Player) sender));
 
-                l.clear();
-                l = new ArrayList<>(PlayerWarpManager.getManager().getForeignAvailableWarps((Player) sender));
-                for(PlayerWarp warp : l) {
-                    String name = warp.getName(false).replace(" ", "_");
-                    suggestions.add(warp.getOwner().getName() + "." + name);
+                    for(PlayerWarp warp : l) {
+                        if(warp.isExpired()) continue;
+                        String name = warp.getName(false).replace(" ", "_");
+                        suggestions.add(name);
+                    }
+
+                    l.clear();
+                    l = new ArrayList<>(PlayerWarpManager.getManager().getForeignAvailableWarps((Player) sender));
+                    for(PlayerWarp warp : l) {
+                        String name = warp.getName(false).replace(" ", "_");
+                        suggestions.add(warp.getOwner().getName() + "." + name);
+                    }
+                    l.clear();
                 }
-                l.clear();
             }
 
             @Override
