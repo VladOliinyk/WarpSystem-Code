@@ -68,6 +68,8 @@ public enum PacketType {
 
     AnswerPacket(AnswerPacket.class),
     RequestFullNamePacket(RequestFullNamePacket.class),
+
+    SendServerPropertiesPacket(SendServerPropertiesPacket.class),
     ;
 
     private final Class<?> packet;

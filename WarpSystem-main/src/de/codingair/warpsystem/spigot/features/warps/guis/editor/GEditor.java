@@ -2,6 +2,7 @@ package de.codingair.warpsystem.spigot.features.warps.guis.editor;
 
 import de.codingair.warpsystem.spigot.base.guis.editor.Backup;
 import de.codingair.warpsystem.spigot.base.guis.editor.Editor;
+import de.codingair.warpsystem.spigot.base.guis.editor.ShowIcon;
 import de.codingair.warpsystem.spigot.base.guis.editor.pages.DestinationPage;
 import de.codingair.warpsystem.spigot.base.guis.editor.pages.SoundPage;
 import de.codingair.warpsystem.spigot.base.language.Lang;
@@ -13,6 +14,7 @@ import de.codingair.warpsystem.spigot.features.warps.guis.editor.pages.PFunction
 import de.codingair.warpsystem.spigot.features.warps.managers.IconManager;
 import de.codingair.warpsystem.spigot.features.warps.nextlevel.utils.Icon;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class GEditor extends de.codingair.warpsystem.spigot.base.guis.editor.Editor<Icon> {
     public GEditor(Player p, Icon icon) {
@@ -36,7 +38,7 @@ public class GEditor extends de.codingair.warpsystem.spigot.base.guis.editor.Edi
                     public void cancel(Icon value) {
                     }
                 },
-                clone::getItem,
+                () -> clone.getItemBuilderWithPlaceholders(p).getItem(),
                 new PAppearance(p, clone),
                 new PFunctions(p, clone),
                 icon.isPage() ? null : new DestinationPage(p, getMainTitle(), clone.getAction(WarpAction.class).getValue(), Origin.WarpIcon),

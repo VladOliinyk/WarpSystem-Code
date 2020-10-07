@@ -25,6 +25,27 @@ WarpSystem:
     #Values: 0=Disabled, 1=Ask_on_Enable, 2=Automatically
     Fetch_Updated_Jars: 1
 
+    #Following placeholder are for WarpSigns, WarpGUI icons and portal holograms that use a GlobalWarp or a Server as Destination. (Fetch cycle: every 5 seconds)
+    # .p. - Current amount of players
+    # .mp. - Max amount of players
+    # .ci. - Count info, defined below
+    # .m. - Message of the day
+    # .s. - Status: Whether the server is online or offline, defined below
+    Placeholder:
+      # These placeholders only support color placeholders from below - NOT the entire PlaceholderAPI
+      # Placeholders use the dot indicator to reduce the text width for signs
+      Online: ".sc.Online"
+      Offline: ".sc.Offline"
+      Count_Info: ".cc..p.&8/.cc..mp."
+
+      Colors:
+        # .sc.: Status color, defined below
+        # .cc.: Count color, defined below
+        Online: "&a"
+        Offline: "&c"
+        Full: "&c"
+        Not_Full: "&a"
+
   GUI:
     #false: The WarpGUI is identical on the entire server in all worlds
     #true: The WarpGUI is different in every world
@@ -131,7 +152,7 @@ WarpSystem:
     ParticleDistance: 64
     #Holograms support PlaceholderAPI | Time format: "0d, 0h, 0m, 0s" - Unnecessary values can be removed (examples: "1d, 5m", "10s", "5h")!
     #A value of 0 disables hologram updates
-    HologramUpdateInterval: 0h, 1m, 0s
+    HologramUpdateInterval: 0h, 0m, 5s
 
   SimpleWarps:
     #Adds on every created warp the standard permission: 'WarpSystem.Warps.<WarpName>'

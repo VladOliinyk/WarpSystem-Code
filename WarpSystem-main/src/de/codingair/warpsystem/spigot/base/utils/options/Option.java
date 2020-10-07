@@ -67,6 +67,10 @@ public class Option<E> {
         return state == State.CHANGED;
     }
 
+    public void reset() {
+        setValue(getDefault());
+    }
+
     public Option<E> clone() {
         Option o = new Option<>(path, value, def);
         o.state = this.state;

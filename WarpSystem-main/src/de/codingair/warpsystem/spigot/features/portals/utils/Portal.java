@@ -33,7 +33,7 @@ public class Portal extends FeatureObject {
     private boolean visible = false;
     private final List<PortalListener> listeners = new ArrayList<>();
 
-    private Hologram hologram = new Hologram();
+    private Hologram hologram = new Hologram(this);
 
     private final List<BlockHierarchy> merged = new ArrayList<>();
     private Location[] cachedEdges = null;

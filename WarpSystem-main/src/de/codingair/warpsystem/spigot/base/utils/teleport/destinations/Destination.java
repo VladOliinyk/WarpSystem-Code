@@ -8,9 +8,8 @@ import de.codingair.warpsystem.spigot.api.PAPI;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
-import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.CloneableAdapter;
-import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.GlobalLocationAdapter;
-import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.LocationAdapter;
+import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.*;
+import de.codingair.warpsystem.spigot.features.globalwarps.managers.GlobalWarpManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -88,6 +87,18 @@ public class Destination implements Serializable {
         this.offsetZ = destination.offsetZ;
         this.customOptions.apply(destination.customOptions);
         return this;
+    }
+
+    public boolean hasServerDestination() {
+        return adapter instanceof GlobalWarpAdapter || adapter instanceof ServerAdapter;
+    }
+
+    public String getTargetServer() {
+        if(adapter instanceof GlobalWarpAdapter) {
+            return GlobalWarpManager.getInstance().getGlobalWarps().get(id);
+        } else if(adapter instanceof ServerAdapter) {
+            return id;
+        } else return null;
     }
 
     public boolean teleport(Player player, String message, String displayName, boolean checkPermission, boolean silent, double costs, Callback<Result> callback) {

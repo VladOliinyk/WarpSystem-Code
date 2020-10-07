@@ -76,7 +76,7 @@ public class GEditWarp extends SimpleGUI {
         public void initialize(Player p) {
             ItemButtonOption option = new StandardButtonOption();
 
-            addButton(new NameButton(2, 0, false, new Value<>(clone.getName())) {
+            addButton(new NameButton(2, 0, false, new Value<>(clone.getName()), null) {
                 @Override
                 public String acceptName(String name) {
                     if(!name.equalsIgnoreCase(warp.getName()) && !SimpleWarpManager.getInstance().reserveName(name)) {

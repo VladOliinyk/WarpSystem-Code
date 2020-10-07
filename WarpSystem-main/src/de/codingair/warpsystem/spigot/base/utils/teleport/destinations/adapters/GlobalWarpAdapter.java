@@ -40,6 +40,22 @@ public class GlobalWarpAdapter extends DestinationAdapter {
 
                         if(callback != null) callback.accept(Result.SERVER_NOT_AVAILABLE);
                         break;
+
+                    case SERVER_IS_FULL:
+                        if(Bank.adapter() != null && costs != 0) {
+                            Bank.adapter().deposit(player, costs);
+                        }
+
+                        if(callback != null) callback.accept(Result.TARGET_SERVER_IS_FULL);
+                        break;
+
+                    case ERROR:
+                        if(Bank.adapter() != null && costs != 0) {
+                            Bank.adapter().deposit(player, costs);
+                        }
+
+                        if(callback != null) callback.accept(Result.ERROR);
+                        break;
                 }
             }
         });

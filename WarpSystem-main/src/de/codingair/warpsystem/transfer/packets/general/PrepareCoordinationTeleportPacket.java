@@ -13,11 +13,12 @@ public class PrepareCoordinationTeleportPacket extends RequestPacket<Integer> {
     private double x, y, z;
     private float yaw, pitch;
     private double costs;
+    private boolean ignoreLimit;
 
     public PrepareCoordinationTeleportPacket() {
     }
 
-    public PrepareCoordinationTeleportPacket(String player, String server, String world, String destinationName, String message, double x, double y, double z, float yaw, float pitch, double costs, Callback<Integer> callback) {
+    public PrepareCoordinationTeleportPacket(String player, String server, String world, String destinationName, String message, double x, double y, double z, float yaw, float pitch, double costs, boolean ignoreLimit, Callback<Integer> callback) {
         super(callback);
         this.player = player;
         this.server = server;
@@ -30,10 +31,11 @@ public class PrepareCoordinationTeleportPacket extends RequestPacket<Integer> {
         this.yaw = yaw;
         this.pitch = pitch;
         this.costs = costs;
+        this.ignoreLimit = ignoreLimit;
     }
 
     public PrepareCoordinationTeleportPacket clone(Callback<Integer> callback) {
-        return new PrepareCoordinationTeleportPacket(player, server, world, destinationName, message, x, y, z, yaw, pitch, costs, callback);
+        return new PrepareCoordinationTeleportPacket(player, server, world, destinationName, message, x, y, z, yaw, pitch, costs, ignoreLimit, callback);
     }
 
     @Override
@@ -123,5 +125,9 @@ public class PrepareCoordinationTeleportPacket extends RequestPacket<Integer> {
 
     public String getMessage() {
         return message;
+    }
+
+    public boolean isIgnoreLimit() {
+        return ignoreLimit;
     }
 }

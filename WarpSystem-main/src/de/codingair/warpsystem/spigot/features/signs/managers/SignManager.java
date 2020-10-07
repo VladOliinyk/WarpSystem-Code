@@ -25,7 +25,7 @@ public class SignManager implements Manager {
     private final List<WarpSign> warpSigns = new ArrayList<>();
 
     public static SignManager getInstance() {
-        return ((SignManager) WarpSystem.getInstance().getDataManager().getManager(FeatureType.SIGNS));
+        return WarpSystem.getInstance().getDataManager().getManager(FeatureType.SIGNS);
     }
 
     @Override
@@ -91,6 +91,10 @@ public class SignManager implements Manager {
     @Override
     public void destroy() {
         this.warpSigns.clear();
+    }
+
+    public void updateAll() {
+        warpSigns.stream().filter(s -> !s.isEditing()).forEach(WarpSign::update);
     }
 
     public WarpSign getByLocation(Location location) {

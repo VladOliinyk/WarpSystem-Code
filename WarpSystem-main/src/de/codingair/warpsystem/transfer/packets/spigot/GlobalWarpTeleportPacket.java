@@ -14,11 +14,12 @@ public class GlobalWarpTeleportPacket extends RequestPacket<Integer> {
     private double costs, randomOffsetX, randomOffsetY, randomOffsetZ;
     private String message;
     private boolean keepRotation;
+    private boolean ignoreLimit;
 
     public GlobalWarpTeleportPacket() {
     }
 
-    public GlobalWarpTeleportPacket(String player, String id, double randomOffsetX, double randomOffsetY, double randomOffsetZ, String displayName, String message, double costs, boolean keepRotation, Callback<Integer> callback) {
+    public GlobalWarpTeleportPacket(String player, String id, double randomOffsetX, double randomOffsetY, double randomOffsetZ, String displayName, String message, double costs, boolean keepRotation, boolean ignoreLimit, Callback<Integer> callback) {
         super(callback);
         this.player = player;
         this.id = id;
@@ -31,6 +32,7 @@ public class GlobalWarpTeleportPacket extends RequestPacket<Integer> {
         this.message = message;
         this.costs = costs;
         this.keepRotation = keepRotation;
+        this.ignoreLimit = ignoreLimit;
     }
 
     @Override
@@ -42,6 +44,7 @@ public class GlobalWarpTeleportPacket extends RequestPacket<Integer> {
         options |= (randomOffsetZ > 0 ? 1 : 0) << 4;
         options |= (message != null ? 1 : 0) << 5;
         options |= (keepRotation ? 1 : 0) << 6;
+        options |= (ignoreLimit ? 1 : 0) << 7;
         out.writeByte(options);
 
         out.writeUTF(this.player);
@@ -71,6 +74,7 @@ public class GlobalWarpTeleportPacket extends RequestPacket<Integer> {
         if((options & (1 << 4)) != 0) this.randomOffsetZ = in.readDouble();
         if((options & (1 << 5)) != 0) this.message = in.readUTF();
         this.keepRotation = (options & (1 << 6)) != 0;
+        this.ignoreLimit = (options & (1 << 7)) != 0;
 
         super.read(in);
     }
@@ -111,11 +115,17 @@ public class GlobalWarpTeleportPacket extends RequestPacket<Integer> {
         return keepRotation;
     }
 
+    public boolean isIgnoreLimit() {
+        return ignoreLimit;
+    }
+
     public enum Result {
         TELEPORTED(0),
         WARP_NOT_EXISTS(1),
         SERVER_NOT_AVAILABLE(2),
         PLAYER_ALREADY_ON_SERVER(3),
+        SERVER_IS_FULL(4),
+        ERROR(5),
         ;
 
         private final int id;

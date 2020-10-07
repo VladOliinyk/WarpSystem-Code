@@ -1,7 +1,9 @@
 package de.codingair.warpsystem.spigot.features.warps.guis.editor.pages;
 
 import de.codingair.codingapi.player.gui.inventory.gui.itembutton.ItemButtonOption;
+import de.codingair.codingapi.player.gui.inventory.gui.simple.SimpleGUI;
 import de.codingair.codingapi.player.gui.inventory.gui.simple.SyncButton;
+import de.codingair.codingapi.player.gui.inventory.gui.simple.SyncSignGUIButton;
 import de.codingair.codingapi.server.sounds.Sound;
 import de.codingair.codingapi.server.sounds.SoundData;
 import de.codingair.codingapi.tools.items.ItemBuilder;
@@ -27,6 +29,16 @@ public class PAppearance extends PageItem {
 
         this.icon = icon;
         initialize(p);
+    }
+
+    @Override
+    public boolean initialize(SimpleGUI gui) {
+        boolean res = super.initialize(gui);
+
+        ((NameButton) getButton(2, 2)).update();
+        ((LoreButton) getButton(3, 2)).update();
+
+        return res;
     }
 
     @Override
@@ -85,7 +97,7 @@ public class PAppearance extends PageItem {
             }
         });
 
-        addButton(new LoreButton(3, 2, icon.getItemBuilder()) {
+        addButton(new LoreButton(3, 2, icon.getItemBuilder(), icon) {
             @Override
             public void updatingLore(ItemBuilder toChange) {
                 icon.setItem(toChange.getItem());

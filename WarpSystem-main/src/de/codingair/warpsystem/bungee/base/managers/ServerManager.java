@@ -5,7 +5,12 @@ import de.codingair.codingapi.tools.Callback;
 import de.codingair.warpsystem.bungee.base.WarpSystem;
 import de.codingair.warpsystem.bungee.base.utils.ServerInitializeEvent;
 import de.codingair.warpsystem.bungee.base.utils.ServerProvideOptionsEvent;
+import de.codingair.warpsystem.bungee.features.teleport.managers.TeleportManager;
+import de.codingair.warpsystem.spigot.base.utils.ServerPing;
+import de.codingair.warpsystem.transfer.packets.bungee.InitialPacket;
+import de.codingair.warpsystem.transfer.packets.bungee.SendServerPropertiesPacket;
 import de.codingair.warpsystem.transfer.packets.spigot.SendOptionsPacket;
+import de.codingair.warpsystem.transfer.packets.utils.Packet;
 import de.codingair.warpsystem.transfer.packets.utils.PacketType;
 import de.codingair.warpsystem.transfer.serializeable.ServerOptions;
 import de.codingair.warpsystem.transfer.packets.bungee.InitialPacket;
@@ -21,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ServerManager implements Listener, PacketListener {
     private final HashMap<ServerInfo, ServerOptions> options = new HashMap<>();
+    private final HashMap<String, ServerPing> cachedPing = new HashMap<>();
     private final Set<ServerInfo> onlineServer = new HashSet<>();
     private final HashMap<ServerInfo, List<Callback<ServerInfo>>> waiting = new HashMap<>();
 
@@ -53,9 +59,30 @@ public class ServerManager implements Listener, PacketListener {
     public void run() {
         BungeeCord.getInstance().getScheduler().schedule(WarpSystem.getInstance(), () -> {
             for(ServerInfo info : BungeeCord.getInstance().getServers().values()) {
-                info.ping((serverPing, error) -> setStatus(info, error == null));
+                info.ping((serverPing, error) -> {
+                    setStatus(info, error == null);
+
+                    if(error == null) {
+                        cachedPing.put(info.getName().toLowerCase(), new ServerPing(true,
+                                serverPing.getPlayers().getOnline(),
+                                serverPing.getPlayers().getMax(),
+                                info.getMotd()));
+                    } else {
+                        cachedPing.put(info.getName().toLowerCase(), new ServerPing(false, 0, 0, null));
+                    }
+                });
             }
         }, 0, 5, TimeUnit.SECONDS);
+
+        BungeeCord.getInstance().getScheduler().schedule(WarpSystem.getInstance(), () -> {
+            SendServerPropertiesPacket p = new SendServerPropertiesPacket(cachedPing);
+
+            for(ServerInfo target : BungeeCord.getInstance().getServers().values()) {
+                if(!target.getPlayers().isEmpty()) {
+                    WarpSystem.getInstance().getDataHandler().send(p, target);
+                }
+            }
+        }, 3, 5, TimeUnit.SECONDS);
     }
 
     public void sendInitialPacket(ServerInfo server) {
@@ -77,7 +104,13 @@ public class ServerManager implements Listener, PacketListener {
     }
 
     public ServerOptions getOptions(ServerInfo info) {
+        if(info == null) return null;
         return options.get(info);
+    }
+
+    public ServerPing getLastPing(ServerInfo info) {
+        if(info == null) return null;
+        return cachedPing.get(info.getName().toLowerCase());
     }
 
     @Override

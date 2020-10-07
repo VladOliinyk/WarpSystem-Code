@@ -1,21 +1,28 @@
 package de.codingair.warpsystem.spigot.features.signs.utils;
 
 import de.codingair.codingapi.tools.Location;
+import de.codingair.codingapi.tools.io.lib.JSONArray;
 import de.codingair.codingapi.tools.io.utils.DataWriter;
+import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
+import de.codingair.warpsystem.spigot.base.utils.ServerPing;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.FeatureObject;
-import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Action;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.WarpAction;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.DestinationType;
 import de.codingair.warpsystem.spigot.features.FeatureType;
 import de.codingair.warpsystem.spigot.features.warps.managers.IconManager;
 import de.codingair.warpsystem.spigot.features.warps.nextlevel.utils.Icon;
+import org.bukkit.block.Sign;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class WarpSign extends FeatureObject {
+    private boolean editing = false;
     private Location location;
+    private String[] text = null;
 
     public WarpSign() {
     }
@@ -23,6 +30,7 @@ public class WarpSign extends FeatureObject {
     public WarpSign(WarpSign sign) {
         super(sign);
         this.location = sign.location;
+        this.text = sign.text == null ? null : sign.text.clone();
     }
 
     public WarpSign(Location location, Destination destination) {
@@ -32,6 +40,32 @@ public class WarpSign extends FeatureObject {
     public WarpSign(Location location, Destination destination, String permission) {
         super(permission, false, new WarpAction(destination));
         this.location = location;
+    }
+
+    public void editMode() {
+        if(this.text != null) {
+            Sign s = (Sign) location.getBlock().getState();
+
+            for(int i = 0; i < this.text.length; i++) {
+                s.setLine(i, text[i]);
+            }
+
+            s.update(true);
+        }
+    }
+
+    public void update() {
+        if(location == null || location.getWorld() == null || text == null) return;
+
+        if(location.getBlock().getState() instanceof Sign) {
+            Sign s = (Sign) location.getBlock().getState();
+
+            for(int i = 0; i < this.text.length; i++) {
+                s.setLine(i, prepareLine(text[i]));
+            }
+
+            s.update(true);
+        }
     }
 
     public Location getLocation() {
@@ -66,6 +100,9 @@ public class WarpSign extends FeatureObject {
         }
 
         setPermission(null);
+        List<String> text = d.getList("text");
+        if(text == null) this.text = ((Sign) (location.getBlock().getState())).getLines();
+        else this.text = text.toArray(new String[4]);
         return true;
     }
 
@@ -76,12 +113,20 @@ public class WarpSign extends FeatureObject {
         d.remove("permission");
         this.location.trim(0);
         d.put("location", this.location);
+
+        JSONArray list = new JSONArray();
+        for(String s : this.text) {
+            if(s == null) list.add("");
+            else list.add(s);
+        }
+        d.put("text", list);
     }
 
     @Override
     public void destroy() {
         super.destroy();
         this.location = null;
+        this.text = null;
     }
 
     @Override
@@ -90,6 +135,7 @@ public class WarpSign extends FeatureObject {
 
         WarpSign sign = (WarpSign) object;
         this.location = sign.location;
+        this.text = sign.text;
     }
 
     @Override
@@ -98,15 +144,34 @@ public class WarpSign extends FeatureObject {
         if(o == null || getClass() != o.getClass()) return false;
         if(!super.equals(o)) return false;
         WarpSign warpSign = (WarpSign) o;
-        return location.equals(warpSign.location);
+        return Objects.equals(location, warpSign.location) &&
+                Arrays.equals(text, warpSign.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(location);
+        int result = Objects.hash(location);
+        result = 31 * result + Arrays.hashCode(text);
+        return result;
     }
 
     public WarpSign clone() {
         return new WarpSign(this);
+    }
+
+    public String[] getText() {
+        return text;
+    }
+
+    public void setText(String[] text) {
+        this.text = text;
+    }
+
+    public boolean isEditing() {
+        return editing;
+    }
+
+    public void setEditing(boolean editing) {
+        this.editing = editing;
     }
 }

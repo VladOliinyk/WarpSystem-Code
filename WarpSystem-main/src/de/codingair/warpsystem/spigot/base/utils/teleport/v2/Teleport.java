@@ -53,11 +53,15 @@ public class Teleport {
     }
 
     public void cancelByStage(Result result) {
-        if(options.getCancelSound() != null && stage != null && stage.active().isFired(TeleportDelay.class)) options.getCancelSound().play(player);
+        if(getOptions().getDelay(player) > 0 && options.getCancelSound() != null && stage != null && stage.active().isFired(TeleportDelay.class)) options.getCancelSound().play(player);
         options.fireCallbacks(result);
 
         if(result == Result.NOT_ENOUGH_MONEY) {
             player.sendMessage(Lang.getPrefix() + Lang.get("Not_enough_Money").replace("%AMOUNT%", options.getFinalCosts(player).toString()));
+        }
+
+        if(result == Result.TARGET_SERVER_IS_FULL) {
+            player.sendMessage(Lang.getPrefix() + Lang.get("Target_Server_Is_Full"));
         }
 
         if(result == Result.DENIED_PAYMENT) {

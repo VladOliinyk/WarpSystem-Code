@@ -234,13 +234,11 @@ public class Icon extends FeatureObject {
         ItemBuilder builder = getItemBuilder().checkFirstLine();
         if(hideName) builder.setHideName(true);
 
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            if(builder.getName() != null) builder.setName(PlaceholderAPI.setPlaceholders(player, builder.getName()));
+        if(builder.getName() != null) builder.setName(prepareLine(builder.getName(), player));
 
-            if(builder.getLore() != null) {
-                for(int i = 0; i < builder.getLore().size(); i++) {
-                    builder.getLore().add(i, PlaceholderAPI.setPlaceholders(player, builder.getLore().remove(i)));
-                }
+        if(builder.getLore() != null) {
+            for(int i = 0; i < builder.getLore().size(); i++) {
+                builder.getLore().add(i, prepareLine(builder.getLore().remove(i), player));
             }
         }
 

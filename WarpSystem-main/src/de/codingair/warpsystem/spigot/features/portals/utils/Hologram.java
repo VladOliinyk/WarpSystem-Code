@@ -13,17 +13,15 @@ import org.bukkit.entity.Player;
 import java.util.Objects;
 
 public class Hologram implements Serializable {
+    private final Portal portal;
     private String text;
     private boolean visible;
     private Location location;
     private double height;
     private de.codingair.codingapi.player.Hologram hologram;
 
-    public Hologram() {
-    }
-
-    public Hologram(Hologram hologram) {
-        apply(hologram);
+    public Hologram(Portal portal) {
+        this.portal = portal;
     }
 
     public void apply(Hologram hologram) {
@@ -77,7 +75,7 @@ public class Hologram implements Serializable {
 
         if(this.hologram != null) {
             this.hologram.setVisible(this.visible);
-            this.hologram.setText(ChatColor.translateAll('&', this.text));
+            this.hologram.setText(portal.prepareLine(this.text.replace("\\n", "\n")));
             this.hologram.teleport(this.location.clone().add(0, height, 0));
             this.hologram.update();
             this.hologram.addAll();

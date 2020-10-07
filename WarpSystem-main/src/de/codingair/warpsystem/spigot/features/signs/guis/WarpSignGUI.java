@@ -1,8 +1,6 @@
 package de.codingair.warpsystem.spigot.features.signs.guis;
 
-import de.codingair.codingapi.player.gui.sign.SignTools;
 import de.codingair.codingapi.tools.items.ItemBuilder;
-import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.warpsystem.spigot.base.guis.editor.Backup;
 import de.codingair.warpsystem.spigot.base.guis.editor.Editor;
 import de.codingair.warpsystem.spigot.base.guis.editor.pages.DestinationPage;
@@ -26,8 +24,6 @@ public class WarpSignGUI extends Editor<WarpSign> {
 
     private WarpSignGUI(Player p, WarpSign sign, WarpSign clone) {
         super(p, clone, new Backup<WarpSign>(sign) {
-                    private final String[] backupLines = ((Sign) sign.getLocation().getBlock().getState()).getLines();
-
                     @Override
                     public void applyTo(WarpSign clone) {
                         sign.apply(clone);
@@ -37,17 +33,17 @@ public class WarpSignGUI extends Editor<WarpSign> {
                         }
 
                         Sign s = (Sign) sign.getLocation().getBlock().getState();
-
-                        SignTools.updateSign(s, s.getLines());
+                        sign.setText(s.getLines());
+                        sign.setEditing(false);
+                        sign.update();
                     }
 
                     @Override
                     public void cancel(WarpSign value) {
-                        Sign s = ((Sign) sign.getLocation().getBlock().getState());
-
-                        SignTools.updateSign(s, backupLines);
+                        sign.setEditing(false);
+                        sign.update();
                     }
-                }, new ShowIcon((Sign) sign.getLocation().getBlock().getState()),
+                }, new ShowIcon(clone),
                 new OptionPage(p, clone),
                 new DestinationPage(p, getMainTitle(), clone.getDestination(), Origin.WarpSign),
                 new SoundPage(p, getMainTitle(), clone.getAction(SoundAction.class).getValue())
@@ -59,12 +55,14 @@ public class WarpSignGUI extends Editor<WarpSign> {
     }
 
     public static class ShowIcon implements de.codingair.warpsystem.spigot.base.guis.editor.ShowIcon {
+        private final WarpSign warpSign;
         private final Sign sign;
         private String[] lines;
 
-        public ShowIcon(Sign s) {
-            this.sign = s;
-            this.lines = s.getLines();
+        public ShowIcon(WarpSign warpSign) {
+            this.warpSign = warpSign;
+            this.sign = (Sign) warpSign.getLocation().getBlock().getState();
+            this.lines = this.sign.getLines();
         }
 
         public void applyLines(String[] lines) {
@@ -76,7 +74,7 @@ public class WarpSignGUI extends Editor<WarpSign> {
             ItemBuilder builder = new ItemBuilder(getType());
 
             for(String line : lines) {
-                builder.addText("§7'§f" + ChatColor.translateAll('&', line) + "§7'");
+                builder.addText("§7'§f" + warpSign.prepareLine(line) + "§7'");
             }
 
             return builder.getItem();

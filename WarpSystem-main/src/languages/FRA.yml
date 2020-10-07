@@ -138,6 +138,7 @@ Close: Fermer
 Save: Sauvegarder
 GlobalWarp_Server_Is_Not_Online: '&cLe serveur cible n''est pas en ligne!'
 GlobalWarp_Player_Is_Already_On_Target_Server: '&cVous êtes déjà sur le serveur cible.'
+Target_Server_Is_Full: '&cCe serveur est déjà plein.'
 GlobalWarp_Create_Name_Already_Exists: '&7Le warp global "&b%GLOBAL_WARP%&7" &cexiste déjàs&7.'
 GlobalWarp_Deleted: '&7Le warp global "&b%GLOBAL_WARP%&7" a été &csupprimé&7.'
 GlobalWarp_Deleted_Cancel: '&7Le warp global "&b%GLOBAL_WARP%&7" n''a &cpas &7été supprimé.'

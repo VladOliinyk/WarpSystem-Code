@@ -11,6 +11,7 @@ public class PrepareServerSwitchPacket extends RequestPacket<Integer> {
     private String player;
     private String server;
     private String message = null;
+    private boolean ignoreLimit = false;
 
     public PrepareServerSwitchPacket() {
     }
@@ -21,11 +22,12 @@ public class PrepareServerSwitchPacket extends RequestPacket<Integer> {
         this.server = server;
     }
 
-    public PrepareServerSwitchPacket(String player, String server, String message, Callback<Integer> callback) {
+    public PrepareServerSwitchPacket(String player, String server, String message, boolean ignoreLimit, Callback<Integer> callback) {
         super(callback);
         this.player = player;
         this.server = server;
         this.message = message;
+        this.ignoreLimit = ignoreLimit;
     }
 
     @Override
@@ -33,7 +35,11 @@ public class PrepareServerSwitchPacket extends RequestPacket<Integer> {
         super.write(out);
         out.writeUTF(player);
         out.writeUTF(server);
-        out.writeBoolean(message != null);
+
+        byte options = (byte) (message != null ? 1 : 0);
+        if(ignoreLimit) options |= 1 << 1;
+        out.writeByte(options);
+
         if(message != null) out.writeUTF(message);
     }
 
@@ -42,7 +48,10 @@ public class PrepareServerSwitchPacket extends RequestPacket<Integer> {
         super.read(in);
         player = in.readUTF();
         server = in.readUTF();
-        if(in.readBoolean()) message = in.readUTF();
+
+        byte options = in.readByte();
+        if((options & 1) != 0) message = in.readUTF();
+        this.ignoreLimit = (options & (1 << 1)) != 0;
     }
 
     public String getPlayer() {
@@ -55,5 +64,9 @@ public class PrepareServerSwitchPacket extends RequestPacket<Integer> {
 
     public String getMessage() {
         return message;
+    }
+
+    public boolean isIgnoreLimit() {
+        return ignoreLimit;
     }
 }

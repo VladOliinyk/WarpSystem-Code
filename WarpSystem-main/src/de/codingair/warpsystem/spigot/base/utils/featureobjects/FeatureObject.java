@@ -12,10 +12,12 @@ import de.codingair.codingapi.tools.io.utils.DataWriter;
 import de.codingair.codingapi.tools.io.utils.Serializable;
 import de.codingair.codingapi.utils.ImprovedDouble;
 import de.codingair.codingapi.utils.Value;
+import de.codingair.warpsystem.spigot.api.PAPI;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.guis.editor.pages.SoundPage;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.base.managers.TeleportManager;
+import de.codingair.warpsystem.spigot.base.utils.ServerPing;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Action;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.ActionObject;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.ActionObjectReadException;
@@ -379,6 +381,30 @@ public abstract class FeatureObject implements Serializable {
     @Override
     public int hashCode() {
         throw new IllegalStateException("Outdated feature object");
+    }
+
+    public String prepareLine(String s) {
+        return prepareLine(s, null);
+    }
+
+    public String prepareLine(String s, Player player) {
+        if(s == null) return null;
+
+        s = de.codingair.codingapi.utils.ChatColor.translateAll('&', s);
+
+        if(getDestination() != null) {
+            String server = getDestination().getTargetServer();
+            if(server != null) {
+                ServerPing ping = WarpSystem.getInstance().getServerManager().getProperties(server);
+                s = WarpSystem.opt().prepareServerString(ping, s);
+            }
+        }
+
+        if(player != null) {
+            s = PAPI.convert(s, player);
+        }
+
+        return s;
     }
 
     public Destination getDestination() {

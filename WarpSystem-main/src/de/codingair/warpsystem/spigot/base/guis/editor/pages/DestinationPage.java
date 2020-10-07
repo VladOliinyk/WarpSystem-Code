@@ -98,6 +98,10 @@ public class DestinationPage extends PageItem {
     }
 
     public void updateDestinationButtons() {
+        if(destination.getId() == null && destination.getAdapter() == null && destination.getType() == null) {
+            getLast().updateShowIcon();
+        }
+
         for(int i = 1; i < 8; i++) {
             Button button = getButton(i, 2);
             if(button instanceof SyncButton) {

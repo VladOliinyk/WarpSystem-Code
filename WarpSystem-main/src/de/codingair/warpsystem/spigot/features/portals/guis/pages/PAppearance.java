@@ -65,7 +65,7 @@ public class PAppearance extends PageItem {
     public void initialize(Player p) {
         StandardButtonOption option = new StandardButtonOption();
 
-        addButton(new NameButton(1, 2, false, new Value<>(clone.getDisplayName())) {
+        addButton(new NameButton(1, 2, false, new Value<>(clone.getDisplayName()), clone) {
             @Override
             public String acceptName(String name) {
                 if(PortalManager.getInstance().existsPortal(name)) {
@@ -160,7 +160,7 @@ public class PAppearance extends PageItem {
                 ItemBuilder b = new ItemBuilder(XMaterial.OAK_SIGN).setName(Editor.ITEM_TITLE_COLOR + Lang.get("Hologram"));
 
                 b.addLore("§7" + Lang.get("Line_break") + ": '§e\\n§7' §8- §7PlaceholderAPI support", "");
-                b.addText(Editor.ITEM_SUB_TITLE_COLOR + Lang.get("Current") + ": " + (clone.getHologram().getText() == null ? "§c-" : "§7'§f" + ChatColor.translateAll('&', clone.getHologram().getText()) + "§7'"), 100);
+                b.addText(Editor.ITEM_SUB_TITLE_COLOR + Lang.get("Current") + ": " + (clone.getHologram().getText() == null ? "§c-" : "§7'§f" + clone.prepareLine(clone.getHologram().getText(), p) + "§7'"), 100);
                 b.addText(b.getLore().size() > 3 ? "" : null, Editor.ITEM_SUB_TITLE_COLOR + Lang.get("Status") + ": §7" + (clone.getHologram().isVisible() ? "§a" + Lang.get("Enabled") : "§c" + Lang.get("Disabled")));
 
                 b.addText("", Editor.ITEM_SUB_TITLE_COLOR + Lang.get("Leftclick") + ": §7" + Lang.get("Change"));

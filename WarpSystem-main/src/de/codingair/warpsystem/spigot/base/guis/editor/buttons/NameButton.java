@@ -10,21 +10,24 @@ import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.codingapi.utils.Value;
 import de.codingair.warpsystem.spigot.base.guis.editor.Editor;
 import de.codingair.warpsystem.spigot.base.language.Lang;
+import de.codingair.warpsystem.spigot.base.utils.featureobjects.FeatureObject;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class NameButton extends SyncAnvilGUIButton {
+    protected final FeatureObject featureObject;
     protected Value<String> name;
     private boolean acceptNull;
 
-    protected NameButton(int x, int y, ClickType... trigger) {
+    protected NameButton(int x, int y, FeatureObject featureObject, ClickType... trigger) {
         super(x, y, trigger);
+        this.featureObject = featureObject;
     }
 
-    public NameButton(int x, int y, boolean acceptNull, Value<String> name) {
-        super(x, y, ClickType.LEFT);
+    public NameButton(int x, int y, boolean acceptNull, Value<String> name, FeatureObject featureObject) {
+        this(x, y, featureObject, ClickType.LEFT);
 
         this.acceptNull = acceptNull;
         this.name = name;
@@ -42,10 +45,15 @@ public abstract class NameButton extends SyncAnvilGUIButton {
 
         return new ItemBuilder(XMaterial.NAME_TAG)
                 .setName(Editor.ITEM_TITLE_COLOR + Lang.get("Name"))
-                .setLore("§3" + Lang.get("Current") + ": " + (name.getValue() == null ? "§c" + Lang.get("Not_Set") : "§7'§f" + ChatColor.translateAll('&', name.getValue()) + "§7'"),
+                .setLore("§3" + Lang.get("Current") + ": " + (name.getValue() == null ? "§c" + Lang.get("Not_Set") : "§7'§f" + prepareLine(name.getValue()) + "§7'"),
                         "", (name.getValue() == null ? "§3" + Lang.get("Leftclick") + ": §a" + Lang.get("Set_Name") : "§3" + Lang.get("Leftclick") + ": §a" + Lang.get("Change_Name")),
                         (name.getValue() == null || !acceptNull ? null : "§3" + Lang.get("Rightclick") + ": §c" + Lang.get("Remove")))
                 .getItem();
+    }
+
+    protected String prepareLine(String s) {
+        if(featureObject == null) return ChatColor.translateAll('&', s);
+        else return featureObject.prepareLine(s);
     }
 
     @Override

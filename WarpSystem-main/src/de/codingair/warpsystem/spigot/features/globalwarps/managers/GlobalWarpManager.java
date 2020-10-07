@@ -86,7 +86,7 @@ public class GlobalWarpManager implements Manager, BungeeFeature {
         boolean keepRotation = false;
         if(t != null) keepRotation = !t.getDestination().getCustomOptions().isRotation();
 
-        WarpSystem.getInstance().getDataHandler().send(new GlobalWarpTeleportPacket(player.getName(), id, x, y, z, displayName, message, costs, keepRotation, new Callback<Integer>() {
+        WarpSystem.getInstance().getDataHandler().send(new GlobalWarpTeleportPacket(player.getName(), id, x, y, z, displayName, message, costs, keepRotation, player.hasPermission(WarpSystem.PERMISSION_ByPass_Teleport_Max_Players), new Callback<Integer>() {
             @Override
             public void accept(Integer object) {
                 callback.accept(GlobalWarpTeleportPacket.Result.getById(object));

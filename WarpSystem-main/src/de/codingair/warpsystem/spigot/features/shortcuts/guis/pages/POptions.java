@@ -34,7 +34,7 @@ public class POptions extends PageItem {
         ItemButtonOption option = new ItemButtonOption();
         option.setClickSound(new SoundData(Sound.UI_BUTTON_CLICK, 0.7F, 1F));
 
-        addButton(new NameButton(1, 2, false, new Value<>(shortcut.getDisplayName())) {
+        addButton(new NameButton(1, 2, false, new Value<>(shortcut.getDisplayName()), shortcut) {
             @Override
             public String acceptName(String name) {
                 return null;

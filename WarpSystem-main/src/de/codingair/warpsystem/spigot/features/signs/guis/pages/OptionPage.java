@@ -1,13 +1,13 @@
 package de.codingair.warpsystem.spigot.features.signs.guis.pages;
 
 import de.codingair.codingapi.player.gui.inventory.gui.itembutton.ItemButtonOption;
+import de.codingair.codingapi.player.gui.inventory.gui.simple.SimpleGUI;
 import de.codingair.codingapi.player.gui.inventory.gui.simple.SyncButton;
 import de.codingair.codingapi.player.gui.inventory.gui.simple.SyncSignGUIButton;
 import de.codingair.codingapi.server.sounds.Sound;
 import de.codingair.codingapi.server.sounds.SoundData;
 import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.items.XMaterial;
-import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.warpsystem.spigot.base.guis.editor.Editor;
 import de.codingair.warpsystem.spigot.base.guis.editor.PageItem;
 import de.codingair.warpsystem.spigot.base.guis.editor.buttons.CommandButton;
@@ -34,6 +34,15 @@ public class OptionPage extends PageItem {
     }
 
     @Override
+    public boolean initialize(SimpleGUI gui) {
+        boolean res = super.initialize(gui);
+
+        ((SyncSignGUIButton) getButton(1, 2)).update();
+
+        return res;
+    }
+
+    @Override
     public void initialize(Player p) {
         ItemButtonOption option = new ItemButtonOption();
         option.setClickSound(new SoundData(Sound.UI_BUTTON_CLICK, 0.7F, 1));
@@ -55,7 +64,7 @@ public class OptionPage extends PageItem {
                 builder.setLore("§3" + Lang.get("Current") + ":");
 
                 for(String line : lines == null ? s.getLines() : lines) {
-                    builder.addLore("§7- '§f" + (line == null ? "" : ChatColor.translateAll('&', line)) + "§7'");
+                    builder.addLore("§7- '§f" + (line == null ? "" : sign.prepareLine(line)) + "§7'");
                 }
 
                 builder.addLore("", "§3" + Lang.get("Leftclick") + ": §a" + Lang.get("Edit"));

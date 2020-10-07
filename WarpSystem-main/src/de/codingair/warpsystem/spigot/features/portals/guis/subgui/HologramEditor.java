@@ -239,7 +239,7 @@ public class HologramEditor extends HotbarGUI {
 
         String text = hologram.getText();
         if(text != null && text.length() > 60) text = text.substring(0, 60) + "§f...";
-        setItem(3, new ItemComponent(new ItemBuilder(Material.NAME_TAG).setName("§7" + Lang.get("Hologram_Text") + ": " + (hologram.getText() == null ? "§c-" : "'§f" + ChatColor.translateAll('&', text) + "§7'")).getItem(), new ItemListener() {
+        setItem(3, new ItemComponent(new ItemBuilder(Material.NAME_TAG).setName("§7" + Lang.get("Hologram_Text") + ": " + (hologram.getText() == null ? "§c-" : "'§f" + fallBack.getClone().prepareLine(text, getPlayer()) + "§7'")).getItem(), new ItemListener() {
             @Override
             public void onClick(HotbarGUI gui, ItemComponent ic, Player player, ClickType clickType) {
                 if(clickType != ClickType.LEFT_CLICK) return;
@@ -268,7 +268,7 @@ public class HologramEditor extends HotbarGUI {
 
                         String text = e.getText();
                         if(text.length() > 60) text = text.substring(0, 60) + "§f...";
-                        updateDisplayName(ic, "§7" + Lang.get("Hologram_Text") + ": '§f" + ChatColor.translateAll('&', text) + "§7'");
+                        updateDisplayName(ic, "§7" + Lang.get("Hologram_Text") + ": '§f" + fallBack.getClone().prepareLine(text, getPlayer()) + "§7'");
                     }
 
                     @Override

@@ -34,14 +34,8 @@ public class SignListener implements Listener {
             WarpSign sign = manager.getByLocation(s.getLocation());
             if(sign != null) {
                 if(!e.getPlayer().isSneaking() && e.getPlayer().hasPermission(WarpSystem.PERMISSION_MODIFY_WARP_SIGNS) && e.getPlayer().getItemInHand().getType().name().toLowerCase().contains("sign")) {
-                    String[] lines = s.getLines();
-                    for(int i = 0; i < 4; i++) {
-                        lines[i] = ChatColor.toLegacy('&', lines[i]);
-                        s.setLine(i, lines[i]);
-                    }
-
-                    s.update(true, true);
-
+                    sign.editMode();
+                    sign.setEditing(true);
                     Bukkit.getScheduler().runTaskLater(WarpSystem.getInstance(), () -> new WarpSignGUI(e.getPlayer(), sign).open(), 1L);
                     return;
                 }

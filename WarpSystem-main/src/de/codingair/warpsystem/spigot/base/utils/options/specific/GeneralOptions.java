@@ -1,6 +1,8 @@
 package de.codingair.warpsystem.spigot.base.utils.options.specific;
 
 import de.codingair.warpsystem.spigot.api.StringFormatter;
+import de.codingair.warpsystem.spigot.base.WarpSystem;
+import de.codingair.warpsystem.spigot.base.utils.ServerPing;
 import de.codingair.warpsystem.spigot.base.utils.options.Option;
 import de.codingair.warpsystem.spigot.base.utils.options.Options;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Origin;
@@ -20,6 +22,13 @@ public class GeneralOptions extends Options {
     private Option<String> delayDisplay = new Option<>("WarpSystem.Teleport.Delay_Display", "ACTION_BAR");
     private Option<Boolean> teleportInterceptions = new Option<>("WarpSystem.Beta.Functions.Teleport_Interceptions", false);
     private Option<Integer> fetchUpdates = new Option<>("WarpSystem.BungeeCord.Fetch_Updated_Jars", 1);
+    private Option<String> placeholderOnline = new Option<>("WarpSystem.BungeeCord.Placeholder.Online", ".sc.Online");
+    private Option<String> placeholderOffline = new Option<>("WarpSystem.BungeeCord.Placeholder.Offline", ".sc.Offline");
+    private Option<String> placeholderCountInfo = new Option<>("WarpSystem.BungeeCord.Placeholder.Count_Info", ".cc..p.&8/.cc..mp.");
+    private Option<String> placeholderColorsOnline = new Option<>("WarpSystem.BungeeCord.Placeholder.Colors.Online", "&a");
+    private Option<String> placeholderColorsOffline = new Option<>("WarpSystem.BungeeCord.Placeholder.Colors.Offline", "&c");
+    private Option<String> placeholderColorsFull = new Option<>("WarpSystem.BungeeCord.Placeholder.Colors.Full", "&c");
+    private Option<String> placeholderColorsNotFull = new Option<>("WarpSystem.BungeeCord.Placeholder.Colors.Not_Full", "&a");
 
     public GeneralOptions() {
         super("Config");
@@ -42,6 +51,13 @@ public class GeneralOptions extends Options {
         set(delayDisplay);
         set(teleportInterceptions);
         set(fetchUpdates);
+        set(placeholderOnline);
+        set(placeholderOffline);
+        set(placeholderCountInfo);
+        set(placeholderColorsOnline);
+        set(placeholderColorsOffline);
+        set(placeholderColorsFull);
+        set(placeholderColorsNotFull);
         save();
     }
 
@@ -57,9 +73,17 @@ public class GeneralOptions extends Options {
         get(delayDisplay);
         get(teleportInterceptions);
         get(fetchUpdates);
+        get(placeholderOnline);
+        get(placeholderOffline);
+        get(placeholderCountInfo);
+        get(placeholderColorsOnline);
+        get(placeholderColorsOffline);
+        get(placeholderColorsFull);
+        get(placeholderColorsNotFull);
 
         if(fetchUpdates.getValue() < 0 || fetchUpdates.getValue() > 2) fetchUpdates.setValue(1);
-        if(System.getProperty("os.name").toLowerCase().contains("win") || System.getProperty("os.name").toLowerCase().contains("mac")) fetchUpdates.setValue(0);   //file-system does not allow to delete active files.
+        if(System.getProperty("os.name").toLowerCase().contains("win") || System.getProperty("os.name").toLowerCase().contains("mac"))
+            fetchUpdates.setValue(0);   //file-system does not allow to delete active files.
 
         IntPredicate test = new IntPredicate() {
             private boolean color = false;
@@ -76,17 +100,17 @@ public class GeneralOptions extends Options {
             }
         };
 
-        StringBuilder s = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         for(int c : cmdSugColor.getValue().trim().chars().filter(test).toArray()) {
-            s.append((char) c);
+            sb.append((char) c);
         }
-        cmdSugColor.setValue(s.toString());
+        cmdSugColor.setValue(sb.toString());
 
-        s = new StringBuilder();
+        sb = new StringBuilder();
         for(int c : cmdArgColor.getValue().trim().chars().filter(test).toArray()) {
-            s.append((char) c);
+            sb.append((char) c);
         }
-        cmdArgColor.setValue(s.toString());
+        cmdArgColor.setValue(sb.toString());
     }
 
     @Override
@@ -104,6 +128,13 @@ public class GeneralOptions extends Options {
             this.delayDisplay = o.delayDisplay.clone();
             this.teleportInterceptions = o.teleportInterceptions.clone();
             this.fetchUpdates = o.fetchUpdates.clone();
+            this.placeholderOnline = o.placeholderOnline.clone();
+            this.placeholderOffline = o.placeholderOffline.clone();
+            this.placeholderCountInfo = o.placeholderCountInfo.clone();
+            this.placeholderColorsOnline = o.placeholderColorsOnline.clone();
+            this.placeholderColorsOffline = o.placeholderColorsOffline.clone();
+            this.placeholderColorsFull = o.placeholderColorsFull.clone();
+            this.placeholderColorsNotFull = o.placeholderColorsNotFull.clone();
         }
     }
 
@@ -162,5 +193,78 @@ public class GeneralOptions extends Options {
 
     public int getFetchUpdateOption() {
         return fetchUpdates.getValue();
+    }
+
+    public String getStatus(ServerPing ping) {
+        if(ping.getStatus()) {
+            return getPlaceholderOnline(ping);
+        } else {
+            return getPlaceholderOffline();
+        }
+    }
+
+    private String getPlaceholderOnline(ServerPing ping) {
+        String s = prepareServerColorString(ping, placeholderOnline.getValue());
+
+        return s == null ? null : de.codingair.codingapi.utils.ChatColor.translateAll('&', s);
+    }
+
+    public String getPlaceholderOffline() {
+        String s = prepareServerColorString(null, placeholderOffline.getValue());
+
+        return s == null ? null : de.codingair.codingapi.utils.ChatColor.translateAll('&', s);
+    }
+
+    public String getPlaceholderCountInfo(ServerPing ping) {
+        String s = placeholderCountInfo.getValue();
+        if(s == null) return null;
+
+        if(ping != null) {
+            s = s.replace(".p.", ping.getPlayers() + "")
+                    .replace(".mp.", ping.getMaxPlayers() + "")
+                    .replace(".s.", WarpSystem.opt().getStatus(ping))
+                    .replace(".m.", ping.getMotd() == null ? "" : ping.getMotd())
+            ;
+        } else {
+            s = s.replace(".p.", "0")
+                    .replace(".mp.", "0")
+                    .replace(".s.", getPlaceholderOffline())
+                    .replace(".m.", "")
+            ;
+        }
+
+        return de.codingair.codingapi.utils.ChatColor.translateAll('&', prepareServerColorString(ping, s));
+    }
+
+    private String prepareServerColorString(ServerPing ping, String s) {
+        if(ping != null) {
+            s = s.replace(".sc.", (ping.getStatus() ? placeholderColorsOnline.getValue() : placeholderColorsOffline.getValue()))
+                    .replace(".cc.", (ping.getPlayers() < ping.getMaxPlayers() ? placeholderColorsNotFull.getValue() : placeholderColorsFull.getValue()));
+        } else {
+            s = s.replace(".sc.", placeholderColorsOffline.getValue())
+                    .replace(".cc.", placeholderColorsFull.getValue());
+        }
+
+        return de.codingair.codingapi.utils.ChatColor.translateAll('&', s);
+    }
+
+    public String prepareServerString(ServerPing ping, String s) {
+        if(ping != null) {
+            s = s.replace(".p.", ping.getPlayers() + "")
+                    .replace(".mp.", ping.getMaxPlayers() + "")
+                    .replace(".s.", WarpSystem.opt().getStatus(ping))
+                    .replace(".m.", ping.getMotd() == null ? "" : ping.getMotd())
+                    .replace(".ci.", WarpSystem.opt().getPlaceholderCountInfo(ping))
+            ;
+        } else {
+            s = s.replace(".p.", "0")
+                    .replace(".mp.", "0")
+                    .replace(".s.", getPlaceholderOffline())
+                    .replace(".m.", "")
+                    .replace(".ci.", WarpSystem.opt().getPlaceholderCountInfo(ping))
+            ;
+        }
+
+        return de.codingair.codingapi.utils.ChatColor.translateAll('&', prepareServerColorString(ping, s));
     }
 }

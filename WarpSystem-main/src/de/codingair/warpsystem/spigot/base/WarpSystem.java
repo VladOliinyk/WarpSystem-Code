@@ -87,6 +87,7 @@ public class WarpSystem extends JavaPlugin {
 
     public static final String PERMISSION_ByPass_Teleport_Costs = "warpsystem.bypass.teleport.costs";
     public static final String PERMISSION_ByPass_Teleport_Delay = "warpsystem.bypass.teleport.delay";
+    public static final String PERMISSION_ByPass_Teleport_Max_Players = "warpsystem.bypass.teleport.maxplayers";
     public static final String PERMISSION_ByPass_Teleport_Cooldown = "warpsystem.bypass.cooldown";
 
     public static String PERMISSION_USE_WARP_GUI = "warpsystem.use.warpgui";
@@ -117,6 +118,7 @@ public class WarpSystem extends JavaPlugin {
     private final SetupAssistantManager setupAssistantManager = new SetupAssistantManager();
     private final CooldownManager cooldownManager = new CooldownManager();
     private final VanishManager vanishManager = new VanishManager();
+    private ServerManager serverManager;
 
     private UpdateNotifier updateNotifier;
 
@@ -173,6 +175,8 @@ public class WarpSystem extends JavaPlugin {
 
         instance = this;
         copyConfig();
+
+        this.serverManager = new ServerManager();
 
         this.dataManager = new DataManager();
         this.dataManager.preLoad();
@@ -642,5 +646,9 @@ public class WarpSystem extends JavaPlugin {
 
     public UTFConfig getOldConfig() {
         return oldConfig;
+    }
+
+    public ServerManager getServerManager() {
+        return serverManager;
     }
 }
