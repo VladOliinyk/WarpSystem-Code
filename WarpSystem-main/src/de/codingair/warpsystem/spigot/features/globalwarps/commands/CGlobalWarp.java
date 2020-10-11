@@ -18,6 +18,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.logging.Level;
 
 public class CGlobalWarp extends WSCommandBuilder implements BungeeFeature {
     public CGlobalWarp() {
@@ -50,6 +51,11 @@ public class CGlobalWarp extends WSCommandBuilder implements BungeeFeature {
 
     @Override
     public void onConnect() {
+        if(getComponent((String) null) != null) {
+            WarpSystem.getInstance().getLogger().log(Level.WARNING, "Trying to register already known command components (CGlobalWarp)! Please contact the author (PlayerCount=" + Bukkit.getOnlinePlayers().size() + ").");
+            return;
+        }
+
         getBaseComponent().addChild(new MultiCommandComponent() {
             @Override
             public void addArguments(CommandSender sender, String[] args, List<String> suggestions) {

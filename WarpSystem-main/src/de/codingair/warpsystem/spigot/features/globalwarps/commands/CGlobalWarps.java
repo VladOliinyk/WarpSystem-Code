@@ -18,11 +18,13 @@ import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destinati
 import de.codingair.warpsystem.spigot.features.FeatureType;
 import de.codingair.warpsystem.spigot.features.globalwarps.guis.GGlobalWarpList;
 import de.codingair.warpsystem.spigot.features.globalwarps.managers.GlobalWarpManager;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 
 import java.util.List;
+import java.util.logging.Level;
 
 public class CGlobalWarps extends WSCommandBuilder implements BungeeFeature {
     public CGlobalWarps() {
@@ -44,7 +46,8 @@ public class CGlobalWarps extends WSCommandBuilder implements BungeeFeature {
 
             @Override
             public boolean runCommand(CommandSender sender, String label, String[] args) {
-                if(WarpSystem.getInstance().isOnBungeeCord()) sender.sendMessage(Lang.getPrefix() + WarpSystem.opt().cmdSug() + Lang.get("Use") + ": /" + label + " " + WarpSystem.opt().cmdArg() + "<create, delete, list>");
+                if(WarpSystem.getInstance().isOnBungeeCord())
+                    sender.sendMessage(Lang.getPrefix() + WarpSystem.opt().cmdSug() + Lang.get("Use") + ": /" + label + " " + WarpSystem.opt().cmdArg() + "<create, delete, list>");
                 else sender.sendMessage(Lang.getPrefix() + Lang.get("Connect_BungeeCord"));
                 return false;
             }
@@ -55,6 +58,11 @@ public class CGlobalWarps extends WSCommandBuilder implements BungeeFeature {
 
     @Override
     public void onConnect() {
+        if(getComponent("create") != null) {
+            WarpSystem.getInstance().getLogger().log(Level.WARNING, "Trying to register already known command components (CGlobalWarps)! Please contact the author (PlayerCount=" + Bukkit.getOnlinePlayers().size() + ").");
+            return;
+        }
+
         getBaseComponent().addChild(new CommandComponent("create") {
             @Override
             public boolean runCommand(CommandSender sender, String label, String[] args) {
