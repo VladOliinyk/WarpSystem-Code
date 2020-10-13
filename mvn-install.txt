@@ -1,0 +1,5 @@
+mvn install:install-file -Dfile=./lib/BungeeCord.jar -DgroupId=net.md_5 -DartifactId=BungeeCord -Dversion=1.16 -Dpackaging=jar
+mvn install:install-file -Dfile=./lib/spigot-1.16.1.jar -DgroupId=net.md_5 -DartifactId=Spigot-1.16 -Dversion=1 -Dpackaging=jar
+mvn install:install-file -Dfile=./lib/spigot-1.8.jar -DgroupId=net.md_5 -DartifactId=Spigot-1.8 -Dversion=0 -Dpackaging=jar
+mvn install:install-file -Dfile=./lib/GemsEconomy-4.8.3.jar -DgroupId=me.xanium -DartifactId=GemsEconomy -Dversion=4.8.3 -Dpackaging=jar
+mvn install:install-file -Dfile=./lib/PlayerPoints.jar -DgroupId=org.black_ixx -DartifactId=PlayerPoints -Dversion=2.1.4 -Dpackaging=jar

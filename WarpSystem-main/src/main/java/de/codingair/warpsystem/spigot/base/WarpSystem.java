@@ -1,0 +1,656 @@
+package de.codingair.warpsystem.spigot.base;
+
+import de.codingair.codingapi.API;
+import de.codingair.codingapi.files.ConfigFile;
+import de.codingair.codingapi.files.FileManager;
+import de.codingair.codingapi.files.loader.UTFConfig;
+import de.codingair.codingapi.server.reflections.IReflection;
+import de.codingair.codingapi.server.specification.Type;
+import de.codingair.codingapi.server.specification.Version;
+import de.codingair.codingapi.tools.time.TimeFetcher;
+import de.codingair.codingapi.tools.time.Timer;
+import de.codingair.warpsystem.spigot.api.PAPI;
+import de.codingair.warpsystem.spigot.api.SpigotAPI;
+import de.codingair.warpsystem.spigot.base.commands.CWarpSystem;
+import de.codingair.warpsystem.spigot.base.language.Lang;
+import de.codingair.warpsystem.spigot.base.listeners.*;
+import de.codingair.warpsystem.spigot.base.managers.*;
+import de.codingair.warpsystem.spigot.base.setupassistant.SetupAssistantManager;
+import de.codingair.warpsystem.spigot.base.setupassistant.utils.SetupAssistantListener;
+import de.codingair.warpsystem.spigot.base.utils.BungeeFeature;
+import de.codingair.warpsystem.spigot.base.utils.options.OptionBundle;
+import de.codingair.warpsystem.spigot.base.utils.options.Options;
+import de.codingair.warpsystem.spigot.base.utils.options.specific.GeneralOptions;
+import de.codingair.warpsystem.spigot.base.utils.options.specific.PortalOptions;
+import de.codingair.warpsystem.spigot.base.utils.options.specific.WarpGUIOptions;
+import de.codingair.warpsystem.spigot.base.utils.options.specific.WarpSignOptions;
+import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
+import de.codingair.warpsystem.spigot.base.utils.updates.UpdateNotifier;
+import de.codingair.warpsystem.spigot.base.utils.updates.UpdateReader;
+import de.codingair.warpsystem.transfer.jar.JarReceiver;
+import de.codingair.warpsystem.transfer.packets.spigot.RequestInitialPacket;
+import de.codingair.warpsystem.transfer.spigot.SpigotHandler;
+import de.codingair.warpsystem.utils.Manager;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.MemorySection;
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.InvalidDescriptionException;
+import org.bukkit.plugin.InvalidPluginException;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+
+public class WarpSystem extends JavaPlugin {
+    public static final String PERMISSION_NOTIFY = "warpsystem.notify";
+    public static final String PERMISSION_MODIFY = "warpsystem.modify";
+    public static String PERMISSION_ADMIN = "warpsystem.admin"; //will be set after removing all non-final permission (if permissions are disabled)
+
+    public static final String PERMISSION_MODIFY_WARP_GUI = "warpsystem.modify.warpgui";
+    public static final String PERMISSION_MODIFY_SHORTCUTS = "warpsystem.modify.shortcuts";
+    public static final String PERMISSION_MODIFY_WARP_SIGNS = "warpsystem.modify.warpsigns";
+    public static final String PERMISSION_MODIFY_GLOBAL_WARPS = "warpsystem.modify.globalwarps";
+    public static final String PERMISSION_MODIFY_SIMPLE_WARPS = "warpsystem.modify.simplewarps";
+    public static final String PERMISSION_MODIFY_PORTALS = "warpsystem.modify.portals";
+    public static final String PERMISSION_MODIFY_RANDOM_TELEPORTER = "warpsystem.modify.randomteleporters";
+    public static final String PERMISSION_MODIFY_PLAYER_WARPS = "warpsystem.modify.playerwarps";
+    public static final String PERMISSION_MODIFY_SPAWN = "warpsystem.modify.spawn";
+
+    public static final String PERMISSION_USE_TELEPORT_COMMAND = "warpsystem.use.teleportCommand";
+    public static final String PERMISSION_USE_TELEPORT_COMMAND_TP = PERMISSION_USE_TELEPORT_COMMAND + ".tp";
+    public static final String PERMISSION_USE_TELEPORT_COMMAND_TP_TOGGLE = PERMISSION_USE_TELEPORT_COMMAND + ".tptoggle";
+    public static final String PERMISSION_USE_TELEPORT_COMMAND_TPALL = PERMISSION_USE_TELEPORT_COMMAND + ".tpall";
+    public static final String PERMISSION_USE_TELEPORT_COMMAND_TPA_ALL = PERMISSION_USE_TELEPORT_COMMAND + ".tpaall";
+    public static String PERMISSION_USE_TELEPORT_COMMAND_BACK = PERMISSION_USE_TELEPORT_COMMAND + ".back";
+    public static String PERMISSION_USE_TELEPORT_COMMAND_BACK_DETECT_DEATHS = PERMISSION_USE_TELEPORT_COMMAND_BACK + ".deaths";
+    public static String PERMISSION_USE_TELEPORT_COMMAND_TPA = PERMISSION_USE_TELEPORT_COMMAND + ".tpa";
+    public static String PERMISSION_USE_TELEPORT_COMMAND_TP_ACCEPT = PERMISSION_USE_TELEPORT_COMMAND + ".tpaccept";
+    public static String PERMISSION_USE_TELEPORT_COMMAND_TP_DENY = PERMISSION_USE_TELEPORT_COMMAND + ".tpdeny";
+    public static String PERMISSION_USE_TELEPORT_COMMAND_TPA_TOGGLE = PERMISSION_USE_TELEPORT_COMMAND + ".tpatoggle";
+    public static String PERMISSION_USE_TELEPORT_COMMAND_TPA_HERE = PERMISSION_USE_TELEPORT_COMMAND + ".tpahere";
+
+    public static final String PERMISSION_WARP_GUI_OTHER = "warpsystem.warpgui.other";
+    public static final String PERMISSION_HIDE_ALL_ICONS = "warpgui.hideall";
+    public static final String PERMISSION_SIMPLE_WARPS_DIRECT_TELEPORT = "warpsystem.simplewarp.directteleport";
+    public static final String PERMISSION_GLOBAL_WARPS_DIRECT_TELEPORT = "warpsystem.globalwarp.directteleport";
+    public static final String PERMISSION_RANDOM_TELEPORT_SELECTION_SELF = "warpsystem.randomteleporters.selection";
+    public static final String PERMISSION_RANDOM_TELEPORT_SELECTION_OTHER = "warpsystem.randomteleporters.selection.other";
+
+    public static final String PERMISSION_ByPass_Teleport_Costs = "warpsystem.bypass.teleport.costs";
+    public static final String PERMISSION_ByPass_Teleport_Delay = "warpsystem.bypass.teleport.delay";
+    public static final String PERMISSION_ByPass_Teleport_Max_Players = "warpsystem.bypass.teleport.maxplayers";
+    public static final String PERMISSION_ByPass_Teleport_Cooldown = "warpsystem.bypass.cooldown";
+
+    public static String PERMISSION_USE_WARP_GUI = "warpsystem.use.warpgui";
+    public static String PERMISSION_USE_WARP_SIGNS = "warpsystem.use.warpsigns";
+    public static String PERMISSION_USE_GLOBAL_WARPS = "warpsystem.use.globalwarps";
+    public static String PERMISSION_USE_SIMPLE_WARPS = "warpsystem.use.simplewarps";
+    public static String PERMISSION_USE_PLAYER_WARPS = "warpsystem.use.playerwarps";
+    public static String PERMISSION_USE_PORTALS = "warpsystem.use.portals";
+    public static String PERMISSION_USE_RANDOM_TELEPORTER = "warpsystem.use.randomteleporters";
+    public static String PERMISSION_USE_SPAWN = "warpsystem.use.spawn";
+
+    public static boolean activated = false;
+    private static WarpSystem instance;
+    public static boolean updateAvailable = false;
+    private OptionBundle options;
+    private GeneralOptions generalOptions;
+
+    private boolean onBungeeCord = false;
+    private String bungeePluginVersion = null;
+    private String server = null;
+    private BungeeBukkitListener packetListener;
+    private final List<BungeeFeature> bungeeFeatureList = new ArrayList<>();
+
+    private final TeleportManager teleportManager = TeleportManager.getInstance();
+    private final FileManager fileManager = new FileManager(this);
+    private DataManager dataManager;
+    private final HeadManager headManager = new HeadManager();
+    private final SetupAssistantManager setupAssistantManager = new SetupAssistantManager();
+    private final CooldownManager cooldownManager = new CooldownManager();
+    private final VanishManager vanishManager = new VanishManager();
+    private ServerManager serverManager;
+
+    private UpdateNotifier updateNotifier;
+
+    private final Timer timer = new Timer();
+    private boolean old = false;
+    private boolean ERROR = true;
+    private boolean shouldSave = true;
+    private String oldVersion = null;
+    private final SpigotHandler dataHandler = new SpigotHandler(this);
+    private final UUIDManager uuidManager = new UUIDManager();
+    private UTFConfig oldConfig = null;
+
+    public static boolean hasPermission(CommandSender sender, String permission) {
+        return permission == null || sender.hasPermission(permission);
+    }
+
+    public static void updateCommandList() {
+        if(Version.get().isBiggerThan(Version.v1_12)) {
+            for(Player player : Bukkit.getOnlinePlayers()) {
+                IReflection.MethodAccessor updateCommands = IReflection.getMethod(Player.class, "updateCommands");
+                updateCommands.invoke(player);
+            }
+        }
+    }
+
+    public static WarpSystem getInstance() {
+        return instance;
+    }
+
+    public static void log(String message) {
+        System.out.println(message);
+    }
+
+    public static <E extends Options> E getOptions(Class<? extends E> clazz) {
+        if(instance == null) return null;
+
+        for(Options option : getInstance().options.getOptions()) {
+            if(option.getClass().equals(clazz)) return (E) option;
+        }
+
+        return null;
+    }
+
+    public static GeneralOptions opt() {
+        return getInstance().generalOptions;
+    }
+
+    @Override
+    public void onEnable() {
+        Version.load();
+        if(!checkSpigot()) return;
+
+        timer.start();
+
+        instance = this;
+        copyConfig();
+
+        this.serverManager = new ServerManager();
+
+        this.dataManager = new DataManager();
+        this.dataManager.preLoad();
+
+        this.updateNotifier = new UpdateNotifier();
+        loadOptions();
+
+        try {
+            checkOldDirectory();
+
+            API.getInstance().onEnable(this);
+            SpigotAPI.getInstance().onEnable(this);
+
+            log(" ");
+            log("__________________________________________________________");
+            log(" ");
+            log("                       WarpSystem [" + getDescription().getVersion() + "]");
+            log(" ");
+            log("Status:");
+            log(" ");
+            log("MC-Version: " + Version.get().fullVersion());
+            log(" ");
+
+            this.fileManager.loadFile("Config", "/");
+            Lang.initPreDefinedLanguages(this);
+
+            oldVersion = fileManager.getFile("Config").getConfig().getString("Do_Not_Edit.Last_Version", "0");
+            if(!oldVersion.equals(getDescription().getVersion())) createBackup();
+
+            //check permission before loading features
+            checkPermissions();
+            PERMISSION_ADMIN = this.fileManager.getFile("Config").getConfig().getString("WarpSystem.Admin.Permission", "WarpSystem.Admin");
+
+            new PostWorldManager();
+
+            log("Loading features");
+            this.dataManager.removeDisabled();
+
+            CWarpSystem cWarpSystem = new CWarpSystem();
+            cWarpSystem.register();
+
+            boolean createBackup = false;
+            if(!this.dataManager.load()) createBackup = true;
+            log(" ");
+            log("Loading TeleportManager");
+            if(!this.teleportManager.load()) createBackup = true;
+
+            if(createBackup) {
+                log(" ");
+                log(" ");
+                log("Loading with errors > Create backup...");
+                if(oldVersion.equals(getDescription().getVersion())) createBackup();
+                log("Backup successfully created");
+                log(" ");
+            }
+
+            Bukkit.getPluginManager().registerEvents(new TeleportListener(), this);
+            Bukkit.getPluginManager().registerEvents(new NotifyListener(), this);
+            Bukkit.getPluginManager().registerEvents(new CommandListener(), this);
+
+            //register Jar receiver
+            dataHandler.register(new JarReceiver());
+
+            UUIDManager.UUIDListener uuidListener = uuidManager.listener();
+            Bukkit.getPluginManager().registerEvents(uuidListener, this);
+            dataHandler.register(uuidListener);
+
+            Bukkit.getPluginManager().registerEvents(new HeadListener(), this);
+            SetupAssistantListener l = new SetupAssistantListener();
+            Bukkit.getPluginManager().registerEvents(l, this);
+            dataHandler.register(l);
+            getBungeeFeatureList().add(this.vanishManager);
+
+            this.startAutoSaver();
+            afterOnEnable();
+
+            log(" ");
+            log("Finished (" + timer.result() + ")");
+            log(" ");
+            log("__________________________________________________________");
+            log(" ");
+
+            activated = true;
+            UpdateReader.start();
+
+            this.ERROR = false;
+
+            this.dataHandler.onEnable();
+            this.dataHandler.send(new RequestInitialPacket());
+            this.dataHandler.register(this.packetListener = new BungeeBukkitListener());
+            Bukkit.getPluginManager().registerEvents(this.packetListener, this);
+
+            ConfigFile config = fileManager.getFile("Config");
+            if(config.getConfig().getBoolean("WarpSystem.Functions.CommandBlocks", true))
+                Bukkit.getPluginManager().registerEvents(new CommandBlockListener(), this);
+        } catch(Throwable ex) {
+            //make error-report
+
+            if(!getDataFolder().exists()) {
+                try {
+                    getDataFolder().createNewFile();
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            BufferedWriter writer = null;
+            try {
+                File log = new File(getDataFolder(), "ErrorReport.txt");
+                if(log.exists()) log.delete();
+
+                writer = new BufferedWriter(new FileWriter(log));
+
+                PrintWriter printWriter = new PrintWriter(writer);
+                ex.printStackTrace(printWriter);
+            } catch(IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    writer.close();
+                } catch(Exception ignored) {
+                }
+            }
+
+
+            log(" ");
+            log("__________________________________________________________");
+            log(" ");
+            log("                       WarpSystem [" + getDescription().getVersion() + "]");
+            log(" ");
+            log("       COULD NOT ENABLE CORRECTLY!!");
+            log(" ");
+            log("       Please contact the author with the ErrorReport.txt");
+            log("       file in the plugins/WarpSystem folder.");
+            log(" ");
+            log(" ");
+            log("       Thanks for supporting!");
+            log(" ");
+            log("__________________________________________________________");
+            log(" ");
+
+            this.ERROR = true;
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+    }
+
+    private void copyConfig() {
+        ConfigFile file = this.fileManager.loadFile("Config", "/", false);
+
+        IReflection.FieldAccessor<Map<String, Object>> map = IReflection.getField(MemorySection.class, "map");
+        Map<String, Object> copy = new HashMap<>(map.get(file.getConfig()));
+
+        this.oldConfig = (UTFConfig) IReflection.getConstructor(UTFConfig.class).newInstance();
+        map.set(oldConfig, copy);
+
+        this.fileManager.unloadFile(file);
+    }
+
+    private void checkPermissions() {
+        ConfigFile config = fileManager.getFile("Config");
+        if(config.getConfig().getString("Do_Not_Edit.Last_Version").equals("0")) {
+            config.getConfig().set("WarpSystem.Permissions", false);
+            config.saveConfig();
+        }
+
+        if(!config.getConfig().getBoolean("WarpSystem.Permissions", true)) {
+            for(Field f : getClass().getDeclaredFields()) {
+                if(!Modifier.isFinal(f.getModifiers()) && f.getName().startsWith("PERMISSION_USE_")) {
+                    f.setAccessible(true);
+                    try {
+                        f.set(this, null);
+                    } catch(IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    private void afterOnEnable() {
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            //update command dispatcher for players to synchronize CommandList
+            Bukkit.getScheduler().runTask(this, WarpSystem::updateCommandList);
+            PAPI.register();
+        }, 1);
+    }
+
+    @Override
+    public void onDisable() {
+        if(Version.type() == Type.BUKKIT) return;
+
+        API.getInstance().onDisable(this);
+        SpigotAPI.getInstance().onDisable(this);
+
+        save(false);
+        teleportManager.getTeleports().forEach(t -> t.cancel(Result.CANCELLED_BY_SYSTEM));
+        teleportManager.clear();
+
+        //Disable all functions
+        activated = false;
+        onBungeeCord = false;
+        server = null;
+        updateAvailable = false;
+        old = false;
+        ERROR = true;
+        shouldSave = true;
+
+        HandlerList.unregisterAll(this);
+
+        this.bungeeFeatureList.forEach(BungeeFeature::onDisconnect);
+        this.bungeeFeatureList.clear();
+
+        this.dataHandler.onDisable();
+        if(this.packetListener != null) this.dataHandler.unregister(this.packetListener);
+
+        destroy();
+        this.uuidManager.removeAll();
+    }
+
+    private boolean checkSpigot() {
+        if(Version.type() == Type.BUKKIT) {
+            shouldSave = false;
+            log(" ");
+            log(" ");
+            log(" ");
+            getLogger().log(Level.SEVERE, "This plugin requires a Spigot server!");
+            getLogger().log(Level.SEVERE, "A fork like PaperMc does also work.");
+            log(" ");
+            log(" ");
+            log(" ");
+            Bukkit.getPluginManager().disablePlugin(this);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private void loadOptions() {
+        if(this.options == null) this.options = new OptionBundle(generalOptions = new GeneralOptions(), new WarpGUIOptions(), new WarpSignOptions(), new PortalOptions());
+        this.options.read();
+        for(Options option : this.options.getOptions()) {
+            option.write();
+        }
+    }
+
+    public void reload(boolean save) {
+        this.shouldSave = save;
+
+        try {
+            API.getInstance().reload(this);
+        } catch(InvalidDescriptionException | FileNotFoundException | InvalidPluginException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void startAutoSaver() {
+        WarpSystem.log("Starting AutoSaver");
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(WarpSystem.getInstance(), () -> save(true), 10 * 60 * 20, 10 * 60 * 20);
+    }
+
+    private void destroy() {
+        if(dataManager != null) this.dataManager.getManagers().forEach(Manager::destroy);
+        this.bungeeFeatureList.clear();
+        this.fileManager.destroy();
+    }
+
+    private void save(boolean saver) {
+        if(!this.shouldSave) return;
+        try {
+            if(!this.ERROR) {
+                if(!saver) {
+                    timer.start();
+
+                    log(" ");
+                    log("__________________________________________________________");
+                    log(" ");
+                    log("                       WarpSystem [" + getDescription().getVersion() + "]");
+                    if(updateAvailable) {
+                        log(" ");
+                        log("New update available [" + updateNotifier.getVersion() + " - " + WarpSystem.this.updateNotifier.getUpdateInfo() + "]. Download it on \n\n" + updateNotifier.getDownload() + "\n");
+                    }
+                    log(" ");
+                    log("Status:");
+                    log(" ");
+                    log("MC-Version: " + Version.get().name());
+                    log(" ");
+                }
+
+                if(!saver) log("Saving options");
+                fileManager.getFile("Config").loadConfig();
+                this.options.write();
+
+                if(!saver) log("Saving features");
+                this.dataManager.save(saver);
+                this.teleportManager.save();
+
+                if(!saver) {
+                    log(" ");
+                    log("Finished (" + timer.result() + ")");
+                    log(" ");
+                    log("__________________________________________________________");
+                    log(" ");
+                }
+            }
+        } catch(Exception ex) {
+            getLogger().log(Level.SEVERE, "Error at saving data! Exception: \n\n");
+            ex.printStackTrace();
+            getLogger().log(Level.SEVERE, "\n");
+        }
+    }
+
+    private void checkOldDirectory() {
+        File file = getDataFolder();
+
+        if(file.exists()) {
+            File warps = new File(file, "Memory/Warps.yml");
+
+            if(warps.exists()) {
+                old = true;
+                renameUnnecessaryFiles();
+            }
+        }
+    }
+
+    private void renameUnnecessaryFiles() {
+        File file = getDataFolder();
+
+        new File(file, "Config.yml").renameTo(new File(file, "OldConfig_Update_2.0.yml"));
+        new File(file, "Language.yml").renameTo(new File(file, "OldLanguage_Update_2.0.yml"));
+    }
+
+    public void createBackup() {
+        try {
+            getDataFolder().createNewFile();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        File backupFolder = new File(getDataFolder().getPath() + "/Backups/", TimeFetcher.getYear() + "_" + (TimeFetcher.getMonthNum() + 1) + "_" + TimeFetcher.getDay() + " " + TimeFetcher.getHour() + "_" + TimeFetcher.getMinute() + "_" + TimeFetcher.getSecond());
+        backupFolder.mkdirs();
+
+        for(File file : getDataFolder().listFiles()) {
+            if(file.getName().equals("Backups") || file.getName().equals("ErrorReport.txt")) continue;
+            File dest = new File(backupFolder, file.getName());
+
+            try {
+                if(file.isDirectory()) {
+                    copyFolder(file, dest);
+                    continue;
+                }
+
+                copyFileUsingFileChannels(file, dest);
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void copyFolder(File source, File dest) throws IOException {
+        dest.mkdirs();
+        for(File file : source.listFiles()) {
+            File copy = new File(dest, file.getName());
+
+            if(file.isDirectory()) {
+                copyFolder(file, copy);
+                continue;
+            }
+
+            copyFileUsingFileChannels(file, copy);
+        }
+    }
+
+    private void copyFileUsingFileChannels(File source, File dest) throws IOException {
+        FileChannel inputChannel = null;
+        FileChannel outputChannel = null;
+        try {
+            inputChannel = new FileInputStream(source).getChannel();
+            outputChannel = new FileOutputStream(dest).getChannel();
+            outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+        } finally {
+            inputChannel.close();
+            outputChannel.close();
+        }
+    }
+
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    public boolean isOnBungeeCord() {
+        return onBungeeCord;
+    }
+
+    public synchronized void setOnBungeeCord(boolean onBungeeCord) {
+        if(this.onBungeeCord == onBungeeCord) return;
+
+        this.onBungeeCord = onBungeeCord;
+        if(onBungeeCord) {
+            this.bungeeFeatureList.forEach(BungeeFeature::onConnect);
+        } else {
+            this.bungeeFeatureList.forEach(BungeeFeature::onDisconnect);
+        }
+    }
+
+    public TeleportManager getTeleportManager() {
+        return teleportManager;
+    }
+
+    public boolean isOld() {
+        return old;
+    }
+
+    public SpigotHandler getDataHandler() {
+        return dataHandler;
+    }
+
+    public DataManager getDataManager() {
+        return dataManager;
+    }
+
+    public String getCurrentServer() {
+        return server;
+    }
+
+    public void setCurrentServer(String server) {
+        this.server = server;
+    }
+
+    public UpdateNotifier getUpdateNotifier() {
+        return updateNotifier;
+    }
+
+    public UUIDManager getUUIDManager() {
+        return uuidManager;
+    }
+
+    public String getBungeePluginVersion() {
+        return bungeePluginVersion;
+    }
+
+    public void setBungeePluginVersion(String bungeePluginVersion) {
+        this.bungeePluginVersion = bungeePluginVersion;
+    }
+
+    public List<BungeeFeature> getBungeeFeatureList() {
+        return bungeeFeatureList;
+    }
+
+    public HeadManager getHeadManager() {
+        return headManager;
+    }
+
+    public SetupAssistantManager getSetupAssistantManager() {
+        return setupAssistantManager;
+    }
+
+    public String getOldVersion() {
+        return oldVersion;
+    }
+
+    public static CooldownManager cooldown() {
+        return getInstance().cooldownManager;
+    }
+
+    public VanishManager getVanishManager() {
+        return vanishManager;
+    }
+
+    public UTFConfig getOldConfig() {
+        return oldConfig;
+    }
+
+    public ServerManager getServerManager() {
+        return serverManager;
+    }
+}

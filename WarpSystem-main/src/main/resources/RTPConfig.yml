@@ -1,0 +1,96 @@
+#The standard and max amount of random teleports will be configured with permissions:
+#"warpsystem.randomteleporters.free.1" » This permissions means, that the player with that permission has a standard amount of 1 free random teleports
+#"warpsystem.randomteleporters.max.2" » This permissions means, that the player with that permission has a max amount of 2 random teleports, so he could buy one, if it's enabled
+RandomTeleport:
+  #Max/Free RTPs - ONLY if permissions in the main Config.yml are disabled
+  Max: 4
+  Free: 1
+  #Costs for one extra teleport (buyable with commands)
+  Buyable:
+    Enabled: true
+    Costs: 500
+  Range:
+    #Don't use too high y values! It would cause lags!!
+    Highest_Y:
+      Nether: 126
+      End: 80
+  Worlds:
+    #Ignored values (like in "Example") will be replaced by default values
+    # Ignored start values will be replaced by default values. World spawn will be used if startX=-1, startY=-1 & startZ=-1
+    # Ignored range values will be replaced by general range values at the top
+    # Values: startX, startY, startZ, min_range, max_range, target_worlds, disabled
+    Default:
+      startX: -1
+      startY: -1
+      startZ: -1
+      min_range: 1000
+      max_range: 10000
+      target_worlds:
+        - "ExampleWorld-01"
+        - "ExampleWorld-02"
+    Options:
+      - World:
+          startX: 0
+          startY: 70
+          startZ: 0
+          min_range: 1000
+          max_range: 10000
+      - Example:
+          startY: 70
+      - DisabledWorld:
+          disabled: true
+  Block_Blacklist:
+    Enabled: true
+    List:
+      - Water
+  Support:
+    #If enabled, the player will be teleported to a random position, which is not in a protected region
+    ProtectedRegions: true
+    #If enabled, the player will be teleported to a random position, which is inside of the WorldBorder
+    #Premium feature - WorldBorder won't be supported even it's set to 'true'
+    WorldBorder: true
+    #If enabled, the player will be teleported to a random position, in one of the listed biomes
+    Biome:
+      Enabled: false
+      #Names can be found here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/Biome.html
+      BiomeList:
+        - OCEAN
+        - PLAINS
+        - DESERT
+        - EXTREME_HILLS
+        - FOREST
+        - TAIGA
+        - SWAMPLAND
+        - RIVER
+        - HELL
+        - SKY
+        - FROZEN_OCEAN
+        - FROZEN_RIVER
+        - ICE_FLATS
+        - ICE_MOUNTAINS
+        - MUSHROOM_ISLAND
+        - MUSHROOM_ISLAND_SHORE
+        - BEACHES
+        - DESERT_HILLS
+        - FOREST_HILLS
+        - TAIGA_HILLS
+        - SMALLER_EXTREME_HILLS
+        - JUNGLE
+        - JUNGLE_HILLS
+        - JUNGLE_EDGE
+        - DEEP_OCEAN
+        - STONE_BEACH
+        - COLD_BEACH
+        - BIRCH_FOREST
+        - BIRCH_FOREST_HILLS
+        - ROOFED_FOREST
+        - TAIGA_COLD
+        - TAIGA_COLD_HILLS
+        - REDWOOD_TAIGA
+        - REDWOOD_TAIGA_HILLS
+        - EXTREME_HILLS_WITH_TREES
+        - SAVANNA
+        - SAVANNA_ROCK
+        - MESA
+        - MESA_ROCK
+        - MESA_CLEAR_ROCK

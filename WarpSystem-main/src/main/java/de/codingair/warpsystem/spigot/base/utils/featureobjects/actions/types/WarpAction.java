@@ -1,0 +1,51 @@
+package de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types;
+
+import de.codingair.codingapi.tools.io.utils.DataWriter;
+import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Action;
+import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.ActionObject;
+import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
+import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.LocationAdapter;
+import org.bukkit.entity.Player;
+
+public class WarpAction extends ActionObject<Destination> {
+    public WarpAction(Destination destination) {
+        super(Action.WARP, destination);
+    }
+
+    public WarpAction() {
+        this(null);
+    }
+
+    @Override
+    public void read(String s) {
+        if(s != null) {
+            setValue(new Destination(s));
+        }
+    }
+
+    @Override
+    public boolean read(DataWriter d) {
+        setValue(d.getSerializable("destination", new Destination()));
+        return true;
+    }
+
+    @Override
+    public void write(DataWriter d) {
+        d.put("destination", getValue());
+    }
+
+    @Override
+    public boolean perform(Player player) {
+        return true;
+    }
+
+    @Override
+    public boolean usable() {
+        return getValue() != null && (getValue().getId() != null || (getValue().getAdapter() instanceof LocationAdapter && ((LocationAdapter) getValue().getAdapter()).getLocation() != null));
+    }
+
+    @Override
+    public WarpAction clone() {
+        return new WarpAction(getValue() == null ? null : getValue().clone());
+    }
+}
