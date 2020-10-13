@@ -34,9 +34,9 @@ jobs:
       run: |
         file=$(find "./WarpSystem-main/target" -type f -name "WarpSystem_v*.jar" | head -n 1)
         name=${file[@]//.jar/}
-        name=${name:23}
+        name=${name:25}
         info=${name##*_}
-        version=${name:12}
+        version=${name:11}
         version=${version[@]//_$info/}
         if [ "$info" = "$version" ]; then
         	info="New release**__   -   __**"

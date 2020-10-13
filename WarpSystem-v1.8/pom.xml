@@ -16,7 +16,6 @@
     </repositories>
 
     <build>
-        <finalName>DiscordWebhookCI_v${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
