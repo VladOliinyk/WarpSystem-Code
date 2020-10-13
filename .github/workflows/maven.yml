@@ -1,0 +1,52 @@
+name: Test Buld
+
+on:
+  push:
+    branches: [ convert-to-maven ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Build dependencies
+      run: |
+        cd ./WarpSystem-v1.8
+        mvn install
+        cd ../
+        mvn install:install-file -Dfile=./lib/BungeeCord.jar -DgroupId=net.md_5 -DartifactId=BungeeCord -Dversion=1.16 -Dpackaging=jar
+        mvn install:install-file -Dfile=./lib/spigot-1.16.1.jar -DgroupId=net.md_5 -DartifactId=Spigot-1.16 -Dversion=1 -Dpackaging=jar
+        mvn install:install-file -Dfile=./lib/spigot-1.8.jar -DgroupId=net.md_5 -DartifactId=Spigot-1.8 -Dversion=0 -Dpackaging=jar
+        mvn install:install-file -Dfile=./lib/GemsEconomy-4.8.3.jar -DgroupId=me.xanium -DartifactId=GemsEconomy -Dversion=4.8.3 -Dpackaging=jar
+        mvn install:install-file -Dfile=./lib/PlayerPoints.jar -DgroupId=org.black_ixx -DartifactId=PlayerPoints -Dversion=2.1.4 -Dpackaging=jar
+    - name: Build with Maven
+      run: |
+        cd ./WarpSystem-main
+        mvn -B package --file pom.xml
+        cd ../
+    - name: Deploy
+      run: |
+        file=$(find "./WarpSystem-main/target" -type f -name "WarpSystem_v*.jar" | head -n 1)
+        name=${file[@]//.jar/}
+        name=${name:23}
+        info=${name##*_}
+        version=${name:12}
+        version=${version[@]//_$info/}
+        if [ "$info" = "$version" ]; then
+        	info="New release**__   -   __**"
+        else
+        	info=${info[@]//-/ }
+        	info="$info**__   -   __**"
+        fi
+        NOW="$(LC_ALL=en_GB.utf8 date --universal)"
+        milestone=35
+        hook=${{ secrets.DISCORD_WEBHOOK }}
+        echo "Sending '$file' to 'DevBuilds' channel, this may take a while..."
+        curl -i -H 'Expect: application/json' -F file=@"$file" -F "payload_json={ \"wait\": true, \"avatar_url\":\"https://i.imgur.com/ZoSmsVs.png\", \"content\": \"@here\n__**$info$version**__   [$NOW]\n\n**Changelog:**\n<https://github.com/CodingAir/WarpSystem-IssueTracker/milestone/$milestone?closed=1>\", \"username\": \"WarpSystem CI\" }" $hook
+
