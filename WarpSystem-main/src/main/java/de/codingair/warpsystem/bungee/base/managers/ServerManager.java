@@ -57,18 +57,27 @@ public class ServerManager implements Listener, PacketListener {
     }
 
     public void run() {
+        for(ServerInfo info : BungeeCord.getInstance().getServers().values()) {
+            cachedPing.put(info.getName().toLowerCase(), new ServerPing(false, 0, 0, null));
+        }
+
         BungeeCord.getInstance().getScheduler().schedule(WarpSystem.getInstance(), () -> {
             for(ServerInfo info : BungeeCord.getInstance().getServers().values()) {
                 info.ping((serverPing, error) -> {
                     setStatus(info, error == null);
 
+                    ServerPing ping = cachedPing.get(info.getName().toLowerCase());
+
                     if(error == null) {
-                        cachedPing.put(info.getName().toLowerCase(), new ServerPing(true,
-                                serverPing.getPlayers().getOnline(),
-                                serverPing.getPlayers().getMax(),
-                                info.getMotd()));
+                        ping.setStatus(true);
+                        ping.setPlayers(serverPing.getPlayers().getOnline());
+                        ping.setMaxPlayers(serverPing.getPlayers().getMax());
+                        ping.setMotd(info.getMotd());
                     } else {
-                        cachedPing.put(info.getName().toLowerCase(), new ServerPing(false, 0, 0, null));
+                        ping.setStatus(false);
+                        ping.setPlayers(0);
+                        ping.setMaxPlayers(0);
+                        ping.setMotd(null);
                     }
                 });
             }

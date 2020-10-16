@@ -63,6 +63,22 @@ public class ServerPing implements Serializable {
         return motd;
     }
 
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public void setPlayers(int players) {
+        this.players = players;
+    }
+
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public void setMotd(String motd) {
+        this.motd = motd;
+    }
+
     @Override
     public String toString() {
         return "ServerProperties{" +

@@ -5,6 +5,7 @@ import de.codingair.codingapi.tools.Callback;
 import de.codingair.warpsystem.bungee.features.randomtp.RandomTPListener;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;
+import de.codingair.warpsystem.spigot.base.utils.teleport.Origin;
 import de.codingair.warpsystem.spigot.features.randomteleports.managers.RandomTeleporterManager;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -28,6 +29,8 @@ public class RTP_Go_Command extends NaturalCommandComponent {
     @Override
     public boolean runCommand(CommandSender sender, String label, String[] args) {
         if(args.length >= 1 && args[0].equalsIgnoreCase("go")) {
+            if(WarpSystem.cooldown().checkPlayer((Player) sender, Origin.RandomTP)) return false;
+
             StringBuilder builder = new StringBuilder();
             int endOfCMD = 0;
             for(int i = 1; i < args.length; i++) {
@@ -105,6 +108,8 @@ public class RTP_Go_Command extends NaturalCommandComponent {
                             else if(result == 1) sender.sendMessage(Lang.getPrefix() + Lang.get("Player_is_not_online"));
                             else if(result == 2) sender.sendMessage(Lang.getPrefix() + Lang.get("RandomTP_No_Location_Found"));
                             else if(result == 4) sender.sendMessage(Lang.getPrefix() + Lang.get("RandomTP_Other_No_Teleports_Left").replace("%PLAYER%", finalPlayer));
+                        } else if(result == 0) {
+                            WarpSystem.cooldown().register((Player) sender, Origin.RandomTP);
                         }
 
                         if(result == 3) sender.sendMessage(Lang.getPrefix() + Lang.get("Server_Is_Not_Online"));
@@ -143,6 +148,8 @@ public class RTP_Go_Command extends NaturalCommandComponent {
                             else if(result == 1) sender.sendMessage(Lang.getPrefix() + Lang.get("Player_is_not_online"));
                             else if(result == 2) sender.sendMessage(Lang.getPrefix() + Lang.get("RandomTP_No_Location_Found"));
                             else if(result == 4) sender.sendMessage(Lang.getPrefix() + Lang.get("RandomTP_Other_No_Teleports_Left").replace("%PLAYER%", finalPlayer));
+                        } else if(result == 0) {
+                            WarpSystem.cooldown().register((Player) sender, Origin.RandomTP);
                         }
 
                         if(result == 3) sender.sendMessage(Lang.getPrefix() + Lang.get("Server_Is_Not_Online"));

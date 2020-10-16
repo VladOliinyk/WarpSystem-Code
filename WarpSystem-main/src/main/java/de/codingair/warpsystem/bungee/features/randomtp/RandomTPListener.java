@@ -36,6 +36,8 @@ public class RandomTPListener implements PacketListener, Listener {
         if(e.getSuggestions().remove(ID)) {
             boolean other = e.getSuggestions().remove(ID_OTHER);
             String command = e.getSuggestions().isEmpty() ? "" : e.getSuggestions().remove(0).replace("go ", "");
+            if(command.startsWith("\"") && command.endsWith("\"")) command = command.substring(1, command.length() - 1);
+
             if(!RandomTPManager.getInstance().hasRegisteredServers()) return;
 
             boolean editingLast = !command.endsWith(" ");

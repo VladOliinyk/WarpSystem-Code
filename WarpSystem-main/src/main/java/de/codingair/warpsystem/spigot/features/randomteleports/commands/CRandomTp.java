@@ -4,10 +4,12 @@ import de.codingair.codingapi.player.chat.ChatButton;
 import de.codingair.codingapi.player.chat.SimpleMessage;
 import de.codingair.codingapi.server.commands.builder.BaseComponent;
 import de.codingair.codingapi.server.commands.builder.CommandComponent;
+import de.codingair.codingapi.tools.Callback;
 import de.codingair.warpsystem.spigot.api.WSCommandBuilder;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.base.utils.money.Bank;
+import de.codingair.warpsystem.spigot.base.utils.teleport.Origin;
 import de.codingair.warpsystem.spigot.features.randomteleports.managers.RandomTeleporterManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -168,7 +170,17 @@ public class CRandomTp extends WSCommandBuilder {
                     return false;
                 }
 
-                RandomTeleporterManager.getInstance().tryToTeleport((Player) sender);
+                if(WarpSystem.cooldown().checkPlayer((Player) sender, Origin.RandomTP)) return false;
+
+                Player p = (Player) sender;
+                RandomTeleporterManager.getInstance().tryToTeleport(p.getName(), p.getWorld(), false, new Callback<Integer>() {
+                    @Override
+                    public void accept(Integer result) {
+                        if(result == 0) {
+                            WarpSystem.cooldown().register((Player) sender, Origin.RandomTP);
+                        }
+                    }
+                });
                 return false;
             }
         }.setOnlyPlayers(false).addChild(new RTP_Go_Command(WarpSystem.PERMISSION_RANDOM_TELEPORT_SELECTION_SELF)));

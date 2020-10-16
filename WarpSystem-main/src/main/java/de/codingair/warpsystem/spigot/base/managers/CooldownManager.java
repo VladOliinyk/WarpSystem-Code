@@ -116,7 +116,7 @@ public class CooldownManager implements PacketListener {
 
     public void register(Player player, Origin origin) {
         long time = origin.getCooldown();
-        if(player.hasPermission(WarpSystem.PERMISSION_ByPass_Teleport_Cooldown) || time == 0) return;
+        if(time == 0 || player.hasPermission(WarpSystem.PERMISSION_ByPass_Teleport_Cooldown)) return;
         Cooldown cooldown = new Cooldown(WarpSystem.getInstance().getUUIDManager().get(player), System.currentTimeMillis() + time, origin.ordinal());
 
         add(cooldown);
