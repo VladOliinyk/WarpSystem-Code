@@ -66,32 +66,46 @@ public class ServerManager implements Listener, PacketListener {
                 info.ping((serverPing, error) -> {
                     setStatus(info, error == null);
 
-                    ServerPing ping = cachedPing.get(info.getName().toLowerCase());
+                    useCache(new Callback<HashMap<String, ServerPing>>() {
+                        @Override
+                        public void accept(HashMap<String, ServerPing> cachedPing) {
+                            ServerPing ping = cachedPing.get(info.getName().toLowerCase());
 
-                    if(error == null) {
-                        ping.setStatus(true);
-                        ping.setPlayers(serverPing.getPlayers().getOnline());
-                        ping.setMaxPlayers(serverPing.getPlayers().getMax());
-                        ping.setMotd(info.getMotd());
-                    } else {
-                        ping.setStatus(false);
-                        ping.setPlayers(0);
-                        ping.setMaxPlayers(0);
-                        ping.setMotd(null);
-                    }
+                            if(error == null) {
+                                ping.setStatus(true);
+                                ping.setPlayers(serverPing.getPlayers().getOnline());
+                                ping.setMaxPlayers(serverPing.getPlayers().getMax());
+                                ping.setMotd(info.getMotd());
+                            } else {
+                                ping.setStatus(false);
+                                ping.setPlayers(0);
+                                ping.setMaxPlayers(0);
+                                ping.setMotd(null);
+                            }
+                        }
+                    });
                 });
             }
         }, 0, 5, TimeUnit.SECONDS);
 
         BungeeCord.getInstance().getScheduler().schedule(WarpSystem.getInstance(), () -> {
-            SendServerPropertiesPacket p = new SendServerPropertiesPacket(cachedPing);
+            useCache(new Callback<HashMap<String, ServerPing>>() {
+                @Override
+                public void accept(HashMap<String, ServerPing> object) {
+                    SendServerPropertiesPacket p = new SendServerPropertiesPacket(cachedPing);
 
-            for(ServerInfo target : BungeeCord.getInstance().getServers().values()) {
-                if(!target.getPlayers().isEmpty()) {
-                    WarpSystem.getInstance().getDataHandler().send(p, target);
+                    for(ServerInfo target : BungeeCord.getInstance().getServers().values()) {
+                        if(!target.getPlayers().isEmpty()) {
+                            WarpSystem.getInstance().getDataHandler().send(p, target);
+                        }
+                    }
                 }
-            }
+            });
         }, 3, 5, TimeUnit.SECONDS);
+    }
+
+    private synchronized void useCache(Callback<HashMap<String, ServerPing>> callback) {
+        callback.accept(cachedPing);
     }
 
     public void sendInitialPacket(ServerInfo server) {
