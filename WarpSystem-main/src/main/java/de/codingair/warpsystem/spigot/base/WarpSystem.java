@@ -51,6 +51,11 @@ import java.util.Map;
 import java.util.logging.Level;
 
 public class WarpSystem extends JavaPlugin {
+    public static final String COLOR_NITRADO = "§x§F§F§D§7§4§4"; //#FFD744
+    public static final String COLOR_NITRADO_PLANE = "#FFD744"; //#FFD744
+    public static final String SUB_PREFIX = "Quests §8» §7";
+    public static final String PREFIX = COLOR_NITRADO + SUB_PREFIX;
+
     public static final String PERMISSION_NOTIFY = "warpsystem.notify";
     public static final String PERMISSION_MODIFY = "warpsystem.modify";
     public static String PERMISSION_ADMIN = "warpsystem.admin"; //will be set after removing all non-final permission (if permissions are disabled)
@@ -242,7 +247,6 @@ public class WarpSystem extends JavaPlugin {
 
             UUIDManager.UUIDListener uuidListener = uuidManager.listener();
             Bukkit.getPluginManager().registerEvents(uuidListener, this);
-            dataHandler.register(uuidListener);
 
             Bukkit.getPluginManager().registerEvents(new HeadListener(), this);
             SetupAssistantListener l = new SetupAssistantListener();
@@ -393,7 +397,6 @@ public class WarpSystem extends JavaPlugin {
         if(this.packetListener != null) this.dataHandler.unregister(this.packetListener);
 
         destroy();
-        this.uuidManager.removeAll();
     }
 
     private boolean checkSpigot() {
