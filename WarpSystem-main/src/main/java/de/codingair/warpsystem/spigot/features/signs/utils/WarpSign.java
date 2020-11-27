@@ -97,6 +97,7 @@ public class WarpSign extends FeatureObject {
             setPermission(d.get("Permissions"));
         }
 
+        setPermission(null);
         List<String> text = d.getList("text");
         if(text == null) this.text = ((Sign) (location.getBlock().getState())).getLines();
         else this.text = text.toArray(new String[4]);
@@ -107,6 +108,7 @@ public class WarpSign extends FeatureObject {
     public void write(DataWriter d) {
         super.write(d);
 
+        d.remove("permission");
         this.location.trim(0);
         d.put("location", this.location);
 
