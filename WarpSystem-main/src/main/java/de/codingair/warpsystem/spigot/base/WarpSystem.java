@@ -206,10 +206,6 @@ public class WarpSystem extends JavaPlugin {
             oldVersion = fileManager.getFile("Config").getConfig().getString("Do_Not_Edit.Last_Version", "0");
             if(!oldVersion.equals(getDescription().getVersion())) createBackup();
 
-            //load cooldown list
-            cooldownManager.load();
-            dataHandler.register(cooldownManager);
-
             //check permission before loading features
             checkPermissions();
             PERMISSION_ADMIN = this.fileManager.getFile("Config").getConfig().getString("WarpSystem.Admin.Permission", "WarpSystem.Admin");
@@ -441,7 +437,7 @@ public class WarpSystem extends JavaPlugin {
     }
 
     private void destroy() {
-        this.dataManager.getManagers().forEach(Manager::destroy);
+        if(dataManager != null) this.dataManager.getManagers().forEach(Manager::destroy);
         this.bungeeFeatureList.clear();
         this.fileManager.destroy();
     }
@@ -467,9 +463,6 @@ public class WarpSystem extends JavaPlugin {
                     log("MC-Version: " + Version.get().name());
                     log(" ");
                 }
-
-                //save cooldown list
-                cooldownManager.save();
 
                 if(!saver) log("Saving options");
                 fileManager.getFile("Config").loadConfig();

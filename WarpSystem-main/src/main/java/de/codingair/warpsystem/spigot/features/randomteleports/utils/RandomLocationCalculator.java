@@ -1,20 +1,17 @@
 package de.codingair.warpsystem.spigot.features.randomteleports.utils;
 
 import de.codingair.codingapi.server.Environment;
-import de.codingair.codingapi.server.specification.Version;
 import de.codingair.codingapi.tools.Area;
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.Location;
 import de.codingair.codingapi.utils.Node;
 import de.codingair.codingapi.utils.Value;
-import de.codingair.warpsystem.spigot.api.players.PermissionPlayer_v1_8;
-import de.codingair.warpsystem.spigot.api.players.PermissionPlayer_v1_9;
+import de.codingair.warpsystem.spigot.api.players.PermissionPlayer;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.features.randomteleports.managers.RandomTeleporterManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -25,7 +22,7 @@ import java.util.Random;
 
 public class RandomLocationCalculator implements Runnable {
     private final org.bukkit.Location startLocation;
-    private final Player check;
+    private final PermissionPlayer check;
     private final Callback<Location> callback;
     private long lastReaction = 0;
     private final double minRange;
@@ -33,9 +30,7 @@ public class RandomLocationCalculator implements Runnable {
     private final double diffRange;
 
     public RandomLocationCalculator(Player player, org.bukkit.Location location, double minRange, double maxRange, Callback<Location> callback) {
-        if(Version.get().isBiggerThan(8)) check = new PermissionPlayer_v1_9(player);
-        else check = new PermissionPlayer_v1_8(player);
-
+        this.check = new PermissionPlayer(player);
         this.callback = callback;
         this.startLocation = location;
         this.minRange = minRange;
@@ -92,8 +87,8 @@ public class RandomLocationCalculator implements Runnable {
     private Node<Double, Double> getRandomOffset(Random r) {
         double degree = r.nextDouble() * 2 * Math.PI - Math.PI;
 
-        double x = -Math.sin(degree) * ((r.nextDouble() * diffRange) + minRange);
-        double z = Math.cos(degree) * ((r.nextDouble() * diffRange) + minRange);
+        double x = -Math.sin(degree) * ((r.nextDouble() * diffRange)  + minRange);
+        double z = Math.cos(degree) * ((r.nextDouble() * diffRange)  + minRange);
 
         return new Node<>(x, z);
     }
@@ -175,7 +170,7 @@ public class RandomLocationCalculator implements Runnable {
         if(RandomTeleporterManager.getInstance().getBiomeList() != null && !RandomTeleporterManager.getInstance().getBiomeList().contains(location.getWorld().getBiome(location.getBlockX(), location.getBlockZ())))
             return false;
         if(RandomTeleporterManager.getInstance().isProtectedRegions() && isProtected(location)) return false;
-        if(RandomTeleporterManager.getInstance().isWorldBorder() && !isInsideOfWorldBorder(location)) return false;
+
         if(safety) {
             Location above = location.clone();
             above.setY(above.getY() + 1);
@@ -202,11 +197,6 @@ public class RandomLocationCalculator implements Runnable {
         }
 
         return true;
-    }
-
-    private boolean isInsideOfWorldBorder(Location location) {
-        WorldBorder border = location.getWorld().getWorldBorder();
-        return border == null || Area.isInArea(location, border.getCenter(), border.getSize() / 2, false, 0);
     }
 
     private boolean isProtected(Location location) throws InterruptedException {
