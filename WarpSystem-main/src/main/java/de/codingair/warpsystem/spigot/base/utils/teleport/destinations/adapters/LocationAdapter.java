@@ -4,11 +4,14 @@ import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.Location;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.base.listeners.TeleportListener;
-import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
+import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
+import io.papermc.lib.PaperLib;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
+
+import java.util.concurrent.CompletableFuture;
 
 public class LocationAdapter extends CloneableAdapter {
     protected Location location;
@@ -45,10 +48,13 @@ public class LocationAdapter extends CloneableAdapter {
             return false;
         } else {
             org.bukkit.Location finalLoc = prepare(player, location.clone());
-
             if(silent) TeleportListener.TELEPORTS.put(player, finalLoc);
-            player.teleport(finalLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
-            if(callback != null) callback.accept(Result.SUCCESS);
+
+            CompletableFuture<Boolean> f = PaperLib.teleportAsync(player, finalLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            if(callback != null) f.thenAccept(b -> {
+                if(b) callback.accept(Result.SUCCESS);
+                else callback.accept(Result.ERROR);
+            });
             return true;
         }
     }

@@ -10,9 +10,12 @@ import de.codingair.warpsystem.spigot.base.listeners.TeleportListener;
 import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
 import de.codingair.warpsystem.transfer.packets.general.PrepareCoordinationTeleportPacket;
+import io.papermc.lib.PaperLib;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
+
+import java.util.concurrent.CompletableFuture;
 
 public class GlobalLocationAdapter extends LocationAdapter implements Serializable {
     private String server;
@@ -63,10 +66,13 @@ public class GlobalLocationAdapter extends LocationAdapter implements Serializab
                 return false;
             } else {
                 org.bukkit.Location finalLoc = prepare(player, location.clone());
-
                 if(silent) TeleportListener.TELEPORTS.put(player, finalLoc);
-                player.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
-                if(callback != null) callback.accept(Result.SUCCESS);
+
+                CompletableFuture<Boolean> f = PaperLib.teleportAsync(player, finalLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+                if(callback != null) f.thenAccept(b -> {
+                    if(b) callback.accept(Result.SUCCESS);
+                    else callback.accept(Result.ERROR);
+                });
                 return true;
             }
         } else {

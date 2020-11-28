@@ -9,11 +9,14 @@ import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.DestinationAdapter;
 import de.codingair.warpsystem.spigot.features.simplewarps.SimpleWarp;
 import de.codingair.warpsystem.spigot.features.simplewarps.managers.SimpleWarpManager;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
+
+import java.util.concurrent.CompletableFuture;
 
 public class SimpleWarpAdapter extends DestinationAdapter {
     @Override
@@ -38,11 +41,16 @@ public class SimpleWarpAdapter extends DestinationAdapter {
             }
 
             Location finalLoc = prepare(player, warp.getLocation().clone());
-
             if(silent) TeleportListener.TELEPORTS.put(player, finalLoc);
-            warp.increaseTeleports();
-            Bukkit.getScheduler().runTask(WarpSystem.getInstance(), () -> player.teleport(finalLoc, PlayerTeleportEvent.TeleportCause.PLUGIN));
-            if(callback != null) callback.accept(Result.SUCCESS);
+
+            CompletableFuture<Boolean> f = PaperLib.teleportAsync(player, finalLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            if(callback != null) f.thenAccept(b -> {
+                if(b) {
+                    warp.increaseTeleports();
+                    callback.accept(Result.SUCCESS);
+                }
+                else callback.accept(Result.ERROR);
+            });
             return true;
         }
     }

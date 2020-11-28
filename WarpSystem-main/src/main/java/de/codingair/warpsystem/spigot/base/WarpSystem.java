@@ -31,6 +31,7 @@ import de.codingair.warpsystem.transfer.jar.JarReceiver;
 import de.codingair.warpsystem.transfer.packets.spigot.RequestInitialPacket;
 import de.codingair.warpsystem.transfer.spigot.SpigotHandler;
 import de.codingair.warpsystem.utils.Manager;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.MemorySection;
@@ -257,6 +258,8 @@ public class WarpSystem extends JavaPlugin {
             log(" ");
             log("__________________________________________________________");
             log(" ");
+
+            PaperLib.suggestPaper(this);
 
             activated = true;
             UpdateReader.start();

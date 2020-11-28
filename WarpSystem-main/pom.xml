@@ -21,6 +21,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <build>
@@ -63,12 +67,16 @@
                 </executions>
 
                 <configuration>
-                    <artifactSet>
-                        <includes>
-                            <include>com.github.CodingAir:CodingAPI</include>
-                            <include>de.codingair:WarpSystem-v1.8</include>
-                        </includes>
-                    </artifactSet>
+                    <relocations>
+                        <relocation>
+                            <pattern>io.papermc.lib</pattern>
+                            <shadedPattern>de.codingair.warpsystem.lib.paperlib</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>de.codingair.codingapi</pattern>
+                            <shadedPattern>de.codingair.warpsystem.lib.codingapi</shadedPattern>
+                        </relocation>
+                    </relocations>
                 </configuration>
             </plugin>
         </plugins>
@@ -76,39 +84,52 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.md_5</groupId>
-            <artifactId>BungeeCord</artifactId>
-            <version>1.16</version>
-        </dependency>
-        <dependency>
-            <groupId>net.md_5</groupId>
-            <artifactId>Spigot-1.16</artifactId>
-            <version>1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.md_5</groupId>
-            <artifactId>Spigot-1.8</artifactId>
-            <version>0</version>
-        </dependency>
-        <dependency>
-            <groupId>me.xanium</groupId>
-            <artifactId>GemsEconomy</artifactId>
-            <version>4.8.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.black_ixx</groupId>
-            <artifactId>PlayerPoints</artifactId>
-            <version>2.1.4</version>
+            <groupId>io.papermc</groupId>
+            <artifactId>paperlib</artifactId>
+            <version>1.0.5</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.CodingAir</groupId>
             <artifactId>CodingAPI</artifactId>
             <version>1.7</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>de.codingair</groupId>
             <artifactId>WarpSystem-v1.8</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.md_5</groupId>
+            <artifactId>BungeeCord</artifactId>
+            <version>1.16</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.md_5</groupId>
+            <artifactId>Spigot-1.16</artifactId>
+            <version>1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.md_5</groupId>
+            <artifactId>Spigot-1.8</artifactId>
+            <version>0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.xanium</groupId>
+            <artifactId>GemsEconomy</artifactId>
+            <version>4.8.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.black_ixx</groupId>
+            <artifactId>PlayerPoints</artifactId>
+            <version>2.1.4</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.ess3</groupId>

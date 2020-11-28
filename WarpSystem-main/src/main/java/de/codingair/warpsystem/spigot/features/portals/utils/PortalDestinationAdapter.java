@@ -7,10 +7,13 @@ import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResul
 import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.DestinationAdapter;
 import de.codingair.warpsystem.spigot.features.portals.managers.PortalManager;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
+
+import java.util.concurrent.CompletableFuture;
 
 public class PortalDestinationAdapter extends DestinationAdapter {
     @Override
@@ -28,11 +31,14 @@ public class PortalDestinationAdapter extends DestinationAdapter {
             if(callback != null) callback.accept(Result.WORLD_DOES_NOT_EXIST);
             return false;
         } else {
-            prepare(player, location);
+            Location finalLoc = prepare(player, location);
+            if(silent) TeleportListener.TELEPORTS.put(player, finalLoc);
 
-            if(silent) TeleportListener.TELEPORTS.put(player, location);
-            player.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
-            if(callback != null) callback.accept(Result.SUCCESS);
+            CompletableFuture<Boolean> f = PaperLib.teleportAsync(player, finalLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            if(callback != null) f.thenAccept(b -> {
+                if(b) callback.accept(Result.SUCCESS);
+                else callback.accept(Result.ERROR);
+            });callback.accept(Result.SUCCESS);
             return true;
         }
     }
