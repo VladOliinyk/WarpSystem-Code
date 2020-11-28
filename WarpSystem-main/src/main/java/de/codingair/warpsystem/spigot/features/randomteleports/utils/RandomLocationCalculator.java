@@ -20,6 +20,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 
 public class RandomLocationCalculator implements Runnable {
     private final org.bukkit.Location startLocation;
@@ -76,6 +77,7 @@ public class RandomLocationCalculator implements Runnable {
             location.setX(x + offset.getKey());
             location.setZ(z + offset.getValue());
 
+            PaperLib.getChunkAtAsync(location).join();
             if(start + maxTime < System.currentTimeMillis()) {
                 return null;
             }
