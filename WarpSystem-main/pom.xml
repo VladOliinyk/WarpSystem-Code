@@ -7,15 +7,19 @@
     <groupId>de.codingair</groupId>
     <artifactId>WarpSystem-main</artifactId>
     <version>4.2.12-free</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>WarpSystem-Base</module>
+        <module>WarpSystem-Spigot</module>
+        <module>WarpSystem-BungeeCord</module>
+        <module>WarpSystem-Velocity</module>
+        <module>WarpSystem-bundle</module>
+    </modules>
 
     <repositories>
         <repository>
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
-        <repository>
-            <id>ess-repo</id>
-            <url>https://ci.ender.zone/plugin/repository/everything/</url>
         </repository>
         <repository>
             <id>jitpack.io</id>
@@ -27,127 +31,32 @@
         </repository>
     </repositories>
 
-    <build>
-        <finalName>WarpSystem_v${project.version}</finalName>
-
-        <resources>
-            <resource>
-                <directory>${basedir}/src/main/resources</directory>
-                <targetPath>.</targetPath>
-                <filtering>true</filtering>
-                <includes>
-                    <include>*</include>
-                    <include>*/**</include>
-                </includes>
-            </resource>
-        </resources>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-
-                <configuration>
-                    <relocations>
-                        <relocation>
-                            <pattern>io.papermc.lib</pattern>
-                            <shadedPattern>de.codingair.warpsystem.lib.paperlib</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>de.codingair.codingapi</pattern>
-                            <shadedPattern>de.codingair.warpsystem.lib.codingapi</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-    <dependencies>
-        <dependency>
-            <groupId>io.papermc</groupId>
-            <artifactId>paperlib</artifactId>
-            <version>1.0.5</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.CodingAir</groupId>
-            <artifactId>CodingAPI</artifactId>
-            <version>1.7</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.codingair</groupId>
-            <artifactId>WarpSystem-v1.8</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.md_5</groupId>
-            <artifactId>BungeeCord</artifactId>
-            <version>1.16</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.md_5</groupId>
-            <artifactId>Spigot-1.16</artifactId>
-            <version>1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.md_5</groupId>
-            <artifactId>Spigot-1.8</artifactId>
-            <version>0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.xanium</groupId>
-            <artifactId>GemsEconomy</artifactId>
-            <version>4.8.3</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.black_ixx</groupId>
-            <artifactId>PlayerPoints</artifactId>
-            <version>2.1.4</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.ess3</groupId>
-            <artifactId>EssentialsX</artifactId>
-            <version>2.17.2</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.MilkBowl</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>1.7</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.10.9</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>de.codingair</groupId>
+                <artifactId>WarpSystem-Base</artifactId>
+                <version>4.2.12</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>21.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.CodingAir</groupId>
+                <artifactId>CodingAPI</artifactId>
+                <version>1.7</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.codingair</groupId>
+                <artifactId>WarpSystem-v1.8</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <scope>compile</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

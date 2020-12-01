@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>WarpSystem-main</artifactId>
+        <groupId>de.codingair</groupId>
+        <version>4.2.12-free</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>WarpSystem-bundle</artifactId>
+
+    <build>
+        <finalName>WarpSystem_v${project.version}</finalName>
+
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <targetPath>.</targetPath>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*</include>
+                    <include>*/**</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <relocations>
+<!--                        Cannot handle sub modules with same dependencies-->
+                        <!--                        <relocation>-->
+                        <!--                            <pattern>io.papermc.lib</pattern>-->
+                        <!--                            <shadedPattern>de.codingair.warpsystem.lib.paperlib</shadedPattern>-->
+                        <!--                        </relocation>-->
+                        <!--                        <relocation>-->
+                        <!--                            <pattern>de.codingair.codingapi</pattern>-->
+                        <!--                            <shadedPattern>de.codingair.warpsystem.lib.codingapi</shadedPattern>-->
+                        <!--                        </relocation>-->
+                    </relocations>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>WarpSystem-Base</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>WarpSystem-Spigot</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>WarpSystem-BungeeCord</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>WarpSystem-Velocity</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

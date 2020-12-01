@@ -1,0 +1,130 @@
+package de.codingair.warpsystem.spigot.features.spawn.managers;
+
+import de.codingair.codingapi.files.ConfigFile;
+import de.codingair.codingapi.tools.io.ConfigWriter;
+import de.codingair.warpsystem.spigot.base.WarpSystem;
+import de.codingair.warpsystem.spigot.base.setupassistant.annotations.AvailableForSetupAssistant;
+import de.codingair.warpsystem.spigot.base.setupassistant.annotations.Function;
+import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.WarpAction;
+import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
+import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.LocationAdapter;
+import de.codingair.warpsystem.spigot.features.FeatureType;
+import de.codingair.warpsystem.spigot.features.spawn.commands.CSetSpawn;
+import de.codingair.warpsystem.spigot.features.spawn.commands.CSpawn;
+import de.codingair.warpsystem.spigot.features.spawn.listeners.SpawnListener;
+import de.codingair.warpsystem.spigot.features.spawn.utils.Spawn;
+import de.codingair.warpsystem.transfer.packets.general.SendGlobalSpawnOptionsPacket;
+import de.codingair.warpsystem.utils.Manager;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
+import java.util.Objects;
+
+@AvailableForSetupAssistant(type = "Spawn", config = "Config")
+@Function(name = "Enabled", defaultValue = "false", config = "Config", configPath = "WarpSystem.Functions.Spawn", clazz = Boolean.class)
+@Function(name = "Teleport message", defaultValue = "true", config = "Config", configPath = "WarpSystem.Send.Teleport_Message.Spawn", clazz = Boolean.class)
+public class SpawnManager implements Manager {
+    private String spawnServer = null, respawnServer = null;
+    private Spawn spawn;
+
+    public static SpawnManager getInstance() {
+        return WarpSystem.getInstance().getDataManager().getManager(FeatureType.SPAWN);
+    }
+
+    @Override
+    public boolean load(boolean loader) {
+        ConfigFile file = WarpSystem.getInstance().getFileManager().loadFile("Teleporters", "/Memory/");
+
+        spawn = new Spawn();
+        if(file.getConfig().contains("Spawn")) {
+            ConfigWriter reader = new ConfigWriter(file);
+            reader.getSerializable("Spawn", this.spawn);
+        }
+
+        if(spawn.getLocation() == null) {
+            //import spawn
+            Location l = readEssentialsSpawn();
+            if(l != null) this.spawn.addAction(new WarpAction(new Destination(new LocationAdapter(l))));
+            else this.spawn.addAction(new WarpAction(new Destination(new LocationAdapter(Bukkit.getWorlds().get(0).getSpawnLocation()))));
+        }
+
+        SpawnListener listener = new SpawnListener();
+        Bukkit.getPluginManager().registerEvents(listener, WarpSystem.getInstance());
+        WarpSystem.getInstance().getDataHandler().register(listener);
+
+        new CSetSpawn().register();
+        new CSpawn().register();
+        return true;
+    }
+
+    private Location readEssentialsSpawn() {
+        File target = new File(WarpSystem.getInstance().getDataFolder().getParent() + "/Essentials/spawn.yml");
+        if(!target.exists()) return null;
+
+        FileConfiguration config = YamlConfiguration.loadConfiguration(target);
+        String world = config.getString("spawns.default.world");
+        if(world == null) return null;
+
+        return new de.codingair.codingapi.tools.Location(world,
+                config.getDouble("spawns.default.x"),
+                config.getDouble("spawns.default.y"),
+                config.getDouble("spawns.default.z"),
+                (float) config.getDouble("spawns.default.yaw"),
+                (float) config.getDouble("spawns.default.pitch")
+        );
+    }
+
+    @Override
+    public void save(boolean saver) {
+        if(this.spawn != null) {
+            ConfigFile file = WarpSystem.getInstance().getFileManager().getFile("Teleporters");
+            ConfigWriter writer = new ConfigWriter(file);
+            writer.put("Spawn", this.spawn);
+            file.saveConfig();
+        }
+    }
+
+    @Override
+    public void destroy() {
+        if(this.spawn != null) this.spawn.destroy();
+    }
+
+    public Spawn getSpawn() {
+        return spawn;
+    }
+
+    public void updateSpawn(Location location) {
+        if(this.spawn == null) this.spawn = new Spawn();
+        this.spawn.addAction(new WarpAction(new Destination(new LocationAdapter(location))));
+    }
+
+    public String getSpawnServer() {
+        return spawnServer;
+    }
+
+    public void updateGlobalOptions(String spawn, String respawn) {
+        if(!Objects.equals(this.spawnServer, spawn) || !Objects.equals(this.respawnServer, respawn)) {
+            this.spawnServer = spawn;
+            this.respawnServer = respawn;
+
+            WarpSystem.getInstance().getDataHandler().send(new SendGlobalSpawnOptionsPacket(spawn, respawn));
+        }
+    }
+
+    public void applyGlobalOptions(String spawn, String respawn) {
+        String s = WarpSystem.getInstance().getCurrentServer();
+
+        if(this.spawn != null && this.spawn.getUsage().isBungee() && !Objects.equals(s, spawn)) this.spawn.setUsage(this.spawn.getUsage().getLocal());
+        if(this.spawn != null && this.spawn.getRespawnUsage().isBungee() && !Objects.equals(s, respawn)) this.spawn.setRespawnUsage(this.spawn.getRespawnUsage().getLocal());
+
+        this.spawnServer = spawn;
+        this.respawnServer = respawn;
+    }
+
+    public String getRespawnServer() {
+        return respawnServer;
+    }
+}
