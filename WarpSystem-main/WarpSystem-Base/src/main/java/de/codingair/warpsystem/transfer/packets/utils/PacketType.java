@@ -30,20 +30,12 @@ public enum PacketType {
     RequestUUIDPacket(RequestUUIDPacket.class),
     SendUUIDPacket(SendUUIDPacket.class),
     TeleportPlayerToPlayerPacket(TeleportPlayerToPlayerPacket.class),
-    TeleportPlayerToCoordsPacket(TeleportPlayerToCoordsPacket.class),
     PrepareServerSwitchPacket(PrepareServerSwitchPacket.class),
     PrepareLoginMessagePacket(PrepareLoginMessagePacket.class),
     MessagePacket(MessagePacket.class),
     CooldownPacket(CooldownPacket.class),
     CooldownDataPacket(CooldownDataPacket.class),
-
-    TeleportCommandOptions(TeleportCommandOptionsPacket.class),
-    TeleportRequestHandledPacket(TeleportRequestHandledPacket.class),
-    PrepareTeleportPlayerToPlayerPacket(PrepareTeleportPlayerToPlayerPacket.class),
-    PrepareTeleportRequestPacket(PrepareTeleportRequestPacket.class),
-    StartTeleportToPlayerPacket(StartTeleportToPlayerPacket.class),
     ToggleForceTeleportsPacket(ToggleForceTeleportsPacket.class),
-    PrepareTeleportPacket(PrepareTeleportPacket.class),
 
     SendPlayerWarpsPacket(SendPlayerWarpsPacket.class),
     RegisterServerForPlayerWarpsPacket(RegisterServerForPlayerWarpsPacket.class),
@@ -53,12 +45,14 @@ public enum PacketType {
     SendPlayerWarpOptionsPacket(SendPlayerWarpOptionsPacket.class),
     DeletePlayerWarpPacket(DeletePlayerWarpPacket.class),
     PlayerWarpTeleportProcessPacket(PlayerWarpTeleportProcessPacket.class),
-
-    RandomTPPacket(RandomTPPacket.class),
     RandomTPWorldsPacket(RandomTPWorldsPacket.class),
-    QueueRTPUsagePacket(QueueRTPUsagePacket.class),
     ToggleSetupAssistantPacket(ToggleSetupAssistantPacket.class),
     SetupAssistantStorePacket(SetupAssistantStorePacket.class),
+
+    IsOperatorPacket(IsOperatorPacket.class),
+    SendDisablePacket(SendDisablePacket.class),
+    IsOnlinePacket(IsOnlinePacket.class),
+    GetOnlineCountPacket(GetOnlineCountPacket.class),
 
     BooleanPacket(BooleanPacket.class),
     IntegerPacket(IntegerPacket.class),
