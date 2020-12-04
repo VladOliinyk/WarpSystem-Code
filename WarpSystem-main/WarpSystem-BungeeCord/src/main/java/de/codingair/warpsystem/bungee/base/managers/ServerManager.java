@@ -112,7 +112,6 @@ public class ServerManager extends PacketListener implements Listener {
     public synchronized void setStatus(ServerInfo info, boolean online) {
         if(!online) {
             this.onlineServer.remove(info);
-            TeleportManager.getInstance().removeOptions(info);
             this.options.remove(info);
         } else this.onlineServer.add(info);
     }

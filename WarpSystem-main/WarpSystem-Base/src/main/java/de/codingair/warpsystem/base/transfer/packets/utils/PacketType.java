@@ -30,7 +30,6 @@ public enum PacketType {
     RequestUUIDPacket(RequestUUIDPacket.class),
     SendUUIDPacket(de.codingair.warpsystem.base.transfer.packets.bungee.SendUUIDPacket.class),
     TeleportPlayerToPlayerPacket(TeleportPlayerToPlayerPacket.class),
-    TeleportPlayerToCoordsPacket(TeleportPlayerToCoordsPacket.class),
     PrepareServerSwitchPacket(PrepareServerSwitchPacket.class),
     PrepareLoginMessagePacket(PrepareLoginMessagePacket.class),
     MessagePacket(MessagePacket.class),
@@ -41,9 +40,8 @@ public enum PacketType {
     TeleportRequestHandledPacket(TeleportRequestHandledPacket.class),
     PrepareTeleportPlayerToPlayerPacket(PrepareTeleportPlayerToPlayerPacket.class),
     PrepareTeleportRequestPacket(PrepareTeleportRequestPacket.class),
-    StartTeleportToPlayerPacket(de.codingair.warpsystem.base.transfer.packets.general.StartTeleportToPlayerPacket.class),
+    StartTeleportToPlayerPacket(StartTeleportToPlayerPacket.class),
     ToggleForceTeleportsPacket(ToggleForceTeleportsPacket.class),
-    PrepareTeleportPacket(PrepareTeleportPacket.class),
 
     SendPlayerWarpsPacket(de.codingair.warpsystem.base.transfer.packets.general.SendPlayerWarpsPacket.class),
     RegisterServerForPlayerWarpsPacket(RegisterServerForPlayerWarpsPacket.class),
@@ -53,12 +51,14 @@ public enum PacketType {
     SendPlayerWarpOptionsPacket(SendPlayerWarpOptionsPacket.class),
     DeletePlayerWarpPacket(DeletePlayerWarpPacket.class),
     PlayerWarpTeleportProcessPacket(PlayerWarpTeleportProcessPacket.class),
-
-    RandomTPPacket(RandomTPPacket.class),
     RandomTPWorldsPacket(RandomTPWorldsPacket.class),
-    QueueRTPUsagePacket(QueueRTPUsagePacket.class),
     ToggleSetupAssistantPacket(ToggleSetupAssistantPacket.class),
     SetupAssistantStorePacket(SetupAssistantStorePacket.class),
+
+    IsOperatorPacket(IsOperatorPacket.class),
+    SendDisablePacket(SendDisablePacket.class),
+    IsOnlinePacket(IsOnlinePacket.class),
+    GetOnlineCountPacket(GetOnlineCountPacket.class),
 
     BooleanPacket(BooleanPacket.class),
     IntegerPacket(IntegerPacket.class),

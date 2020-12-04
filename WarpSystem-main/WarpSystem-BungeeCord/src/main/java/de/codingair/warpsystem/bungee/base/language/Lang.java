@@ -1,8 +1,15 @@
 package de.codingair.warpsystem.bungee.base.language;
 
-import de.codingair.warpsystem.bungee.base.WarpSystem;
 import de.codingair.codingapi.bungeecord.files.ConfigFile;
+import de.codingair.warpsystem.bungee.base.WarpSystem;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 

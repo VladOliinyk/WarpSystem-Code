@@ -36,12 +36,6 @@ public class RandomTPListener extends PacketListener implements Listener {
     }
 
     @EventHandler
-    public void onInitialize(ServerProvideOptionsEvent e) {
-        if(!e.getOptions().sameVersion()) return;
-        RandomTPManager.getInstance().updateQueue(e.getInfo());
-    }
-
-    @EventHandler
     public void onResponse(TabCompleteResponseEvent e) {
         if(e.getSuggestions().isEmpty()) return;
 
@@ -132,40 +126,7 @@ public class RandomTPListener extends PacketListener implements Listener {
 
     @Override
     public void onReceive(Packet packet, String extra) {
-        ServerInfo origin = WarpSystem.proxy().getServerInfo(extra);
-
-        if(packet.getType() == PacketType.RandomTPPacket) {
-            RandomTPPacket p = (RandomTPPacket) packet;
-            ProxiedPlayer pp = WarpSystem.proxy().getPlayer(p.getPlayer());
-            ServerInfo target = WarpSystem.proxy().getServerInfo(p.getServer());
-
-            BooleanPacket answer = new BooleanPacket(true);
-            p.applyAsAnswer(answer);
-
-            if(target == null || !WarpSystem.getInstance().getServerManager().isOnline(target)) {
-                answer.setValue(false);
-                WarpSystem.getInstance().getDataHandler().send(answer, origin);
-                return;
-            }
-
-            if(pp != null) {
-                WarpSystem.getInstance().getDataHandler().send(answer, origin);
-                p.setServer(extra);
-                ServerManager.sendPlayerTo(target, pp, new Callback<ServerInfo>() {
-                    @Override
-                    public void accept(ServerInfo server) {
-                        WarpSystem.getInstance().getDataHandler().send(p, server);
-                    }
-                });
-            }
-        } else if(packet.getType() == PacketType.QueueRTPUsagePacket) {
-            QueueRTPUsagePacket p = (QueueRTPUsagePacket) packet;
-
-            ServerInfo server = WarpSystem.proxy().getServerInfo(p.getServer());
-            if(!server.getPlayers().isEmpty()) WarpSystem.getInstance().getDataHandler().send(p, server);
-            else RandomTPManager.getInstance().addQueueEntry(p.getIdOnce(), p.getServer());
-
-        } else if(packet.getType() == PacketType.RandomTPWorldsPacket) {
+        if(packet.getType() == PacketType.RandomTPWorldsPacket) {
             RandomTPWorldsPacket p = (RandomTPWorldsPacket) packet;
             RandomTPManager.getInstance().addWorldData(extra, p.getWorlds());
         }
