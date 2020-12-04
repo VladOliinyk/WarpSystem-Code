@@ -1,7 +1,7 @@
 package de.codingair.warpsystem.bungee.base.managers;
 
 import de.codingair.warpsystem.bungee.features.FeatureType;
-import de.codingair.warpsystem.utils.Manager;
+import de.codingair.warpsystem.base.utils.Manager;
 import net.md_5.bungee.api.CommandSender;
 
 import java.util.ArrayList;

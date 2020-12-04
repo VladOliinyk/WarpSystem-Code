@@ -60,7 +60,7 @@ public class TeleportManager {
 
         options.addCallback(new Callback<Result>() {
             @Override
-            public void accept(de.codingair.warpsystem.spigot.base.utils.teleport.Result result) {
+            public void accept(Result result) {
                 teleports.invalidate(player);
             }
         });

@@ -2,17 +2,17 @@ package de.codingair.warpsystem.spigot.base.listeners;
 
 import de.codingair.codingapi.tools.Location;
 import de.codingair.codingapi.tools.time.TimeMap;
+import de.codingair.warpsystem.base.transfer.packets.bungee.InitialPacket;
+import de.codingair.warpsystem.base.transfer.packets.bungee.PrepareLoginMessagePacket;
+import de.codingair.warpsystem.base.transfer.packets.general.PrepareCoordinationTeleportPacket;
+import de.codingair.warpsystem.base.transfer.packets.spigot.IsOperatorPacket;
+import de.codingair.warpsystem.base.transfer.packets.spigot.SendOptionsPacket;
+import de.codingair.warpsystem.base.transfer.packets.utils.Packet;
+import de.codingair.warpsystem.base.transfer.packets.utils.PacketType;
+import de.codingair.warpsystem.base.transfer.serializeable.ServerOptions;
+import de.codingair.warpsystem.base.transfer.utils.PacketListener;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.teleport.TeleportOptions;
-import de.codingair.warpsystem.transfer.packets.bungee.InitialPacket;
-import de.codingair.warpsystem.transfer.packets.bungee.PrepareLoginMessagePacket;
-import de.codingair.warpsystem.transfer.packets.general.PrepareCoordinationTeleportPacket;
-import de.codingair.warpsystem.transfer.packets.spigot.SendOptionsPacket;
-import de.codingair.warpsystem.transfer.packets.spigot.IsOperatorPacket;
-import de.codingair.warpsystem.transfer.packets.utils.Packet;
-import de.codingair.warpsystem.transfer.packets.utils.PacketType;
-import de.codingair.warpsystem.transfer.serializeable.ServerOptions;
-import de.codingair.warpsystem.transfer.utils.PacketListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -81,16 +81,16 @@ public class BungeeBukkitListener extends PacketListener implements Listener {
                 String version = ((InitialPacket) packet).getVersion();
                 if(!WarpSystem.getInstance().getServer().spigot().getConfig().getBoolean("settings.bungeecord")) {
                     this.notice = new String[] {
-                            "§8[§cWarpSystem§8] §fFound a §eBungeeCord §fbut it's §cdisabled in spigot.yml§f! Please §nenable§f this option to use Bungee features!"
+                            "§8[§cWarpSystem§8] §fFound a §eproxy §fbut it's §cdisabled in your spigot.yml§f! Please §nenable§f this option to use proxy-features!"
                     };
 
-                    WarpSystem.getInstance().getLogger().log(Level.WARNING, "Found a BungeeCord but it's disabled in spigot.yml! Please enable this option to use Bungee features!");
+                    WarpSystem.getInstance().getLogger().log(Level.WARNING, "Found a proxy but it's disabled in your spigot.yml! Please enable this option to use proxy-features!");
                     return;
                 }
 
                 if(version.equals(WarpSystem.getInstance().getDescription().getVersion())) {
                     if(WarpSystem.getInstance().getBungeePluginVersion() == null || !WarpSystem.getInstance().getBungeePluginVersion().equals(version)) {
-                        WarpSystem.getInstance().getLogger().log(Level.INFO, "Found a valid DataCenter > Init BungeeFeatures (Server: '" + WarpSystem.getInstance().getCurrentServer() + "')");
+                        WarpSystem.getInstance().getLogger().log(Level.INFO, "Found a valid proxy > Init proxy-features (Server: '" + WarpSystem.getInstance().getCurrentServer() + "')");
                     }
 
                     this.notice = null;
@@ -108,12 +108,12 @@ public class BungeeBukkitListener extends PacketListener implements Listener {
                             "",
                             "§c§l§nWarpSystem",
                             "",
-                            "§7WarpSystem §cversion §7of the DataCenter and the SpigotServer are §cdifferent§7!",
-                            "§7Please §cupdate §7the WarpSystem §con your BungeeCord §7(" + version + ") §cand on this Server §7(" + WarpSystem.getInstance().getDescription().getVersion() + ")",
+                            "§7WarpSystem §cversion §7of your proxy and spigot server are §cdifferent§7!",
+                            "§7Please §cupdate §7the WarpSystem §con your proxy §7(" + version + ") §cand on this server §7(" + WarpSystem.getInstance().getDescription().getVersion() + ")",
                             ""
                     };
-                    WarpSystem.getInstance().getLogger().log(Level.WARNING, "WarpSystem version of the DataCenter and the SpigotServer are different!");
-                    WarpSystem.getInstance().getLogger().log(Level.INFO, "Please update the WarpSystem on your BungeeCord (" + version + ") and on this Server (" + WarpSystem.getInstance().getDescription().getVersion() + ")");
+                    WarpSystem.getInstance().getLogger().log(Level.WARNING, "WarpSystem version of your proxy and the spigot server are different!");
+                    WarpSystem.getInstance().getLogger().log(Level.INFO, "Please update the WarpSystem on your proxy (" + version + ") and on this server (" + WarpSystem.getInstance().getDescription().getVersion() + ")");
                 }
 
                 WarpSystem.getInstance().setBungeePluginVersion(version);

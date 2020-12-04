@@ -1,8 +1,8 @@
 package de.codingair.warpsystem.spigot.bstats;
 
+import de.codingair.warpsystem.base.utils.Manager;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.features.FeatureType;
-import de.codingair.warpsystem.utils.Manager;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;

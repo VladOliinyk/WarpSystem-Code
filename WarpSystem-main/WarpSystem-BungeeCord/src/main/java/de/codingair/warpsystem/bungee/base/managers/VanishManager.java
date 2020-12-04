@@ -2,10 +2,10 @@ package de.codingair.warpsystem.bungee.base.managers;
 
 import de.codingair.warpsystem.bungee.base.WarpSystem;
 import de.codingair.warpsystem.bungee.base.utils.ServerInitializeEvent;
-import de.codingair.warpsystem.transfer.packets.bungee.PacketVanishInfo;
-import de.codingair.warpsystem.transfer.packets.utils.Packet;
-import de.codingair.warpsystem.transfer.packets.utils.PacketType;
-import de.codingair.warpsystem.transfer.utils.PacketListener;
+import de.codingair.warpsystem.base.transfer.packets.bungee.PacketVanishInfo;
+import de.codingair.warpsystem.base.transfer.packets.utils.Packet;
+import de.codingair.warpsystem.base.transfer.packets.utils.PacketType;
+import de.codingair.warpsystem.base.transfer.utils.PacketListener;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.ServerSwitchEvent;

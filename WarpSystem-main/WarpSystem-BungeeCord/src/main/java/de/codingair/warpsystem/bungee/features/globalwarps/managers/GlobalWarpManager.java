@@ -3,11 +3,11 @@ package de.codingair.warpsystem.bungee.features.globalwarps.managers;
 import de.codingair.codingapi.bungeecord.files.ConfigFile;
 import de.codingair.warpsystem.bungee.base.WarpSystem;
 import de.codingair.warpsystem.bungee.features.globalwarps.listeners.GlobalWarpListener;
-import de.codingair.warpsystem.transfer.packets.bungee.SendGlobalWarpNamesPacket;
-import de.codingair.warpsystem.transfer.packets.bungee.UpdateGlobalWarpPacket;
-import de.codingair.warpsystem.transfer.serializeable.SGlobalWarp;
-import de.codingair.warpsystem.transfer.serializeable.SLocation;
-import de.codingair.warpsystem.utils.Manager;
+import de.codingair.warpsystem.base.transfer.packets.bungee.SendGlobalWarpNamesPacket;
+import de.codingair.warpsystem.base.transfer.packets.bungee.UpdateGlobalWarpPacket;
+import de.codingair.warpsystem.base.transfer.serializeable.SGlobalWarp;
+import de.codingair.warpsystem.base.transfer.serializeable.SLocation;
+import de.codingair.warpsystem.base.utils.Manager;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.config.Configuration;
 

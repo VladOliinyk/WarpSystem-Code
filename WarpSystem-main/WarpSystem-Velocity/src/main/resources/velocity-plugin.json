@@ -1,0 +1,1 @@
+{"id":"warpsystem","name":"WarpSystem","version":"${project.version}","authors":["CodingAir"],"dependencies":[],"main":"de.codingair.warpsystem.velocity.base.WarpSystem"}

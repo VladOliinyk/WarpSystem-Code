@@ -3,7 +3,7 @@ package de.codingair.warpsystem.bungee.transfer.jar;
 import de.codingair.codingapi.tools.Call;
 import de.codingair.codingapi.utils.Value;
 import de.codingair.warpsystem.bungee.base.WarpSystem;
-import de.codingair.warpsystem.transfer.packets.bungee.SendJarPacket;
+import de.codingair.warpsystem.base.transfer.packets.bungee.SendJarPacket;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 

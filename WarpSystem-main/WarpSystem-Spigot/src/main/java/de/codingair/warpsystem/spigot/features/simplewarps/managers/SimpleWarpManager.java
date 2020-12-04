@@ -2,11 +2,11 @@ package de.codingair.warpsystem.spigot.features.simplewarps.managers;
 
 import de.codingair.codingapi.files.ConfigFile;
 import de.codingair.codingapi.tools.io.JSON.JSON;
+import de.codingair.warpsystem.base.utils.Manager;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.features.FeatureType;
 import de.codingair.warpsystem.spigot.features.simplewarps.SimpleWarp;
 import de.codingair.warpsystem.spigot.features.simplewarps.commands.*;
-import de.codingair.warpsystem.utils.Manager;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;

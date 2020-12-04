@@ -1,8 +1,8 @@
 package de.codingair.warpsystem.spigot.base.managers;
 
+import de.codingair.warpsystem.base.transfer.packets.bungee.PacketVanishInfo;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.BungeeFeature;
-import de.codingair.warpsystem.transfer.packets.bungee.PacketVanishInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

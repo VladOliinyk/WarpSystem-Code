@@ -1,10 +1,10 @@
 package de.codingair.warpsystem.bungee.api.chatinput;
 
 import de.codingair.warpsystem.bungee.base.WarpSystem;
-import de.codingair.warpsystem.transfer.packets.spigot.ChatInputGUITogglePacket;
-import de.codingair.warpsystem.transfer.packets.utils.Packet;
-import de.codingair.warpsystem.transfer.packets.utils.PacketType;
-import de.codingair.warpsystem.transfer.utils.PacketListener;
+import de.codingair.warpsystem.base.transfer.packets.spigot.ChatInputGUITogglePacket;
+import de.codingair.warpsystem.base.transfer.packets.utils.Packet;
+import de.codingair.warpsystem.base.transfer.packets.utils.PacketType;
+import de.codingair.warpsystem.base.transfer.utils.PacketListener;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.ServerDisconnectEvent;

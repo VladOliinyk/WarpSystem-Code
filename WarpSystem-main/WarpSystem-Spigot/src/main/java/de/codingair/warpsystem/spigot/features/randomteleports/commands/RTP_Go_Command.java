@@ -2,7 +2,8 @@ package de.codingair.warpsystem.spigot.features.randomteleports.commands;
 
 import de.codingair.codingapi.server.commands.builder.special.NaturalCommandComponent;
 import de.codingair.codingapi.tools.Callback;
-import de.codingair.warpsystem.features.RandomTPCompleteKeys;
+import de.codingair.warpsystem.base.features.RandomTPCompleteKeys;
+import de.codingair.warpsystem.base.transfer.packets.spigot.RandomTPPacket;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Origin;

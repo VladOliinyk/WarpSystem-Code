@@ -1,10 +1,10 @@
 package de.codingair.warpsystem.spigot.transfer.jar;
 
+import de.codingair.warpsystem.base.transfer.packets.bungee.SendJarPacket;
+import de.codingair.warpsystem.base.transfer.packets.utils.Packet;
+import de.codingair.warpsystem.base.transfer.packets.utils.PacketType;
+import de.codingair.warpsystem.base.transfer.utils.PacketListener;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
-import de.codingair.warpsystem.transfer.packets.bungee.SendJarPacket;
-import de.codingair.warpsystem.transfer.packets.utils.Packet;
-import de.codingair.warpsystem.transfer.packets.utils.PacketType;
-import de.codingair.warpsystem.transfer.utils.PacketListener;
 
 import java.io.File;
 import java.io.FileOutputStream;

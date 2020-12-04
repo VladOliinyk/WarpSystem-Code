@@ -4,7 +4,8 @@ import de.codingair.warpsystem.bungee.features.globalwarps.managers.GlobalWarpMa
 import de.codingair.warpsystem.bungee.features.randomtp.RandomTPManager;
 import de.codingair.warpsystem.bungee.features.spawn.managers.SpawnManager;
 import de.codingair.warpsystem.bungee.features.teleport.managers.TeleportManager;
-import de.codingair.warpsystem.utils.Manager;
+import de.codingair.warpsystem.bungee.features.playerwarps.managers.PlayerWarpManager;
+import de.codingair.warpsystem.base.utils.Manager;
 
 import java.util.ArrayList;
 import java.util.List;

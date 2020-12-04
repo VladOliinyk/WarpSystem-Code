@@ -2,13 +2,13 @@ package de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters
 
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.Location;
+import de.codingair.warpsystem.base.transfer.packets.spigot.GlobalWarpTeleportPacket;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.base.utils.money.Bank;
-import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
+import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.DestinationAdapter;
 import de.codingair.warpsystem.spigot.features.globalwarps.managers.GlobalWarpManager;
-import de.codingair.warpsystem.transfer.packets.spigot.GlobalWarpTeleportPacket;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 

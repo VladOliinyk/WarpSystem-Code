@@ -1,5 +1,10 @@
 package de.codingair.warpsystem.spigot.features.shortcuts.listeners;
 
+import de.codingair.warpsystem.base.transfer.packets.bungee.SendGlobalWarpNamesPacket;
+import de.codingair.warpsystem.base.transfer.packets.bungee.UpdateGlobalWarpPacket;
+import de.codingair.warpsystem.base.transfer.packets.utils.Packet;
+import de.codingair.warpsystem.base.transfer.packets.utils.PacketType;
+import de.codingair.warpsystem.base.transfer.utils.PacketListener;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Action;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.DestinationType;
@@ -7,11 +12,6 @@ import de.codingair.warpsystem.spigot.features.FeatureType;
 import de.codingair.warpsystem.spigot.features.globalwarps.managers.GlobalWarpManager;
 import de.codingair.warpsystem.spigot.features.shortcuts.managers.ShortcutManager;
 import de.codingair.warpsystem.spigot.features.shortcuts.utils.Shortcut;
-import de.codingair.warpsystem.transfer.packets.bungee.SendGlobalWarpNamesPacket;
-import de.codingair.warpsystem.transfer.packets.bungee.UpdateGlobalWarpPacket;
-import de.codingair.warpsystem.transfer.packets.utils.Packet;
-import de.codingair.warpsystem.transfer.packets.utils.PacketType;
-import de.codingair.warpsystem.transfer.utils.PacketListener;
 
 import java.util.ArrayList;
 import java.util.List;

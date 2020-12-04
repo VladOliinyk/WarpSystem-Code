@@ -1,6 +1,7 @@
 package de.codingair.warpsystem.spigot.features;
 
 import de.codingair.codingapi.files.ConfigFile;
+import de.codingair.warpsystem.base.utils.Manager;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.bstats.MetricsManager;
 import de.codingair.warpsystem.spigot.features.animations.AnimationManager;
@@ -15,7 +16,6 @@ import de.codingair.warpsystem.spigot.features.simplewarps.managers.SimpleWarpMa
 import de.codingair.warpsystem.spigot.features.spawn.managers.SpawnManager;
 import de.codingair.warpsystem.spigot.features.teleportcommand.TeleportCommandManager;
 import de.codingair.warpsystem.spigot.features.warps.managers.IconManager;
-import de.codingair.warpsystem.utils.Manager;
 
 import java.util.ArrayList;
 import java.util.List;

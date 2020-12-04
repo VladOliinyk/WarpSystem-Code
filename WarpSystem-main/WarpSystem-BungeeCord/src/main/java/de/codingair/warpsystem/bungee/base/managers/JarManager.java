@@ -3,7 +3,7 @@ package de.codingair.warpsystem.bungee.base.managers;
 import de.codingair.warpsystem.bungee.base.WarpSystem;
 import de.codingair.codingapi.tools.Call;
 import de.codingair.warpsystem.bungee.transfer.jar.JarSender;
-import de.codingair.warpsystem.transfer.serializeable.ServerOptions;
+import de.codingair.warpsystem.base.transfer.serializeable.ServerOptions;
 import net.md_5.bungee.api.config.ServerInfo;
 
 import java.io.File;

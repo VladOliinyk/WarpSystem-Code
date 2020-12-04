@@ -2,12 +2,12 @@ package de.codingair.warpsystem.spigot.features.beta;
 
 import de.codingair.codingapi.files.ConfigFile;
 import de.codingair.codingapi.files.loader.UTFConfig;
+import de.codingair.warpsystem.base.utils.Manager;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.setupassistant.annotations.AvailableForSetupAssistant;
 import de.codingair.warpsystem.spigot.base.setupassistant.annotations.Function;
 import de.codingair.warpsystem.spigot.features.beta.functions.Beta;
 import de.codingair.warpsystem.spigot.features.beta.functions.TeleportInterceptions;
-import de.codingair.warpsystem.utils.Manager;
 
 import java.util.HashMap;
 import java.util.HashSet;

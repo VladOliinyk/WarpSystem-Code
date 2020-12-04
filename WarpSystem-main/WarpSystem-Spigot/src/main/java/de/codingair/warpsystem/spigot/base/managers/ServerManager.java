@@ -1,13 +1,13 @@
 package de.codingair.warpsystem.spigot.base.managers;
 
+import de.codingair.warpsystem.base.transfer.packets.bungee.SendServerPropertiesPacket;
+import de.codingair.warpsystem.base.transfer.packets.spigot.utils.ServerPing;
+import de.codingair.warpsystem.base.transfer.packets.utils.Packet;
+import de.codingair.warpsystem.base.transfer.packets.utils.PacketType;
+import de.codingair.warpsystem.base.transfer.utils.PacketListener;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
-import de.codingair.warpsystem.transfer.packets.spigot.utils.ServerPing;
 import de.codingair.warpsystem.spigot.features.FeatureType;
 import de.codingair.warpsystem.spigot.features.signs.managers.SignManager;
-import de.codingair.warpsystem.transfer.packets.bungee.SendServerPropertiesPacket;
-import de.codingair.warpsystem.transfer.packets.utils.Packet;
-import de.codingair.warpsystem.transfer.packets.utils.PacketType;
-import de.codingair.warpsystem.transfer.utils.PacketListener;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;

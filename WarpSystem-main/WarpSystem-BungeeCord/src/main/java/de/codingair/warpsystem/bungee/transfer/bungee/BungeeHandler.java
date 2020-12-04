@@ -4,10 +4,10 @@ import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.transfer.bungee.BungeeDataHandler;
 import de.codingair.codingapi.transfer.packets.utils.Packet;
 import de.codingair.codingapi.transfer.utils.PacketListener;
-import de.codingair.warpsystem.transfer.packets.utils.AnswerPacket;
-import de.codingair.warpsystem.transfer.packets.utils.AssignedPacket;
-import de.codingair.warpsystem.transfer.packets.utils.PacketType;
-import de.codingair.warpsystem.transfer.packets.utils.RequestPacket;
+import de.codingair.warpsystem.base.transfer.packets.utils.AnswerPacket;
+import de.codingair.warpsystem.base.transfer.packets.utils.AssignedPacket;
+import de.codingair.warpsystem.base.transfer.packets.utils.PacketType;
+import de.codingair.warpsystem.base.transfer.packets.utils.RequestPacket;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.plugin.Plugin;
 

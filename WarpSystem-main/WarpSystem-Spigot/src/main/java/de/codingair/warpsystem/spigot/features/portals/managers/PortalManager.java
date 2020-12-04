@@ -7,6 +7,7 @@ import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.io.JSON.JSON;
 import de.codingair.codingapi.tools.io.JSON.JSONParser;
 import de.codingair.codingapi.tools.time.TimeList;
+import de.codingair.warpsystem.base.utils.Manager;
 import de.codingair.warpsystem.spigot.api.StringFormatter;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;
@@ -20,11 +21,10 @@ import de.codingair.warpsystem.spigot.features.portals.guis.DeleteGUI;
 import de.codingair.warpsystem.spigot.features.portals.guis.PortalEditor;
 import de.codingair.warpsystem.spigot.features.portals.guis.subgui.blockeditor.PortalBlockEditor;
 import de.codingair.warpsystem.spigot.features.portals.listeners.EditorListener;
+import de.codingair.warpsystem.spigot.features.portals.listeners.PortalListener;
 import de.codingair.warpsystem.spigot.features.portals.old.EffectPortal;
 import de.codingair.warpsystem.spigot.features.portals.old.nativeportals.NativePortal;
 import de.codingair.warpsystem.spigot.features.portals.utils.Portal;
-import de.codingair.warpsystem.spigot.features.portals.utils.PortalListener;
-import de.codingair.warpsystem.utils.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -56,7 +56,7 @@ public class PortalManager implements Manager {
         WarpSystem.log("  > Loading Portals");
 
         Bukkit.getPluginManager().registerEvents(new EditorListener(), WarpSystem.getInstance());
-        Bukkit.getPluginManager().registerEvents(new de.codingair.warpsystem.spigot.features.portals.listeners.PortalListener(), WarpSystem.getInstance());
+        Bukkit.getPluginManager().registerEvents(new PortalListener(), WarpSystem.getInstance());
 
         ConfigFile file = WarpSystem.getInstance().getFileManager().getFile("Config");
         this.maxParticleDistance = file.getConfig().getDouble("WarpSystem.Portals.ParticleDistance", 70);
@@ -160,7 +160,7 @@ public class PortalManager implements Manager {
 
     private void initListener(Portal portal) {
         portal.getListeners().clear();
-        portal.getListeners().add(new PortalListener() {
+        portal.getListeners().add(new de.codingair.warpsystem.spigot.features.portals.utils.PortalListener() {
             @Override
             public void onEnter(Player player) {
                 if(WarpSystem.hasPermission(player, WarpSystem.PERMISSION_MODIFY_PORTALS)) {

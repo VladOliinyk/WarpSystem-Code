@@ -4,7 +4,7 @@ import de.codingair.warpsystem.bungee.api.Players;
 import de.codingair.warpsystem.bungee.base.WarpSystem;
 import de.codingair.warpsystem.bungee.features.teleport.managers.TeleportManager;
 import de.codingair.warpsystem.bungee.features.teleport.utils.TeleportCommandOptions;
-import de.codingair.warpsystem.features.TeleportTabCompleteKeys;
+import de.codingair.warpsystem.base.features.TeleportTabCompleteKeys;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.TabCompleteResponseEvent;

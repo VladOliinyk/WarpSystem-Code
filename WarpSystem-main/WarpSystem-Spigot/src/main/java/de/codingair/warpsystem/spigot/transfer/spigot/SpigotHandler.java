@@ -4,10 +4,10 @@ import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.transfer.packets.utils.Packet;
 import de.codingair.codingapi.transfer.spigot.SpigotDataHandler;
 import de.codingair.codingapi.transfer.utils.PacketListener;
-import de.codingair.warpsystem.transfer.packets.utils.AnswerPacket;
-import de.codingair.warpsystem.transfer.packets.utils.AssignedPacket;
-import de.codingair.warpsystem.transfer.packets.utils.PacketType;
-import de.codingair.warpsystem.transfer.packets.utils.RequestPacket;
+import de.codingair.warpsystem.base.transfer.packets.utils.AnswerPacket;
+import de.codingair.warpsystem.base.transfer.packets.utils.AssignedPacket;
+import de.codingair.warpsystem.base.transfer.packets.utils.PacketType;
+import de.codingair.warpsystem.base.transfer.packets.utils.RequestPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,15 +24,16 @@ public class SpigotHandler extends SpigotDataHandler {
         super(plugin);
     }
 
-    public void register(de.codingair.warpsystem.transfer.utils.PacketListener listener) {
+    /*Weird maven bug*/
+    public void register(de.codingair.warpsystem.base.transfer.utils.PacketListener listener) {
         super.register((de.codingair.codingapi.transfer.utils.PacketListener) listener);
     }
 
-    public void send(de.codingair.warpsystem.transfer.packets.utils.Packet packet) {
+    public void send(de.codingair.warpsystem.base.transfer.packets.utils.Packet packet) {
         super.send((Packet) packet);
     }
 
-    public void unregister(de.codingair.warpsystem.transfer.utils.PacketListener listener) {
+    public void unregister(de.codingair.warpsystem.base.transfer.utils.PacketListener listener) {
         super.unregister((de.codingair.codingapi.transfer.utils.PacketListener) listener);
     }
 
@@ -75,7 +76,7 @@ public class SpigotHandler extends SpigotDataHandler {
             }
             listeners.clear();
 
-            player.sendPluginMessage(this.plugin, "BungeeCord", b.toByteArray());
+            player.sendPluginMessage(this.plugin, requestChannel, b.toByteArray());
         }
     }
 

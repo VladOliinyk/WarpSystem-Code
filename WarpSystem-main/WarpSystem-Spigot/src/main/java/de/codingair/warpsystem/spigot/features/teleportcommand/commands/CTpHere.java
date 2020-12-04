@@ -4,7 +4,7 @@ import de.codingair.codingapi.server.commands.builder.BaseComponent;
 import de.codingair.codingapi.server.commands.builder.CommandComponent;
 import de.codingair.codingapi.server.commands.builder.special.MultiCommandComponent;
 import de.codingair.codingapi.utils.ChatColor;
-import de.codingair.warpsystem.features.TeleportTabCompleteKeys;
+import de.codingair.warpsystem.base.features.TeleportTabCompleteKeys;
 import de.codingair.warpsystem.spigot.api.WSCommandBuilder;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;

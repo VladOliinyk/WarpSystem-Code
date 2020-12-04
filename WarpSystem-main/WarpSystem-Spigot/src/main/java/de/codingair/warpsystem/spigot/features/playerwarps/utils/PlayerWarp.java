@@ -11,6 +11,8 @@ import de.codingair.codingapi.tools.io.utils.Serializable;
 import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.items.XMaterial;
 import de.codingair.codingapi.utils.ChatColor;
+import de.codingair.warpsystem.base.transfer.packets.spigot.PlayerWarpTeleportProcessPacket;
+import de.codingair.warpsystem.base.transfer.packets.spigot.utils.PlayerWarpData;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.guis.editor.Editor;
 import de.codingair.warpsystem.spigot.base.language.Lang;
@@ -25,8 +27,6 @@ import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destinati
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.GlobalLocationAdapter;
 import de.codingair.warpsystem.spigot.features.playerwarps.guis.editor.PWEditor;
 import de.codingair.warpsystem.spigot.features.playerwarps.managers.PlayerWarpManager;
-import de.codingair.warpsystem.transfer.packets.spigot.PlayerWarpTeleportProcessPacket;
-import de.codingair.warpsystem.transfer.packets.spigot.utils.PlayerWarpData;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -747,7 +747,7 @@ public class PlayerWarp extends FeatureObject {
         return money;
     }
 
-    public static class User implements Serializable, de.codingair.warpsystem.transfer.serializeable.Serializable {
+    public static class User implements Serializable, de.codingair.warpsystem.base.transfer.serializeable.Serializable {
         private final String jsonPrefix;
         private String name;
         private UUID id;

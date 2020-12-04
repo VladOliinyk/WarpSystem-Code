@@ -9,6 +9,8 @@ import de.codingair.codingapi.server.specification.Type;
 import de.codingair.codingapi.server.specification.Version;
 import de.codingair.codingapi.tools.time.TimeFetcher;
 import de.codingair.codingapi.tools.time.Timer;
+import de.codingair.warpsystem.base.transfer.packets.spigot.RequestInitialPacket;
+import de.codingair.warpsystem.base.utils.Manager;
 import de.codingair.warpsystem.spigot.api.PAPI;
 import de.codingair.warpsystem.spigot.api.SpigotAPI;
 import de.codingair.warpsystem.spigot.base.commands.CWarpSystem;
@@ -29,8 +31,6 @@ import de.codingair.warpsystem.spigot.base.utils.updates.UpdateNotifier;
 import de.codingair.warpsystem.spigot.base.utils.updates.UpdateReader;
 import de.codingair.warpsystem.spigot.transfer.jar.JarReceiver;
 import de.codingair.warpsystem.spigot.transfer.spigot.SpigotHandler;
-import de.codingair.warpsystem.transfer.packets.spigot.RequestInitialPacket;
-import de.codingair.warpsystem.utils.Manager;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -511,11 +511,7 @@ public class WarpSystem extends JavaPlugin {
     }
 
     public void createBackup() {
-        try {
-            getDataFolder().createNewFile();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        getDataFolder().mkdir();
 
         File backupFolder = new File(getDataFolder().getPath() + "/Backups/", TimeFetcher.getYear() + "_" + (TimeFetcher.getMonthNum() + 1) + "_" + TimeFetcher.getDay() + " " + TimeFetcher.getHour() + "_" + TimeFetcher.getMinute() + "_" + TimeFetcher.getSecond());
         backupFolder.mkdirs();

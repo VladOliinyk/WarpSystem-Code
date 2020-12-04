@@ -2,8 +2,8 @@ package de.codingair.warpsystem.spigot.base.utils.teleport.destinations;
 
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.Location;
-import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Result;
+import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 

@@ -1,6 +1,13 @@
 package de.codingair.warpsystem.spigot.features.globalwarps.managers;
 
 import de.codingair.codingapi.tools.Callback;
+import de.codingair.warpsystem.base.transfer.packets.spigot.DeleteGlobalWarpPacket;
+import de.codingair.warpsystem.base.transfer.packets.spigot.GlobalWarpTeleportPacket;
+import de.codingair.warpsystem.base.transfer.packets.spigot.PublishGlobalWarpPacket;
+import de.codingair.warpsystem.base.transfer.packets.spigot.RequestGlobalWarpNamesPacket;
+import de.codingair.warpsystem.base.transfer.serializeable.SGlobalWarp;
+import de.codingair.warpsystem.base.transfer.serializeable.SLocation;
+import de.codingair.warpsystem.base.utils.Manager;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.managers.TeleportManager;
 import de.codingair.warpsystem.spigot.base.utils.BungeeFeature;
@@ -9,13 +16,6 @@ import de.codingair.warpsystem.spigot.features.FeatureType;
 import de.codingair.warpsystem.spigot.features.globalwarps.commands.CGlobalWarp;
 import de.codingair.warpsystem.spigot.features.globalwarps.commands.CGlobalWarps;
 import de.codingair.warpsystem.spigot.features.globalwarps.listeners.GlobalWarpListener;
-import de.codingair.warpsystem.transfer.packets.spigot.DeleteGlobalWarpPacket;
-import de.codingair.warpsystem.transfer.packets.spigot.GlobalWarpTeleportPacket;
-import de.codingair.warpsystem.transfer.packets.spigot.PublishGlobalWarpPacket;
-import de.codingair.warpsystem.transfer.packets.spigot.RequestGlobalWarpNamesPacket;
-import de.codingair.warpsystem.transfer.serializeable.SGlobalWarp;
-import de.codingair.warpsystem.transfer.serializeable.SLocation;
-import de.codingair.warpsystem.utils.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

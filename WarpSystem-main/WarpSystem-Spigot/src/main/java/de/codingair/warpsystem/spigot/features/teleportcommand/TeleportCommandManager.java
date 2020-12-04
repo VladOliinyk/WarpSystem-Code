@@ -3,6 +3,9 @@ package de.codingair.warpsystem.spigot.features.teleportcommand;
 import de.codingair.codingapi.files.ConfigFile;
 import de.codingair.codingapi.player.chat.ChatButtonManager;
 import de.codingair.codingapi.tools.Callback;
+import de.codingair.warpsystem.base.transfer.packets.spigot.TeleportCommandOptionsPacket;
+import de.codingair.warpsystem.base.transfer.packets.spigot.ToggleForceTeleportsPacket;
+import de.codingair.warpsystem.base.utils.Manager;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.base.setupassistant.annotations.AvailableForSetupAssistant;
@@ -18,8 +21,8 @@ import de.codingair.warpsystem.spigot.features.teleportcommand.commands.*;
 import de.codingair.warpsystem.spigot.features.teleportcommand.listeners.BackListener;
 import de.codingair.warpsystem.spigot.features.teleportcommand.listeners.TeleportListener;
 import de.codingair.warpsystem.spigot.features.teleportcommand.listeners.TeleportPacketListener;
-import de.codingair.warpsystem.transfer.packets.spigot.ToggleForceTeleportsPacket;
-import de.codingair.warpsystem.utils.Manager;
+import de.codingair.warpsystem.base.transfer.packets.spigot.ToggleForceTeleportsPacket;
+import de.codingair.warpsystem.base.utils.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -152,7 +155,6 @@ public class TeleportCommandManager implements Manager, BungeeFeature, Collectib
     @Override
     public void onConnect() {
         this.packetListener = new TeleportPacketListener();
-        WarpSystem.getInstance().getDataHandler().register(this.packetListener);
         Bukkit.getPluginManager().registerEvents(this.packetListener, WarpSystem.getInstance());
     }
 
@@ -160,7 +162,6 @@ public class TeleportCommandManager implements Manager, BungeeFeature, Collectib
     public void onDisconnect() {
         if(this.packetListener != null) {
             HandlerList.unregisterAll(this.packetListener);
-            WarpSystem.getInstance().getDataHandler().unregister(this.packetListener);
             this.packetListener = null;
         }
     }

@@ -12,10 +12,23 @@
     <artifactId>WarpSystem-Velocity</artifactId>
 
     <build>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <targetPath>.</targetPath>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*</include>
+                    <include>*/**</include>
+                </includes>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
                 <configuration>
                     <source>8</source>
                     <target>8</target>
@@ -26,6 +39,10 @@
 
     <repositories>
         <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
             <id>velocity</id>
             <url>https://repo.velocitypowered.com/snapshots/</url>
         </repository>
@@ -33,9 +50,18 @@
 
     <dependencies>
         <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>WarpSystem-Base</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.CodingAir</groupId>
+            <artifactId>CodingAPI</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.velocitypowered</groupId>
             <artifactId>velocity-api</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.1.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

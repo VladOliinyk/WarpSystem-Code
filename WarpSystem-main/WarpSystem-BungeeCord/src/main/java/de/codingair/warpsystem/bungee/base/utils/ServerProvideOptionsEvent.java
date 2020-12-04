@@ -1,6 +1,6 @@
 package de.codingair.warpsystem.bungee.base.utils;
 
-import de.codingair.warpsystem.transfer.serializeable.ServerOptions;
+import de.codingair.warpsystem.base.transfer.serializeable.ServerOptions;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.plugin.Event;
 

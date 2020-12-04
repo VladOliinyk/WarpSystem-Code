@@ -1,6 +1,7 @@
 package de.codingair.warpsystem.spigot.features.warps.guis.editor;
 
 import de.codingair.warpsystem.spigot.base.guis.editor.Backup;
+import de.codingair.warpsystem.spigot.base.guis.editor.Editor;
 import de.codingair.warpsystem.spigot.base.guis.editor.pages.DestinationPage;
 import de.codingair.warpsystem.spigot.base.guis.editor.pages.SoundPage;
 import de.codingair.warpsystem.spigot.base.language.Lang;
@@ -13,7 +14,7 @@ import de.codingair.warpsystem.spigot.features.warps.managers.IconManager;
 import de.codingair.warpsystem.spigot.features.warps.nextlevel.utils.Icon;
 import org.bukkit.entity.Player;
 
-public class GEditor extends de.codingair.warpsystem.spigot.base.guis.editor.Editor<Icon> {
+public class GEditor extends Editor<Icon> {
     public GEditor(Player p, Icon icon) {
         this(p, icon, icon.clone().createDestinationIfAbsent().createTeleportSoundIfAbsent());
     }

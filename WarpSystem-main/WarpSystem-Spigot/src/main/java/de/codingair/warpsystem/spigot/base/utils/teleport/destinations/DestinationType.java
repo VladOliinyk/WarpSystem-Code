@@ -1,6 +1,7 @@
 package de.codingair.warpsystem.spigot.base.utils.teleport.destinations;
 
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.*;
+import de.codingair.warpsystem.spigot.features.portals.utils.PortalDestinationAdapter;
 
 public enum DestinationType {
     UNKNOWN(-1, null),
@@ -11,7 +12,7 @@ public enum DestinationType {
     Server(5, true, ServerAdapter.class),
     Location(6, LocationAdapter.class),
     GlobalLocation(7, true, GlobalLocationAdapter.class),
-    Portal(8, de.codingair.warpsystem.spigot.features.portals.utils.PortalDestinationAdapter.class),
+    Portal(8, PortalDestinationAdapter.class),
     ;
 
     private int id;

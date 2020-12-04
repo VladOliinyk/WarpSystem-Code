@@ -1,11 +1,11 @@
 package de.codingair.warpsystem.bungee.features.spawn.managers;
 
 import de.codingair.codingapi.bungeecord.files.ConfigFile;
+import de.codingair.warpsystem.bungee.features.spawn.listeners.ServerListener;
 import de.codingair.warpsystem.bungee.base.WarpSystem;
 import de.codingair.warpsystem.bungee.features.FeatureType;
-import de.codingair.warpsystem.bungee.features.spawn.listeners.ServerListener;
-import de.codingair.warpsystem.transfer.packets.general.SendGlobalSpawnOptionsPacket;
-import de.codingair.warpsystem.utils.Manager;
+import de.codingair.warpsystem.base.transfer.packets.general.SendGlobalSpawnOptionsPacket;
+import de.codingair.warpsystem.base.utils.Manager;
 import net.md_5.bungee.api.config.ServerInfo;
 
 import java.util.Objects;

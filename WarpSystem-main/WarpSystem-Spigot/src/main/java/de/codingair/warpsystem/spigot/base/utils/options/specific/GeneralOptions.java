@@ -1,7 +1,8 @@
 package de.codingair.warpsystem.spigot.base.utils.options.specific;
 
+import de.codingair.warpsystem.base.transfer.packets.spigot.utils.ServerPing;
+import de.codingair.warpsystem.spigot.api.StringFormatter;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
-import de.codingair.warpsystem.transfer.packets.spigot.utils.ServerPing;
 import de.codingair.warpsystem.spigot.base.utils.options.Option;
 import de.codingair.warpsystem.spigot.base.utils.options.Options;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Origin;
