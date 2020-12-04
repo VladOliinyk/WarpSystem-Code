@@ -106,7 +106,7 @@ public class Lang {
         try {
             ConfigFile file = WarpSystem.getInstance().getFileManager().getFile(langTag);
             if(file == null) {
-                WarpSystem.getInstance().getFileManager().loadFile(langTag, "/Languages/", "languages/");
+                WarpSystem.getInstance().getFileManager().getFile(langTag, "/Languages/", "languages/");
                 return getLanguageFile(langTag);
             }
             return file.getSimpleConfig();

@@ -24,7 +24,7 @@ public class CooldownManager extends PacketListener {
     private ConfigFile file;
 
     public void load() {
-        file = WarpSystem.getInstance().getFileManager().loadFile("Cooldown", "/");
+        file = WarpSystem.getInstance().getFileManager().getFile("Cooldown", "/");
         Configuration config = file.getSimpleConfig();
 
         long time = config.getLong("Date", -1L);

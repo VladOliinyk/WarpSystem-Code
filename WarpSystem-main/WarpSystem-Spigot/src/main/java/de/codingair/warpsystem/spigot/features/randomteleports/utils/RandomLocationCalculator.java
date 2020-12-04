@@ -130,44 +130,42 @@ public class RandomLocationCalculator implements Runnable {
 
         if(location.getWorld().getEnvironment() == World.Environment.NETHER) {
             int free = 0;
-            while(free < 2) {
-                if(loc.getBlock().getType() == Material.AIR) free++;
+            while(free < 2 && loc.getY() >= 0) {
+                if(Environment.canBeEntered(loc.getBlock().getType())) free++;
 
                 loc.setY(loc.getY() - 1);
             }
 
-            while(loc.getBlock().getType() == Material.AIR && loc.getBlockY() > 0) {
+            while(Environment.canBeEntered(loc.getBlock().getType()) && loc.getBlockY() > 0) {
                 loc.setY(loc.getY() - 1);
             }
 
             loc.setY(loc.getY() + 1);
-            return loc.getBlockY();
         } else {
-            if(loc.getBlock().getType() != Material.AIR) {
-                while(loc.getBlock().getType() != Material.AIR) {
+            if(!Environment.canBeEntered(loc.getBlock().getType())) {
+                while(!Environment.canBeEntered(loc.getBlock().getType())) {
                     loc.setY(loc.getY() + 4);
                 }
 
-                while(loc.getBlock().getType() == Material.AIR) {
+                while(Environment.canBeEntered(loc.getBlock().getType())) {
                     loc.setY(loc.getY() - 1);
                 }
 
                 loc.setY(loc.getY() + 1);
-                return loc.getBlockY();
             } else {
-                while(loc.getBlock().getType() == Material.AIR && loc.getBlockY() > 0) {
+                while(Environment.canBeEntered(loc.getBlock().getType()) && loc.getBlockY() > 0) {
                     loc.setY(loc.getY() - 4);
                 }
 
                 if(loc.getBlockY() > 0) {
-                    while(loc.getBlock().getType() != Material.AIR) {
+                    while(!Environment.canBeEntered(loc.getBlock().getType())) {
                         loc.setY(loc.getY() + 1);
                     }
                 }
-
-                return loc.getBlockY();
             }
         }
+
+        return loc.getBlockY();
     }
 
     private boolean correct(Location location, boolean safety) throws InterruptedException {

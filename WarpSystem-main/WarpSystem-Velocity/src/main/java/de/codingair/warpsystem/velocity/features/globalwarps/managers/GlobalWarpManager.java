@@ -19,7 +19,7 @@ public class GlobalWarpManager implements Manager {
     private final HashMap<String, SGlobalWarp> globalWarps = new HashMap<>();
 
     public boolean load(boolean loader) {
-        WarpSystem.getInstance().getFileManager().loadFile("GlobalWarps", "/");
+        WarpSystem.getInstance().getFileManager().getFile("GlobalWarps", "/");
         ConfigFile file = WarpSystem.getInstance().getFileManager().getFile("GlobalWarps");
         Configuration config = file.getSimpleConfig();
 

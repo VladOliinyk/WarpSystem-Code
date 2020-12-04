@@ -19,22 +19,18 @@ public class FileManager {
     }
 
     public ConfigFile getFile(String name) {
-        return configs.get(key(name));
+        return getFile(name, "/", "/");
     }
 
-    public ConfigFile loadFile(String name) {
-        return loadFile(name, "/", "/");
+    public ConfigFile getFile(String name, String path) {
+        return getFile(name, path, "/");
     }
 
-    public ConfigFile loadFile(String name, String path) {
-        return loadFile(name, path, "/");
-    }
-
-    public ConfigFile loadFile(String name, String path, String srcPath) {
-        ConfigFile file = getFile(name);
+    public ConfigFile getFile(String name, String path, String srcPath) {
+        ConfigFile file = configs.get(key(name));
         if(file != null) return file;
 
-        file = new ConfigFile(name, path, plugin);
+        file = new ConfigFile(name, path, srcPath, plugin);
         this.configs.put(key(name), file);
         return file;
     }

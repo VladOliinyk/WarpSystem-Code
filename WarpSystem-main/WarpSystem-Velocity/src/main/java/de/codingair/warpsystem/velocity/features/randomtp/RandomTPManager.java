@@ -24,7 +24,7 @@ public class RandomTPManager implements Manager {
     public boolean load(boolean loader) {
         if(!loader) WarpSystem.log("  > Loading RandomTPManager");
         destroy();
-        WarpSystem.getInstance().getFileManager().loadFile("RTP_Queue", "/");
+        WarpSystem.getInstance().getFileManager().getFile("RTP_Queue", "/");
         ConfigFile queue = WarpSystem.getInstance().getFileManager().getFile("RTP_Queue");
 
         int queueSize = 0;
@@ -41,7 +41,7 @@ public class RandomTPManager implements Manager {
 
         if(!loader) WarpSystem.log("    ...got " + queueSize + " queued random tp(s)");
 
-        WarpSystem.getInstance().getFileManager().loadFile("Worlds", "/");
+        WarpSystem.getInstance().getFileManager().getFile("Worlds", "/");
         file = WarpSystem.getInstance().getFileManager().getFile("Worlds");
         this.config = file.getSimpleConfig();
 
