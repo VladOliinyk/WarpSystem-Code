@@ -18,6 +18,7 @@ import de.codingair.warpsystem.base.transfer.packets.spigot.utils.ServerPing;
 import de.codingair.warpsystem.base.transfer.packets.utils.Packet;
 import de.codingair.warpsystem.base.transfer.packets.utils.PacketType;
 import de.codingair.warpsystem.base.transfer.utils.PacketListener;
+import de.codingair.warpsystem.transfer.packets.spigot.IsOnlinePacket;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;

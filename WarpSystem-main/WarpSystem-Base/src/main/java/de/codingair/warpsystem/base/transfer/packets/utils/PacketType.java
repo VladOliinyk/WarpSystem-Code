@@ -6,6 +6,8 @@ import de.codingair.warpsystem.base.transfer.packets.spigot.*;
 import de.codingair.warpsystem.base.transfer.packets.bungee.SendJarPacket;
 import de.codingair.warpsystem.base.transfer.packets.spigot.CooldownDataPacket;
 import de.codingair.warpsystem.base.transfer.packets.spigot.CooldownPacket;
+import de.codingair.warpsystem.transfer.packets.spigot.GetOnlineCountPacket;
+import de.codingair.warpsystem.transfer.packets.spigot.IsOnlinePacket;
 
 public enum PacketType {
     InitialPacket(de.codingair.warpsystem.base.transfer.packets.bungee.InitialPacket.class),

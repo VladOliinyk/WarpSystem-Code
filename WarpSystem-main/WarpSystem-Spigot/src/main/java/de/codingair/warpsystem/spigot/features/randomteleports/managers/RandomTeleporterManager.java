@@ -24,14 +24,10 @@ import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.
 import de.codingair.warpsystem.spigot.features.FeatureType;
 import de.codingair.warpsystem.spigot.features.randomteleports.commands.CRandomTp;
 import de.codingair.warpsystem.spigot.features.randomteleports.listeners.InteractListener;
-import de.codingair.warpsystem.spigot.features.randomteleports.listeners.SpawnListener;
-import de.codingair.warpsystem.transfer.packets.spigot.RandomTPWorldsPacket;
 import de.codingair.warpsystem.spigot.features.randomteleports.utils.RandomLocationCalculator;
 import de.codingair.warpsystem.spigot.features.randomteleports.utils.WorldOption;
 import de.codingair.warpsystem.spigot.features.randomteleports.utils.forwardcompatibility.RTPTagConverter_v4_2_2;
 import de.codingair.warpsystem.spigot.features.randomteleports.utils.forwardcompatibility.RTPTagConverter_v4_2_6;
-import de.codingair.warpsystem.transfer.packets.spigot.RandomTPWorldsPacket;
-import de.codingair.warpsystem.utils.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
