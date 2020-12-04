@@ -104,7 +104,9 @@ public class RandomLocationCalculator implements Runnable {
     }
 
     private boolean isSafeLocation(Location location) {
-        return Environment.canBeEntered(location.getBlock().getType()) && Environment.canBeEntered(location.clone().add(0, 1, 0).getBlock().getType());
+        return Environment.canBeEntered(location.getBlock().getType())
+                && Environment.canBeEntered(location.clone().add(0, 1, 0).getBlock().getType())
+                && !Environment.canBeEntered(location.clone().subtract(0, 1, 0).getBlock().getType());
     }
 
     private boolean checkY(Location location) {
