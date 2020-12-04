@@ -130,14 +130,7 @@ public class RTP_Go_Command extends NaturalCommandComponent {
                 targetWorld = data[1];
 
                 if(!targetServer.equalsIgnoreCase(WarpSystem.getInstance().getCurrentServer())) {
-                    WarpSystem.getInstance().getDataHandler().send(new RandomTPPacket(new Callback<Boolean>() {
-                        @Override
-                        public void accept(Boolean success) {
-                            if(success) {
-                                if(!finalPlayer.equalsIgnoreCase(sender.getName())) sender.sendMessage(Lang.getPrefix() + Lang.get("RandomTP_Teleported_Other").replace("%PLAYER%", finalPlayer));
-                            } else sender.sendMessage(Lang.getPrefix() + Lang.get("Server_Is_Not_Online"));
-                        }
-                    }, player, targetServer, targetWorld, !finalPlayer.equalsIgnoreCase(sender.getName())));
+                    Lang.PREMIUM_CHAT(sender);
                     return false;
                 }
 
