@@ -30,7 +30,7 @@ public class BungeeBukkitListener extends PacketListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         if(e.getPlayer().isOp() && WarpSystem.getInstance().isOnBungeeCord()) {
-            WarpSystem.getInstance().getDataHandler().send(new IsOperatorPacket(e.getPlayer().getName(), e.getPlayer().isOp()));
+            WarpSystem.getInstance().getDataHandler().send(e.getPlayer(), new IsOperatorPacket(e.getPlayer().getName(), e.getPlayer().isOp()));
         }
 
         String message = loginMessage.remove(e.getPlayer());
@@ -63,7 +63,7 @@ public class BungeeBukkitListener extends PacketListener implements Listener {
 
                 Bukkit.getScheduler().runTaskLater(WarpSystem.getInstance(), () -> {
                     if(op != p.isOp()) {
-                        WarpSystem.getInstance().getDataHandler().send(new IsOperatorPacket(p.getName(), p.isOp()));
+                        WarpSystem.getInstance().getDataHandler().send(p, new IsOperatorPacket(p.getName(), p.isOp()));
                     }
                 }, 20);
             }
@@ -74,7 +74,7 @@ public class BungeeBukkitListener extends PacketListener implements Listener {
     public void onReceive(Packet packet, String extra) {
         switch(PacketType.getByObject(packet)) {
             case InitialPacket: {
-                WarpSystem.getInstance().getDataHandler().send(new SendOptionsPacket(new ServerOptions(WarpSystem.getInstance().getDescription().getVersion(), WarpSystem.opt().getFetchUpdateOption())));
+                WarpSystem.getInstance().getDataHandler().send(null, new SendOptionsPacket(new ServerOptions(WarpSystem.getInstance().getDescription().getVersion(), WarpSystem.opt().getFetchUpdateOption())));
 
                 WarpSystem.getInstance().setCurrentServer(((InitialPacket) packet).getServerName());
 
@@ -100,7 +100,7 @@ public class BungeeBukkitListener extends PacketListener implements Listener {
 
                         for(Player player : Bukkit.getOnlinePlayers()) {
                             if(!player.isOp()) continue;
-                            WarpSystem.getInstance().getDataHandler().send(new IsOperatorPacket(player.getName(), player.isOp()));
+                            WarpSystem.getInstance().getDataHandler().send(player, new IsOperatorPacket(player.getName(), player.isOp()));
                         }
                     }, 2L);
                 } else if(WarpSystem.getInstance().getBungeePluginVersion() == null || WarpSystem.getInstance().getBungeePluginVersion().equals(WarpSystem.getInstance().getDescription().getVersion())) {

@@ -53,7 +53,7 @@ public abstract class ChatInputGUI implements Removable {
         API.addRemovable(this);
 
         if(WarpSystem.getInstance().isOnBungeeCord()) {
-            WarpSystem.getInstance().getDataHandler().send(new ChatInputGUITogglePacket(this.player.getName(), true));
+            WarpSystem.getInstance().getDataHandler().send(player, new ChatInputGUITogglePacket(this.player.getName(), true));
         }
 
         sendTitle(5, 10, 0);
@@ -104,7 +104,7 @@ public abstract class ChatInputGUI implements Removable {
             this.runnable = null;
 
             if(WarpSystem.getInstance().isOnBungeeCord()) {
-                WarpSystem.getInstance().getDataHandler().send(new ChatInputGUITogglePacket(this.player.getName(), false));
+                WarpSystem.getInstance().getDataHandler().send(player, new ChatInputGUITogglePacket(this.player.getName(), false));
             }
 
             sendTitle(0, 0, 5);

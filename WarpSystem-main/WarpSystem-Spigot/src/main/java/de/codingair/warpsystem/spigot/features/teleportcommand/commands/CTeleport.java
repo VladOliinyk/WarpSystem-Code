@@ -203,7 +203,7 @@ public class CTeleport extends WSCommandBuilder {
         if(playerP == null) {
             //try on proxy
             if(WarpSystem.getInstance().isOnBungeeCord()) {
-                WarpSystem.getInstance().getDataHandler().send(new IsOnlinePacket(new Callback<Boolean>() {
+                WarpSystem.getInstance().getDataHandler().send(playerP, new IsOnlinePacket(new Callback<Boolean>() {
                     @Override
                     public void accept(Boolean online) {
                         if(online) {
@@ -247,7 +247,7 @@ public class CTeleport extends WSCommandBuilder {
         if(playerP == null || targetP == null) {
             //try on proxy
             if(WarpSystem.getInstance().isOnBungeeCord()) {
-                WarpSystem.getInstance().getDataHandler().send(new IsOnlinePacket(new Callback<Boolean>() {
+                WarpSystem.getInstance().getDataHandler().send(gateP, new IsOnlinePacket(new Callback<Boolean>() {
                     @Override
                     public void accept(Boolean online) {
                         if(online) {
@@ -255,7 +255,7 @@ public class CTeleport extends WSCommandBuilder {
                             tc.setColor(ChatColor.GRAY);
                             Lang.PREMIUM_CHAT(tc, gateP, true);
                         } else {
-                            WarpSystem.getInstance().getDataHandler().send(new IsOnlinePacket(new Callback<Boolean>() {
+                            WarpSystem.getInstance().getDataHandler().send(gateP, new IsOnlinePacket(new Callback<Boolean>() {
                                 @Override
                                 public void accept(Boolean online) {
                                     if(online) {

@@ -72,7 +72,7 @@ public class PWEditor extends Editor<PlayerWarp> implements Ticker {
                                 }});
                                 packet.setClearable(true);
 
-                                WarpSystem.getInstance().getDataHandler().send(packet);
+                                WarpSystem.getInstance().getDataHandler().send(p, packet);
                             }
                         } else {
                             PlayerWarpManager.getManager().sync(warp, clone);

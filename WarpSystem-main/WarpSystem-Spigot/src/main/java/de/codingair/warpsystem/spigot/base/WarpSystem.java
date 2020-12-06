@@ -267,7 +267,7 @@ public class WarpSystem extends JavaPlugin {
             this.ERROR = false;
 
             this.dataHandler.onEnable();
-            this.dataHandler.send(new RequestInitialPacket());
+            this.dataHandler.send(null, new RequestInitialPacket());
             this.dataHandler.register(this.packetListener = new BungeeBukkitListener());
             Bukkit.getPluginManager().registerEvents(this.packetListener, this);
 

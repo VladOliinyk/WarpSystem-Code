@@ -99,7 +99,7 @@ public class PlayerWarp extends FeatureObject {
 
                     if(packet != null) {
                         //update on BungeeCord
-                        WarpSystem.getInstance().getDataHandler().send(packet);
+                        WarpSystem.getInstance().getDataHandler().send(player, packet);
                     }
 
                     PlayerWarpManager.getManager().updateGUIs();
@@ -738,7 +738,7 @@ public class PlayerWarp extends FeatureObject {
 
             if(PlayerWarpManager.getManager().checkBungeeCord()) {
                 PlayerWarpTeleportProcessPacket packet = new PlayerWarpTeleportProcessPacket(name, owner.getId(), false, true, false);
-                WarpSystem.getInstance().getDataHandler().send(packet);
+                WarpSystem.getInstance().getDataHandler().send(player, packet);
             }
 
             a.deposit(player, money);

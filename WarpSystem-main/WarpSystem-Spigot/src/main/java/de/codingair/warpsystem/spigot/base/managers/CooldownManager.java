@@ -122,7 +122,7 @@ public class CooldownManager extends PacketListener {
         add(cooldown);
         if(WarpSystem.getInstance().isOnBungeeCord()) {
             //upload to bungee
-            WarpSystem.getInstance().getDataHandler().send(new CooldownPacket(cooldown));
+            WarpSystem.getInstance().getDataHandler().send(player, new CooldownPacket(cooldown));
         }
     }
 

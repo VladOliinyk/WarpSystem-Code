@@ -17,6 +17,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class SpigotHandler extends SpigotDataHandler {
@@ -29,8 +30,8 @@ public class SpigotHandler extends SpigotDataHandler {
         super.register((de.codingair.codingapi.transfer.utils.PacketListener) listener);
     }
 
-    public void send(de.codingair.warpsystem.base.transfer.packets.utils.Packet packet) {
-        super.send((Packet) packet);
+    public void send(Player player, de.codingair.warpsystem.base.transfer.packets.utils.Packet packet) {
+        super.send(player, (Packet) packet);
     }
 
     public void unregister(de.codingair.warpsystem.base.transfer.utils.PacketListener listener) {
@@ -45,9 +46,13 @@ public class SpigotHandler extends SpigotDataHandler {
     }
 
     @Override
-    public void send(Packet packet, int timeOut) {
+    public void send(Player player, Packet packet, int timeOut) {
         if(!Bukkit.getOnlinePlayers().isEmpty()) {
-            Player player = Bukkit.getOnlinePlayers().toArray(new Player[0])[0];
+            if(player == null) {
+                Optional<? extends Player> opt = Bukkit.getOnlinePlayers().stream().findAny();
+                if(!opt.isPresent()) return;
+                player = opt.get();
+            }
 
             ByteArrayOutputStream b = new ByteArrayOutputStream();
             DataOutputStream out = new DataOutputStream(b);

@@ -10,6 +10,7 @@ import de.codingair.warpsystem.spigot.features.teleportcommand.TeleportCommandMa
 import de.codingair.warpsystem.transfer.packets.spigot.GetOnlineCountPacket;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class CTpaAll extends WSCommandBuilder {
     public CTpaAll() {
@@ -36,7 +37,7 @@ public class CTpaAll extends WSCommandBuilder {
                         int handled = (int) (result >> 32);
 
                         if(WarpSystem.getInstance().isOnBungeeCord()) {
-                            WarpSystem.getInstance().getDataHandler().send(new GetOnlineCountPacket(new Callback<Integer>() {
+                            WarpSystem.getInstance().getDataHandler().send((Player) sender, new GetOnlineCountPacket(new Callback<Integer>() {
                                 @Override
                                 public void accept(Integer count) {
                                     int sent = result.intValue();

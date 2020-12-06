@@ -174,7 +174,7 @@ public class Spawn extends FeatureObject {
     public FeatureObject perform(Player player, TeleportOptions options) {
         if(switchServer()) {
             //switch
-            WarpSystem.getInstance().getDataHandler().send(new TeleportSpawnPacket(player.getName(), false));
+            WarpSystem.getInstance().getDataHandler().send(player, new TeleportSpawnPacket(player.getName(), false));
             return this;
         }
 

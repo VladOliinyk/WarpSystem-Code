@@ -99,7 +99,7 @@ public class GlobalLocationAdapter extends LocationAdapter implements Serializab
                 }
             });
 
-            WarpSystem.getInstance().getDataHandler().send(packet);
+            WarpSystem.getInstance().getDataHandler().send(player, packet);
             return true;
         }
     }

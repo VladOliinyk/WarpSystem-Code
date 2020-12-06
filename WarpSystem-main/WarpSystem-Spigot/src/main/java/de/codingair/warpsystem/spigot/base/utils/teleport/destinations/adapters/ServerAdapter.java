@@ -19,7 +19,7 @@ public class ServerAdapter extends DestinationAdapter {
             return false;
         }
 
-        WarpSystem.getInstance().getDataHandler().send(new PrepareServerSwitchPacket(player.getName(), id, message, player.hasPermission(WarpSystem.PERMISSION_ByPass_Teleport_Max_Players), new Callback<Integer>() {
+        WarpSystem.getInstance().getDataHandler().send(player, new PrepareServerSwitchPacket(player.getName(), id, message, player.hasPermission(WarpSystem.PERMISSION_ByPass_Teleport_Max_Players), new Callback<Integer>() {
             @Override
             public void accept(Integer result) {
                 if(callback != null) {

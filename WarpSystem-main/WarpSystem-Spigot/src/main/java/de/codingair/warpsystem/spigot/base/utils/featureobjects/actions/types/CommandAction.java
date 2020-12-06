@@ -54,7 +54,7 @@ public class CommandAction extends ActionObject<List<String>> {
             Command cmd = CommandBuilder.getCommand(tag);
 
             if(WarpSystem.getInstance().isOnBungeeCord() && cmd == null) {
-                WarpSystem.getInstance().getDataHandler().send(new PerformCommandOnBungeePacket(player.getName(), command, new Callback<Boolean>() {
+                WarpSystem.getInstance().getDataHandler().send(player, new PerformCommandOnBungeePacket(player.getName(), command, new Callback<Boolean>() {
                     @Override
                     public void accept(Boolean exists) {
                         if(!exists) player.sendMessage(Lang.getPrefix() + Lang.get("Unknown_Command"));

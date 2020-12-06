@@ -804,7 +804,7 @@ public class PlayerWarpManager implements Manager, Ticker, Collectible {
 
         if(informBungee && checkBungeeCord()) {
             DeletePlayerWarpPacket packet = new DeletePlayerWarpPacket(warp.getName(), warp.getOwner().getId());
-            WarpSystem.getInstance().getDataHandler().send(packet);
+            WarpSystem.getInstance().getDataHandler().send(null, packet);
         }
 
         return refund;

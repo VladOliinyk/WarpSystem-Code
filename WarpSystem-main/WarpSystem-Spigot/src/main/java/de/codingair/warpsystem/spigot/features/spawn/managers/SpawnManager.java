@@ -110,7 +110,7 @@ public class SpawnManager implements Manager {
             this.spawnServer = spawn;
             this.respawnServer = respawn;
 
-            WarpSystem.getInstance().getDataHandler().send(new SendGlobalSpawnOptionsPacket(spawn, respawn));
+            WarpSystem.getInstance().getDataHandler().send(null, new SendGlobalSpawnOptionsPacket(spawn, respawn));
         }
     }
 

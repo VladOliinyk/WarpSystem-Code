@@ -37,6 +37,7 @@ public class CTpAll extends WSCommandBuilder {
 
             @Override
             public boolean runCommand(CommandSender sender, String label, String[] args) {
+                Player p = (Player) sender;
                 int iHandled = 0;
                 int iSent = 0;
 
@@ -55,7 +56,7 @@ public class CTpAll extends WSCommandBuilder {
 
                 if(WarpSystem.getInstance().isOnBungeeCord()) {
                     int finalISent = iSent;
-                    WarpSystem.getInstance().getDataHandler().send(new GetOnlineCountPacket(new Callback<Integer>() {
+                    WarpSystem.getInstance().getDataHandler().send(p, new GetOnlineCountPacket(new Callback<Integer>() {
                         @Override
                         public void accept(Integer count) {
                             sender.sendMessage(Lang.getPrefix() + Lang.get("Teleport_all").replace("%AMOUNT%", finalISent + "").replace("%MAX%", (count - 1) + ""));

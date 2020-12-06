@@ -38,7 +38,7 @@ public class SpawnListener extends PacketListener implements Listener {
         if(WarpSystem.getInstance().isOnBungeeCord()) {
             String respawn = SpawnManager.getInstance().getRespawnServer();
             if(respawn != null && !respawn.equals(WarpSystem.getInstance().getCurrentServer())) {
-                Bukkit.getScheduler().runTaskLater(WarpSystem.getInstance(), () -> WarpSystem.getInstance().getDataHandler().send(new TeleportSpawnPacket(e.getPlayer().getName(), true)), 2L);
+                Bukkit.getScheduler().runTaskLater(WarpSystem.getInstance(), () -> WarpSystem.getInstance().getDataHandler().send(e.getPlayer(), new TeleportSpawnPacket(e.getPlayer().getName(), true)), 2L);
                 return;
             }
         }

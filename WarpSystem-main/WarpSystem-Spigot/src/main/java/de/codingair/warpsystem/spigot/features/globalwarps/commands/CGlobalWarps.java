@@ -86,7 +86,7 @@ public class CGlobalWarps extends WSCommandBuilder implements BungeeFeature {
                     return false;
                 }
 
-                ((GlobalWarpManager) WarpSystem.getInstance().getDataManager().getManager(FeatureType.GLOBAL_WARPS)).create(argument, player.getLocation(), new Callback<Boolean>() {
+                ((GlobalWarpManager) WarpSystem.getInstance().getDataManager().getManager(FeatureType.GLOBAL_WARPS)).create(player, argument, player.getLocation(), new Callback<Boolean>() {
                     @Override
                     public void accept(Boolean created) {
                         if(created) {
@@ -98,7 +98,7 @@ public class CGlobalWarps extends WSCommandBuilder implements BungeeFeature {
                             simpleMessage.replace("%YES%", new ChatButton(Lang.get("Warp_Confirm_Overwrite_Yes"), Lang.get("Click_Hover")) {
                                 @Override
                                 public void onClick(Player player) {
-                                    ((GlobalWarpManager) WarpSystem.getInstance().getDataManager().getManager(FeatureType.GLOBAL_WARPS)).updatePosition(name, player.getLocation(), new Callback<Boolean>() {
+                                    ((GlobalWarpManager) WarpSystem.getInstance().getDataManager().getManager(FeatureType.GLOBAL_WARPS)).updatePosition(player, name, player.getLocation(), new Callback<Boolean>() {
                                         @Override
                                         public void accept(Boolean overwritten) {
                                             if(overwritten) {
@@ -135,7 +135,7 @@ public class CGlobalWarps extends WSCommandBuilder implements BungeeFeature {
                 String name = GlobalWarpManager.getInstance().getCaseCorrectlyName(args[1]);
 
                 if(name != null) {
-                    ((GlobalWarpManager) WarpSystem.getInstance().getDataManager().getManager(FeatureType.GLOBAL_WARPS)).updatePosition(name, player.getLocation(), new Callback<Boolean>() {
+                    ((GlobalWarpManager) WarpSystem.getInstance().getDataManager().getManager(FeatureType.GLOBAL_WARPS)).updatePosition(player, name, player.getLocation(), new Callback<Boolean>() {
                         @Override
                         public void accept(Boolean overwritten) {
                             if(overwritten) {
@@ -180,7 +180,7 @@ public class CGlobalWarps extends WSCommandBuilder implements BungeeFeature {
                             if(keep) {
                                 sender.sendMessage(Lang.getPrefix() + Lang.get("GlobalWarp_Deleted_Cancel").replace("%GLOBAL_WARP%", name));
                             } else {
-                                ((GlobalWarpManager) WarpSystem.getInstance().getDataManager().getManager(FeatureType.GLOBAL_WARPS)).delete(name, new Callback<Boolean>() {
+                                ((GlobalWarpManager) WarpSystem.getInstance().getDataManager().getManager(FeatureType.GLOBAL_WARPS)).delete((Player) sender, name, new Callback<Boolean>() {
                                     @Override
                                     public void accept(Boolean deleted) {
                                         if(deleted) {
@@ -198,7 +198,7 @@ public class CGlobalWarps extends WSCommandBuilder implements BungeeFeature {
                 }
                 return false;
             }
-        });
+        }).setOnlyPlayers(true);
 
         getComponent("delete", null).addChild(new CommandComponent("true") {
             @Override
@@ -206,7 +206,7 @@ public class CGlobalWarps extends WSCommandBuilder implements BungeeFeature {
                 String name = GlobalWarpManager.getInstance().getCaseCorrectlyName(args[1]);
 
                 if(name != null) {
-                    ((GlobalWarpManager) WarpSystem.getInstance().getDataManager().getManager(FeatureType.GLOBAL_WARPS)).delete(name, new Callback<Boolean>() {
+                    ((GlobalWarpManager) WarpSystem.getInstance().getDataManager().getManager(FeatureType.GLOBAL_WARPS)).delete(sender instanceof Player ? (Player) sender : null, name, new Callback<Boolean>() {
                         @Override
                         public void accept(Boolean deleted) {
                             if(deleted) {

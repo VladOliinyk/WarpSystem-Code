@@ -45,7 +45,7 @@ public class SetupAssistant {
 
         if(WarpSystem.getInstance().isOnBungeeCord()) {
             //send setup assistant packet
-            WarpSystem.getInstance().getDataHandler().send(new ToggleSetupAssistantPacket(player.getName()));
+            WarpSystem.getInstance().getDataHandler().send(player, new ToggleSetupAssistantPacket(player.getName()));
         }
 
         Class<?> oPacketClass = IReflection.getClass(IReflection.ServerPacket.MINECRAFT_PACKAGE, "PacketPlayOutChat");
@@ -130,7 +130,7 @@ public class SetupAssistant {
 
         if(WarpSystem.getInstance().isOnBungeeCord()) {
             //send setup assistant packet
-            WarpSystem.getInstance().getDataHandler().send(new ToggleSetupAssistantPacket());
+            WarpSystem.getInstance().getDataHandler().send(player, new ToggleSetupAssistantPacket());
         }
 
         reader.unInject();

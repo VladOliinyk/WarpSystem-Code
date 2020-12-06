@@ -86,7 +86,7 @@ public class CTpa extends WSCommandBuilder {
                 if(WarpSystem.cooldown().checkPlayer((Player) sender, Origin.TeleportRequest)) return false;
 
                 if(other == null && WarpSystem.hasPermission(sender, WarpSystem.PERMISSION_USE_TELEPORT_COMMAND_TP)) {
-                    WarpSystem.getInstance().getDataHandler().send(new IsOnlinePacket(new Callback<Boolean>() {
+                    WarpSystem.getInstance().getDataHandler().send((Player) sender, new IsOnlinePacket(new Callback<Boolean>() {
                         @Override
                         public void accept(Boolean online) {
                             if(online) {
