@@ -203,7 +203,7 @@ public class CTeleport extends WSCommandBuilder {
         if(playerP == null) {
             //try on proxy
             if(WarpSystem.getInstance().isOnBungeeCord()) {
-                WarpSystem.getInstance().getDataHandler().send(playerP, new IsOnlinePacket(new Callback<Boolean>() {
+                WarpSystem.getInstance().getDataHandler().send(gateP, new IsOnlinePacket(new Callback<Boolean>() {
                     @Override
                     public void accept(Boolean online) {
                         if(online) {
