@@ -7,7 +7,10 @@ import de.codingair.warpsystem.spigot.api.WSCommandBuilder;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.features.teleportcommand.TeleportCommandManager;
+import de.codingair.warpsystem.transfer.packets.spigot.GetOnlineCountPacket;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class CTpaAll extends WSCommandBuilder {
     public CTpaAll() {
@@ -32,8 +35,22 @@ public class CTpaAll extends WSCommandBuilder {
                     @Override
                     public void accept(Long result) {
                         int handled = (int) (result >> 32);
-                        int sent = result.intValue();
-                        sender.sendMessage(Lang.getPrefix() + Lang.get("TeleportRequest_All").replace("%RECEIVED%", sent + "").replace("%MAX%", handled + ""));
+
+                        if(WarpSystem.getInstance().isOnBungeeCord()) {
+                            WarpSystem.getInstance().getDataHandler().send((Player) sender, new GetOnlineCountPacket(new Callback<Integer>() {
+                                @Override
+                                public void accept(Integer count) {
+                                    int sent = result.intValue();
+                                    sender.sendMessage(Lang.getPrefix() + Lang.get("TeleportRequest_All").replace("%RECEIVED%", sent + "").replace("%MAX%", (count - 1) + ""));
+                                    TextComponent tc = new TextComponent(Lang.getPrefix() + "§6" + (count - 1 - handled) + "§7 player(s) on §6different servers§7!");
+                                    tc.setColor(net.md_5.bungee.api.ChatColor.GRAY);
+                                    Lang.PREMIUM_CHAT(tc, sender, true);
+                                }
+                            }));
+                        } else {
+                            int sent = result.intValue();
+                            sender.sendMessage(Lang.getPrefix() + Lang.get("TeleportRequest_All").replace("%RECEIVED%", sent + "").replace("%MAX%", handled + ""));
+                        }
                     }
                 }, null);
                 return false;

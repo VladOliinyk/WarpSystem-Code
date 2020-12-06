@@ -19,9 +19,6 @@ public class GeneralOptions extends Options {
     private Option<Boolean> publicAnimations = new Option<>("WarpSystem.Teleport.Public_Animations");
     private Option<String> cmdSugColor = new Option<>("WarpSystem.Command_Suggestions.Color", "&7");
     private Option<String> cmdArgColor = new Option<>("WarpSystem.Command_Suggestions.Argument", "&e");
-    private Option<String> cooldownTpa = new Option<>("WarpSystem.Cooldown.Tpa", "5m");
-    private Option<String> cooldownBack = new Option<>("WarpSystem.Cooldown.Back", "0s");
-    private Option<String> cooldownRandomTP = new Option<>("WarpSystem.Cooldown.RandomTP", "5m");
     private Option<String> delayDisplay = new Option<>("WarpSystem.Teleport.Delay_Display", "ACTION_BAR");
     private Option<Boolean> teleportInterceptions = new Option<>("WarpSystem.Beta.Functions.Teleport_Interceptions", false);
     private Option<Integer> fetchUpdates = new Option<>("WarpSystem.BungeeCord.Fetch_Updated_Jars", 1);
@@ -51,9 +48,6 @@ public class GeneralOptions extends Options {
         set(publicAnimations);
         set(cmdSugColor);
         set(cmdArgColor);
-        set(cooldownTpa);
-        set(cooldownBack);
-        set(cooldownRandomTP);
         set(delayDisplay);
         set(teleportInterceptions);
         set(fetchUpdates);
@@ -76,9 +70,6 @@ public class GeneralOptions extends Options {
         get(publicAnimations);
         get(cmdSugColor);
         get(cmdArgColor);
-        get(cooldownTpa);
-        get(cooldownBack);
-        get(cooldownRandomTP);
         get(delayDisplay);
         get(teleportInterceptions);
         get(fetchUpdates);
@@ -134,9 +125,6 @@ public class GeneralOptions extends Options {
             this.publicAnimations = o.publicAnimations.clone();
             this.cmdSugColor = o.cmdSugColor.clone();
             this.cmdArgColor = o.cmdArgColor.clone();
-            this.cooldownTpa = o.cooldownTpa.clone();
-            this.cooldownBack = o.cooldownBack.clone();
-            this.cooldownRandomTP = o.cooldownRandomTP.clone();
             this.delayDisplay = o.delayDisplay.clone();
             this.teleportInterceptions = o.teleportInterceptions.clone();
             this.fetchUpdates = o.fetchUpdates.clone();
@@ -186,7 +174,7 @@ public class GeneralOptions extends Options {
     public String cmdArg() {
         return ChatColor.translateAlternateColorCodes('&', cmdArgColor.getValue());
     }
-
+  
     public TeleportDelay.Display getDelayDisplay() {
         try {
             return TeleportDelay.Display.valueOf(delayDisplay.getValue());
@@ -194,23 +182,8 @@ public class GeneralOptions extends Options {
             return TeleportDelay.Display.ACTION_BAR;
         }
     }
-
-    public long getCooldownTpa() {
-        return StringFormatter.convertFromTimeFormat(cooldownTpa.getValue(), 300000);
-    }
-
-    public long getCooldownBack() {
-        return StringFormatter.convertFromTimeFormat(cooldownBack.getValue(), 0);
-    }
-
-    public long getCooldownRandomTP() {
-        return StringFormatter.convertFromTimeFormat(cooldownRandomTP.getValue(), 300000);
-    }
-
+  
     public long getCooldown(Origin origin) {
-        if(origin == Origin.TeleportRequest) return getCooldownTpa();
-        else if(origin == Origin.TeleportCommand) return getCooldownBack();
-        else if(origin == Origin.RandomTP) return getCooldownRandomTP();
         return 0;
     }
 

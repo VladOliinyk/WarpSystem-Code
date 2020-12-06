@@ -32,21 +32,11 @@ public class TabCompleterListener implements Listener {
             String[] args = cursor.split(" ");
 
             ProxiedPlayer receiver = (ProxiedPlayer) e.getReceiver();
-            ServerInfo info = receiver.getServer().getInfo();
-            TeleportCommandOptions options = TeleportManager.getInstance().getOptions(info);
 
             String last = args[args.length - 1];
+            e.getSuggestions().clear();
 
             if(tp) {
-                if(options == null || !options.isTp()) {
-                    for(ProxiedPlayer player : info.getPlayers()) {
-                        if(!cursor.endsWith(" ") && !player.getName().toLowerCase().startsWith(last.toLowerCase())) continue;
-
-                        e.getSuggestions().add(player.getName());
-                    }
-                    return;
-                }
-
                 int deep = args.length - 1;
 
                 if(cursor.endsWith(" ")) {
@@ -56,80 +46,38 @@ public class TabCompleterListener implements Listener {
                     }
                     if(deep == 0 || deep == 1) {
                         for(ServerInfo server : WarpSystem.proxy().getServers().values()) {
-                            TeleportCommandOptions access = TeleportManager.getInstance().getOptions(server);
-                            if(access != null && access.isTp()) {
-                                for(ProxiedPlayer player : server.getPlayers()) {
-                                    if(!cursor.endsWith(" ") && !player.getName().toLowerCase().startsWith(last.toLowerCase())) continue;
-                                    e.getSuggestions().add(player.getName());
-                                }
+                            for(ProxiedPlayer player : server.getPlayers()) {
+                                e.getSuggestions().add(player.getName());
                             }
                         }
                     }
                 } else {
                     if(deep == 1 || deep == 2) {
                         for(ServerInfo server : WarpSystem.proxy().getServers().values()) {
-                            TeleportCommandOptions access = TeleportManager.getInstance().getOptions(server);
-                            if(access != null && access.isTp()) {
-                                for(ProxiedPlayer player : server.getPlayers()) {
-                                    if(!player.getName().toLowerCase().startsWith(last.toLowerCase())) continue;
-                                    e.getSuggestions().add(player.getName());
-                                }
+                            for(ProxiedPlayer player : server.getPlayers()) {
+                                if(!player.getName().toLowerCase().startsWith(last.toLowerCase())) continue;
+                                e.getSuggestions().add(player.getName());
                             }
                         }
                     }
                 }
             } else if(tpa) {
-                if(options == null || !options.isTpa()) {
-                    for(ProxiedPlayer player : info.getPlayers()) {
+                for(ServerInfo server : WarpSystem.proxy().getServers().values()) {
+                    for(ProxiedPlayer player : server.getPlayers()) {
                         if(player.getName().equals(receiver.getName())) continue;
                         if(!cursor.endsWith(" ") && !player.getName().toLowerCase().startsWith(last.toLowerCase())) continue;
                         if(!WarpSystem.getVanishManager().isVanished(player.getName())) e.getSuggestions().add(player.getName()); //check vanished player names
-                    }
-                    finish(e);
-                    return;
-                }
-
-                for(ServerInfo server : WarpSystem.proxy().getServers().values()) {
-                    TeleportCommandOptions access = TeleportManager.getInstance().getOptions(server);
-                    if(access != null && access.isTpa()) {
-                        for(ProxiedPlayer player : server.getPlayers()) {
-                            if(player.getName().equals(receiver.getName())) continue;
-                            if(!cursor.endsWith(" ") && !player.getName().toLowerCase().startsWith(last.toLowerCase())) continue;
-                            if(!WarpSystem.getVanishManager().isVanished(player.getName())) e.getSuggestions().add(player.getName()); //check vanished player names
-                        }
                     }
                 }
             } else if(tpaHere) {
-                if(options == null || !options.isTpaHere()) {
-                    for(ProxiedPlayer player : info.getPlayers()) {
+                for(ServerInfo server : WarpSystem.proxy().getServers().values()) {
+                    for(ProxiedPlayer player : server.getPlayers()) {
                         if(player.getName().equals(receiver.getName())) continue;
                         if(!cursor.endsWith(" ") && !player.getName().toLowerCase().startsWith(last.toLowerCase())) continue;
                         if(!WarpSystem.getVanishManager().isVanished(player.getName())) e.getSuggestions().add(player.getName()); //check vanished player names
                     }
-                    finish(e);
-                    return;
-                }
-
-                for(ServerInfo server : WarpSystem.proxy().getServers().values()) {
-                    TeleportCommandOptions access = TeleportManager.getInstance().getOptions(server);
-                    if(access != null && access.isTpaHere()) {
-                        for(ProxiedPlayer player : server.getPlayers()) {
-                            if(player.getName().equals(receiver.getName())) continue;
-                            if(!cursor.endsWith(" ") && !player.getName().toLowerCase().startsWith(last.toLowerCase())) continue;
-                            if(!WarpSystem.getVanishManager().isVanished(player.getName())) e.getSuggestions().add(player.getName()); //check vanished player names
-                        }
-                    }
                 }
             } else if(tpHere) {
-                if(options == null || !options.isTp()) {
-                    for(ProxiedPlayer player : info.getPlayers()) {
-                        if(!cursor.endsWith(" ") && !player.getName().toLowerCase().startsWith(last.toLowerCase())) continue;
-                        e.getSuggestions().add(player.getName());
-                    }
-                    finish(e);
-                    return;
-                }
-
                 for(ServerInfo server : WarpSystem.proxy().getServers().values()) {
                     TeleportCommandOptions access = TeleportManager.getInstance().getOptions(server);
                     if(access != null && access.isTp()) {
@@ -140,7 +88,6 @@ public class TabCompleterListener implements Listener {
                     }
                 }
             }
-
             finish(e);
         }
     }

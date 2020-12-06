@@ -1,26 +1,11 @@
 package de.codingair.warpsystem.spigot.features.randomteleports.listeners;
 
-import de.codingair.warpsystem.base.transfer.packets.spigot.QueueRTPUsagePacket;
 import de.codingair.warpsystem.base.transfer.packets.utils.Packet;
-import de.codingair.warpsystem.base.transfer.packets.utils.PacketType;
 import de.codingair.warpsystem.base.transfer.utils.PacketListener;
-import de.codingair.warpsystem.spigot.features.randomteleports.managers.RandomTeleporterManager;
-
-import java.util.List;
-import java.util.UUID;
 
 public class BungeePacketListener extends PacketListener {
     @Override
     public void onReceive(Packet packet, String extra) {
-        if(packet.getType() == PacketType.QueueRTPUsagePacket) {
-            QueueRTPUsagePacket p = (QueueRTPUsagePacket) packet;
-
-            List<UUID> l = p.getIds();
-            for(UUID uuid : l) {
-                RandomTeleporterManager.getInstance().increaseTeleports(uuid);
-            }
-            l.clear();
-        }
     }
 
     @Override
