@@ -12,6 +12,8 @@ import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Origin;
 import de.codingair.warpsystem.spigot.features.teleportcommand.TeleportCommandManager;
+import de.codingair.warpsystem.transfer.packets.spigot.IsOnlinePacket;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -83,36 +85,32 @@ public class CTpa extends WSCommandBuilder {
 
                 if(WarpSystem.cooldown().checkPlayer((Player) sender, Origin.TeleportRequest)) return false;
 
-                //get original name
-                Callback<String> callback = new Callback<String>() {
-                    @Override
-                    public void accept(String name) {
-                        if(name == null) {
-                            sender.sendMessage(Lang.getPrefix() + Lang.get("Player_is_not_online"));
-                            return;
+                if(other == null && WarpSystem.hasPermission(sender, WarpSystem.PERMISSION_USE_TELEPORT_COMMAND_TP)) {
+                    WarpSystem.getInstance().getDataHandler().send((Player) sender, new IsOnlinePacket(new Callback<Boolean>() {
+                        @Override
+                        public void accept(Boolean online) {
+                            if(online) {
+                                TextComponent tc = new TextComponent(Lang.getPrefix() + "§7Teleporting on your entire BungeeCord is a §6premium feature§7!");
+                                tc.setColor(net.md_5.bungee.api.ChatColor.GRAY);
+                                Lang.PREMIUM_CHAT(tc, sender, true);
+                            } else sender.sendMessage(Lang.getPrefix() + Lang.get("Player_is_not_online"));
                         }
-
-                        TeleportCommandManager.getInstance().invite(sender.getName(), false, new Callback<Long>() {
-                            @Override
-                            public void accept(Long result) {
-                                int handled = (int) (result >> 32);
-                                int sent = result.intValue();
-
-                                if(handled == 0) sender.sendMessage(Lang.getPrefix() + Lang.get("Player_is_not_online"));
-                                else if(handled == -1) sender.sendMessage(Lang.getPrefix() + Lang.get("TeleportRequest_denied_sender").replace("%PLAYER%", ChatColor.stripColor(name)));
-                                else if(sent == 0) sender.sendMessage(Lang.getPrefix() + Lang.get("TeleportRequest_already_sent"));
-                                else sender.sendMessage(Lang.getPrefix() + Lang.get("TeleportRequest_sent").replace("%PLAYER%", ChatColor.stripColor(name)));
-                            }
-                        }, name);
-                    }
-                };
-
-                if(!WarpSystem.getInstance().isOnBungeeCord() || !TeleportCommandManager.getInstance().isBungeeCord() || other != null) {
-                    callback.accept(other == null ? argument : other.getName());
+                    }, argument));
                     return false;
                 }
 
-                WarpSystem.getInstance().getDataHandler().send(other, new RequestFullNamePacket(callback, argument));
+                TeleportCommandManager.getInstance().invite(sender.getName(), false, new Callback<Long>() {
+                    @Override
+                    public void accept(Long result) {
+                        int handled = (int) (result >> 32);
+                        int sent = result.intValue();
+
+                        if(handled == 0) sender.sendMessage(Lang.getPrefix() + Lang.get("Player_is_not_online"));
+                        else if(handled == -1) sender.sendMessage(Lang.getPrefix() + Lang.get("TeleportRequest_denied_sender").replace("%PLAYER%", ChatColor.stripColor(other != null ? other.getName() : argument)));
+                        else if(sent == 0) sender.sendMessage(Lang.getPrefix() + Lang.get("TeleportRequest_already_sent"));
+                        else sender.sendMessage(Lang.getPrefix() + Lang.get("TeleportRequest_sent").replace("%PLAYER%", ChatColor.stripColor(other != null ? other.getName() : argument)));
+                    }
+                }, other != null ? other.getName() : argument);
                 return false;
             }
         });

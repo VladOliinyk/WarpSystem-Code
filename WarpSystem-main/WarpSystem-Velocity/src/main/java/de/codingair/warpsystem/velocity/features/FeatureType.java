@@ -13,7 +13,6 @@ import java.util.List;
 public enum FeatureType {
     GLOBAL_WARPS(GlobalWarpManager.class, Priority.LOW),
     TELEPORT(TeleportManager.class, Priority.LOW),
-    PLAYER_WARPS(PlayerWarpManager.class, Priority.LOW),
     SPAWN(SpawnManager.class, Priority.LOW),
     RANDOM_TP(RandomTPManager.class, Priority.LOW),
     ;

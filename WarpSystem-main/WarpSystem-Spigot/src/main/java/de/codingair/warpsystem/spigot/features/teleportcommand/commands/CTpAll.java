@@ -12,6 +12,8 @@ import de.codingair.warpsystem.spigot.base.utils.teleport.TeleportOptions;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.LocationAdapter;
 import de.codingair.warpsystem.spigot.features.teleportcommand.TeleportCommandManager;
+import de.codingair.warpsystem.transfer.packets.spigot.GetOnlineCountPacket;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -52,18 +54,17 @@ public class CTpAll extends WSCommandBuilder {
                     iSent++;
                 }
 
-                if(WarpSystem.getInstance().isOnBungeeCord() && TeleportCommandManager.getInstance().isBungeeCord()) {
-                    int finalI = iSent;
-                    int finalIHandled = iHandled;
-                    WarpSystem.getInstance().getDataHandler().send(p, new PrepareTeleportPacket(new Callback<Long>() {
+                if(WarpSystem.getInstance().isOnBungeeCord()) {
+                    int finalISent = iSent;
+                    WarpSystem.getInstance().getDataHandler().send(p, new GetOnlineCountPacket(new Callback<Integer>() {
                         @Override
-                        public void accept(Long result) {
-                            int handled = (int) (result >> 32);
-                            int sent = result.intValue();
-
-                            sender.sendMessage(Lang.getPrefix() + Lang.get("Teleport_all").replace("%AMOUNT%", (finalI + sent) + "").replace("%MAX%", (finalIHandled + handled) + ""));
+                        public void accept(Integer count) {
+                            sender.sendMessage(Lang.getPrefix() + Lang.get("Teleport_all").replace("%AMOUNT%", finalISent + "").replace("%MAX%", (count - 1) + ""));
+                            TextComponent tc = new TextComponent(Lang.getPrefix() + "§6" + (count - 1 - finalISent) + "§7 player(s) on §6different servers§7!");
+                            tc.setColor(net.md_5.bungee.api.ChatColor.GRAY);
+                            Lang.PREMIUM_CHAT(tc, sender, true);
                         }
-                    }, sender.getName(), null, sender.getName()));
+                    }));
                 } else sender.sendMessage(Lang.getPrefix() + Lang.get("Teleport_all").replace("%AMOUNT%", iSent + "").replace("%MAX%", iHandled + ""));
                 return false;
             }
