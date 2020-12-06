@@ -8,7 +8,6 @@ import de.codingair.codingapi.player.gui.inventory.gui.simple.SyncAnvilGUIButton
 import de.codingair.codingapi.player.gui.inventory.gui.simple.SyncButton;
 import de.codingair.codingapi.server.sounds.Sound;
 import de.codingair.codingapi.server.sounds.SoundData;
-import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.items.XMaterial;
 import de.codingair.warpsystem.base.transfer.packets.spigot.RequestUUIDPacket;
@@ -24,8 +23,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.UUID;
 
 public class PTrusted extends PageItem {
     private final PlayerWarp warp, original;
@@ -133,29 +130,9 @@ public class PTrusted extends PageItem {
 
                     Player other;
                     if((other = Bukkit.getPlayer(input)) == null) {
-                        if(WarpSystem.getInstance().isOnBungeeCord()) {
-                            RequestUUIDPacket packet = new RequestUUIDPacket(input, new Callback<UUID>() {
-                                @Override
-                                public void accept(UUID uuid) {
-                                    if(uuid == null) {
-                                        e.getPlayer().sendMessage(Lang.get("Prefix") + Lang.get("Player_is_not_online"));
-                                        return;
-                                    }
-
-                                    if(warp.isTrusted(uuid)) {
-                                        e.getPlayer().sendMessage(Lang.get("Prefix") + Lang.get("Already_Trusted"));
-                                        return;
-                                    }
-
-                                    warp.getTrusted().add(new PlayerWarp.User(input, uuid));
-                                    getLast().updatePage();
-                                    updateIcon();
-                                    updateCosts();
-                                    getAnvilGUI().close();
-                                }
-                            });
-
-                            WarpSystem.getInstance().getDataHandler().send(packet);
+                        if(WarpSystem.getInstance().isOnBungeeCord() && p.hasPermission(WarpSystem.PERMISSION_MODIFY_PLAYER_WARPS)) {
+                            p.sendMessage(Lang.getPrefix() + "§7Adding trusted player on your whole BungeeCord is a §6premium §7feature!");
+                            p.sendMessage(Lang.getPrefix() + "§7Only admins see this message.");
                         } else e.getPlayer().sendMessage(Lang.get("Prefix") + Lang.get("Player_is_not_online"));
 
                         return;
