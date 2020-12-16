@@ -3,7 +3,7 @@ package de.codingair.warpsystem.base.transfer.utils;
 import de.codingair.codingapi.server.reflections.IReflection;
 import de.codingair.warpsystem.base.transfer.packets.utils.Packet;
 
-public abstract class PacketListener implements de.codingair.codingapi.transfer.utils.PacketListener {
+public abstract class PacketListener<P> implements de.codingair.codingapi.transfer.core.PacketListener<P> {
     private static NameConverter CONVERTER = null;
 
     public void onReceive(de.codingair.codingapi.transfer.packets.utils.Packet packet, Object server) {

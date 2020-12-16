@@ -1,13 +1,13 @@
 package de.codingair.warpsystem.velocity.transfer;
 
+import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
-import com.velocitypowered.api.proxy.server.ServerInfo;
 import de.codingair.codingapi.tools.Callback;
-import de.codingair.codingapi.transfer.DataHandler;
-import de.codingair.codingapi.transfer.utils.PacketListener;
+import de.codingair.codingapi.transfer.core.DataHandler;
+import de.codingair.codingapi.transfer.core.PacketListener;
 import de.codingair.warpsystem.base.transfer.packets.utils.*;
 
 import java.io.ByteArrayOutputStream;
@@ -15,7 +15,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-public class VelocityDataHandler extends DataHandler {
+public class VelocityDataHandler extends DataHandler<RegisteredServer> {
     protected final ProxyServer proxy;
     protected final Object plugin;
     protected final ChannelListener listener = new ChannelListener(this);
@@ -36,9 +36,9 @@ public class VelocityDataHandler extends DataHandler {
     }
 
     public void onEnable() {
-        String[] a = getRequestChannel().split(":");
+        String[] a = channelProxy.split(":");
         proxy.getChannelRegistrar().register(in = MinecraftChannelIdentifier.create(a[0], a[1]));
-        a = getGetChannel().split(":");
+        a = channelBackend.split(":");
         proxy.getChannelRegistrar().register(out = MinecraftChannelIdentifier.create(a[0], a[1]));
 
         proxy.getEventManager().register(plugin, this.listener);
@@ -49,6 +49,11 @@ public class VelocityDataHandler extends DataHandler {
         if(out != null) proxy.getChannelRegistrar().unregister(out);
         this.listeners.clear();
         proxy.getEventManager().unregisterListener(plugin, this.listener);
+    }
+
+    @Override
+    public void send(byte[] bytes, RegisteredServer server) {
+        server.sendPluginMessage(this.out, bytes);
     }
 
     public void send(Packet packet, RegisteredServer server) {

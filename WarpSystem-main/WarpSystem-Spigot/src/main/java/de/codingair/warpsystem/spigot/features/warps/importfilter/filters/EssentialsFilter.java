@@ -26,6 +26,7 @@ public class EssentialsFilter implements Filter {
             for(File w : target.listFiles()) {
                 FileConfiguration config = YamlConfiguration.loadConfiguration(w);
                 WarpData warpData = getData(config);
+                if(warpData.getName() == null) continue;
 
                 SimpleWarp warp = new SimpleWarp(warpData);
                 if(SimpleWarpManager.getInstance().existsWarp(warpData.getName())) {

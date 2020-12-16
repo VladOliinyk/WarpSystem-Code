@@ -2,8 +2,8 @@ package de.codingair.warpsystem.bungee.transfer.bungee;
 
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.transfer.bungee.BungeeDataHandler;
+import de.codingair.codingapi.transfer.core.PacketListener;
 import de.codingair.codingapi.transfer.packets.utils.Packet;
-import de.codingair.codingapi.transfer.utils.PacketListener;
 import de.codingair.warpsystem.base.transfer.packets.utils.AnswerPacket;
 import de.codingair.warpsystem.base.transfer.packets.utils.AssignedPacket;
 import de.codingair.warpsystem.base.transfer.packets.utils.PacketType;
@@ -52,7 +52,7 @@ public class BungeeHandler extends BungeeDataHandler {
             if(listener.onSend(packet)) return;
         }
 
-        server.sendData(getChannel, stream.toByteArray());
+        server.sendData(channelBackend, stream.toByteArray());
     }
 
     @Override

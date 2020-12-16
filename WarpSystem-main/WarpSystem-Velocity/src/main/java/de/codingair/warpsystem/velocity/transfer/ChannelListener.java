@@ -19,22 +19,11 @@ public class ChannelListener {
 
     @Subscribe
     public void onPluginMessage(PluginMessageEvent e) {
-        if(e.getIdentifier().getId().equals(velocityDataHandler.getRequestChannel())) {
+        if(e.getIdentifier().getId().equals(velocityDataHandler.getChannelProxy())) {
             e.setResult(PluginMessageEvent.ForwardResult.handled());
 
-            DataInputStream in = new DataInputStream(new ByteArrayInputStream(e.getData()));
-
-            try {
-                ServerConnection s = (ServerConnection) e.getSource();
-                Packet packet = velocityDataHandler.produce(in.readUnsignedShort());
-
-                if(packet == null) return;
-
-                packet.read(in);
-                this.velocityDataHandler.onReceive(packet, s);
-            } catch(IOException e1) {
-                e1.printStackTrace();
-            }
+            ServerConnection s = (ServerConnection) e.getSource();
+            velocityDataHandler.onReceive(e.getData(), s.getServer());
         }
     }
 

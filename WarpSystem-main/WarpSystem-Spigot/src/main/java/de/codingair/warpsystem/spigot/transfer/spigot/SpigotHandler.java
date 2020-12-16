@@ -1,9 +1,9 @@
 package de.codingair.warpsystem.spigot.transfer.spigot;
 
 import de.codingair.codingapi.tools.Callback;
+import de.codingair.codingapi.transfer.core.PacketListener;
 import de.codingair.codingapi.transfer.packets.utils.Packet;
 import de.codingair.codingapi.transfer.spigot.SpigotDataHandler;
-import de.codingair.codingapi.transfer.utils.PacketListener;
 import de.codingair.warpsystem.base.transfer.packets.utils.AnswerPacket;
 import de.codingair.warpsystem.base.transfer.packets.utils.AssignedPacket;
 import de.codingair.warpsystem.base.transfer.packets.utils.PacketType;
@@ -15,27 +15,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class SpigotHandler extends SpigotDataHandler {
     public SpigotHandler(JavaPlugin plugin) {
         super(plugin);
-    }
-
-    /*Weird maven bug*/
-    public void register(de.codingair.warpsystem.base.transfer.utils.PacketListener listener) {
-        super.register((de.codingair.codingapi.transfer.utils.PacketListener) listener);
-    }
-
-    public void send(Player player, de.codingair.warpsystem.base.transfer.packets.utils.Packet packet) {
-        super.send(player, (Packet) packet);
-    }
-
-    public void unregister(de.codingair.warpsystem.base.transfer.utils.PacketListener listener) {
-        super.unregister((de.codingair.codingapi.transfer.utils.PacketListener) listener);
     }
 
     @Override
@@ -80,12 +64,12 @@ public class SpigotHandler extends SpigotDataHandler {
             }
             listeners.clear();
 
-            player.sendPluginMessage(this.plugin, requestChannel, b.toByteArray());
+            player.sendPluginMessage(this.plugin, channelProxy, b.toByteArray());
         }
     }
 
     @Override
-    public void onReceive(Packet packet) {
+    public void onReceive(Packet packet, Player player) {
         if(packet instanceof AnswerPacket) {
             UUID uniqueId = ((AssignedPacket) packet).getUniqueId();
             Callback callback;
@@ -95,7 +79,7 @@ public class SpigotHandler extends SpigotDataHandler {
             this.timeOut.remove(uniqueId);
         }
 
-        List<PacketListener> listeners = new ArrayList<>(this.listeners);
+        Set<PacketListener<Player>> listeners = new HashSet<>(this.listeners);
         for(PacketListener listener : listeners) {
             listener.onReceive(packet, null);
         }
