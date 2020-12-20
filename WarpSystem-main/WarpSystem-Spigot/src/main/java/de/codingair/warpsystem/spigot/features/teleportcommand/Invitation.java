@@ -8,6 +8,7 @@ import de.codingair.warpsystem.base.transfer.packets.general.StartTeleportToPlay
 import de.codingair.warpsystem.base.transfer.packets.spigot.PrepareTeleportPlayerToPlayerPacket;
 import de.codingair.warpsystem.base.transfer.packets.spigot.PrepareTeleportRequestPacket;
 import de.codingair.warpsystem.base.transfer.packets.spigot.TeleportRequestHandledPacket;
+import de.codingair.warpsystem.spigot.api.bungee.HoverEventBuilder;
 import de.codingair.warpsystem.spigot.api.players.BungeePlayer;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.language.Lang;
@@ -184,11 +185,11 @@ public class Invitation {
             m.setTimeOut(TeleportCommandManager.getInstance().getExpireDelay());
 
             TextComponent accept = new TextComponent(Lang.get("Accept"));
-            accept.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Lang.get("Click_Hover"))));
+            accept.setHoverEvent(HoverEventBuilder.build(HoverEvent.Action.SHOW_TEXT, Lang.get("Click_Hover")));
             accept.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaccept " + sender));
 
             TextComponent deny = new TextComponent(Lang.get("Deny"));
-            deny.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Lang.get("Click_Hover"))));
+            deny.setHoverEvent(HoverEventBuilder.build(HoverEvent.Action.SHOW_TEXT, Lang.get("Click_Hover")));
             deny.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpdeny " + sender));
 
             m.replace("%ACCEPT%", accept);
