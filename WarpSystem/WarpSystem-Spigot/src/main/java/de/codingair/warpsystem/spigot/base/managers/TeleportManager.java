@@ -116,7 +116,10 @@ public class TeleportManager implements ITeleportManager {
         teleport.cancel(Result.CANCELLED_BY_SYSTEM);
         invalidate(player);
 
-        if (WarpSystem.getInstance().getFileManager().getFile("Config").getConfig().getBoolean("WarpSystem.Send.Teleport_Cancel_Message", true)) {
+        boolean config = WarpSystem.getInstance().getFileManager().getFile("Config").getConfig().getBoolean("WarpSystem.Send.Teleport_Cancel_Message", true);
+        Boolean b = teleport.getOptions().getOrigin().sendTeleportCancelMessage();
+
+        if (b != null ? b : config) {
             if (WarpSystem.opt().getDelayDisplay() == TeleportDelay.Display.TITLE) MessageAPI.sendTitle(player, " ", " ", 0, 1, 0);
             MessageAPI.sendActionBar(player, Lang.get("Teleport_Cancelled"));
         }

@@ -20,8 +20,10 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Editor<C> extends SimpleGUI {
@@ -35,13 +37,10 @@ public class Editor<C> extends SimpleGUI {
     private final ShowIcon showIcon;
     private SoundData successSound = null;
 
-    public Editor(Player p, C clone, Backup<C> backup, ShowIcon showIcon, PageItem... pages) {
+    public Editor(@NotNull Player p, C clone, @NotNull Backup<C> backup, @NotNull ShowIcon showIcon, @NotNull PageItem... pages) {
         super(p, new Layout(), pages[0], WarpSystem.getInstance());
 
-        List<PageItem> temp = new ArrayList<>();
-        for (PageItem page : pages) {
-            if (page != null) temp.add(page);
-        }
+        List<PageItem> temp = new ArrayList<>(Arrays.asList(pages));
 
         this.pages = temp.toArray(new PageItem[0]);
         temp.clear();

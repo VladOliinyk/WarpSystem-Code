@@ -9,7 +9,6 @@ import de.codingair.codingapi.tools.io.JSON.JSONParser;
 import de.codingair.codingapi.tools.io.lib.JSONArray;
 import de.codingair.codingapi.tools.io.lib.ParseException;
 import de.codingair.codingapi.tools.io.utils.DataMask;
-import de.codingair.codingapi.tools.io.utils.Serializable;
 import de.codingair.codingapi.utils.ImprovedDouble;
 import de.codingair.codingapi.utils.Value;
 import de.codingair.warpsystem.api.Result;
@@ -41,7 +40,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
-public abstract class FeatureObject implements Serializable {
+public abstract class FeatureObject implements IFeatureObject {
     protected int performed = 0;
     protected String permission = null;
     protected long cooldown = 0;

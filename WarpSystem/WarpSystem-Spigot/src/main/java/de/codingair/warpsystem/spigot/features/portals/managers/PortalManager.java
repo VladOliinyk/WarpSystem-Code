@@ -18,6 +18,9 @@ import de.codingair.warpsystem.spigot.base.utils.teleport.Origin;
 import de.codingair.warpsystem.spigot.base.utils.teleport.v2.Teleport;
 import de.codingair.warpsystem.spigot.features.FeatureType;
 import de.codingair.warpsystem.spigot.features.portals.commands.CPortals;
+import de.codingair.warpsystem.spigot.features.portals.dimensions.DimensionType;
+import de.codingair.warpsystem.spigot.features.portals.dimensions.IDimensionalCommandHandler;
+import de.codingair.warpsystem.spigot.features.portals.dimensions.IDimensionalPortal;
 import de.codingair.warpsystem.spigot.features.portals.guis.DeleteGUI;
 import de.codingair.warpsystem.spigot.features.portals.guis.PortalEditor;
 import de.codingair.warpsystem.spigot.features.portals.guis.subgui.blockeditor.PortalBlockEditor;
@@ -25,15 +28,17 @@ import de.codingair.warpsystem.spigot.features.portals.listeners.EditorListener;
 import de.codingair.warpsystem.spigot.features.portals.listeners.PortalListener;
 import de.codingair.warpsystem.spigot.features.portals.old.EffectPortal;
 import de.codingair.warpsystem.spigot.features.portals.old.nativeportals.NativePortal;
+import de.codingair.warpsystem.spigot.features.portals.utils.DimensionalPortalFactory;
 import de.codingair.warpsystem.spigot.features.portals.utils.Portal;
 import de.codingair.warpsystem.spigot.features.portals.utils.PortalFactory;
+import de.codingair.warpsystem.spigot.versionfactory.VFac;
+import de.codingair.warpsystem.spigot.versionfactory.VKey;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @AvailableForSetupAssistant (type = "Portals", config = "Config")
 @Function (name = "Enabled", defaultValue = "true", configPath = "WarpSystem.Functions.Portals", clazz = Boolean.class)
@@ -46,16 +51,27 @@ public class PortalManager implements Manager {
     private final TimeList<String> goingToDelete = new TimeList<>();
     private final TimeList<String> goingToEdit = new TimeList<>();
 
+    private final HashMap<DimensionType, IDimensionalPortal> dimensional = new HashMap<>();
+    private final IDimensionalCommandHandler commandHandler;
+
     private double maxParticleDistance;
     private long hologramUpdateInterval;
+
+    public PortalManager() {
+        commandHandler = VFac.build(VKey.DimensionalCommandHandler);
+    }
 
     public static PortalManager getInstance() {
         return WarpSystem.getInstance().getDataManager().getManager(FeatureType.PORTALS);
     }
 
+    public static IDimensionalCommandHandler handler() {
+        return getInstance().commandHandler;
+    }
+
     @Override
     public boolean load(boolean loader) {
-        WarpSystem.log("  > Loading Portals");
+        if (loader) WarpSystem.log("  > Loading Portals");
 
         Bukkit.getPluginManager().registerEvents(new EditorListener(), WarpSystem.getInstance());
         Bukkit.getPluginManager().registerEvents(new PortalListener(), WarpSystem.getInstance());
@@ -94,8 +110,27 @@ public class PortalManager implements Manager {
                 }
             }
 
-        if (fails > 0) WarpSystem.log("    > " + fails + " Error(s)");
-        WarpSystem.log("    ...got " + portals.size() + " Portal(s)");
+        l = file.getConfig().getList("DimensionalPortals");
+        if (l != null)
+            for (Object s : l) {
+                IDimensionalPortal p = DimensionalPortalFactory.build();
+                if (p != null && s instanceof Map) {
+                    try {
+                        JSON json = new JSON((Map<?, ?>) s);
+                        p.read(json);
+                        dimensional.put(p.getType(), p);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        fails++;
+                        success = false;
+                    }
+                }
+            }
+
+        if (loader) {
+            if (fails > 0) WarpSystem.log("    > " + fails + " Error(s)");
+            WarpSystem.log("    ...got " + (portals.size() + dimensional.size()) + " Portal(s)");
+        }
 
         showAll();
 
@@ -107,9 +142,9 @@ public class PortalManager implements Manager {
         if (!saver) WarpSystem.log("  > Saving Portals");
 
         ConfigFile file = WarpSystem.getInstance().getFileManager().getFile("Teleporters");
+        int saved = 0;
 
         List<JSON> data = new ArrayList<>();
-
         for (Portal portal : this.portals) {
             JSON json = new JSON();
             portal.write(json);
@@ -118,10 +153,23 @@ public class PortalManager implements Manager {
 
         if (!saver) hideAll();
 
+        saved += data.size();
         file.getConfig().set("PortalsV2", data);
+
+        data = new ArrayList<>();
+        for (IDimensionalPortal portal : this.dimensional.values()) {
+            JSON json = new JSON();
+            portal.write(json);
+            data.add(json);
+        }
+
+        if (!saver) hideAll();
+
+        saved += data.size();
+        file.getConfig().set("DimensionalPortals", data);
         file.saveConfig();
 
-        if (!saver) WarpSystem.log("    ...saved " + data.size() + " Portal(s)");
+        if (!saver) WarpSystem.log("    ...saved " + saved + " Portal(s)");
     }
 
     @Override
@@ -130,6 +178,11 @@ public class PortalManager implements Manager {
             portal.destroy();
         }
         this.portals.clear();
+
+        for (IDimensionalPortal portal : this.dimensional.values()) {
+            portal.destroy();
+        }
+        this.dimensional.clear();
     }
 
     public String checkName(String name) {
@@ -157,6 +210,10 @@ public class PortalManager implements Manager {
     public void showAll() {
         for (Portal portal : this.portals) {
             portal.setVisible(true);
+        }
+
+        for (IDimensionalPortal portal : this.dimensional.values()) {
+            portal.enable();
         }
     }
 
@@ -421,5 +478,28 @@ public class PortalManager implements Manager {
 
     public long getHologramUpdateInterval() {
         return hologramUpdateInterval;
+    }
+
+    public IDimensionalPortal getDimensionalPortal(@NotNull DimensionType type) {
+        return this.dimensional.get(type);
+    }
+
+    public Set<DimensionType> getDimensionalPortalTypes() {
+        return this.dimensional.keySet();
+    }
+
+    public void registerDimensionalPortal(@NotNull IDimensionalPortal portal) {
+        DimensionType type = portal.getType();
+        if (type == null) return;
+
+        this.dimensional.putIfAbsent(type, portal);
+    }
+
+    public IDimensionalPortal deleteDimensionalPortal(@NotNull DimensionType type) {
+        return this.dimensional.remove(type);
+    }
+
+    public IDimensionalCommandHandler getCommandHandler() {
+        return commandHandler;
     }
 }

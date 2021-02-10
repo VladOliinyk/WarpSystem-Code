@@ -24,10 +24,12 @@ public enum VKey {
     PlayerWarpHandler(VFac.HANDLERS),
     RandomTeleportHandler(VFac.HANDLERS),
     TeleportCommandManager(VFac.HANDLERS),
+    DimensionalCommandHandler(VFac.HANDLERS),
 
     Portal(VFac.FEATURE_OBJECTS),
     Shortcut(VFac.FEATURE_OBJECTS),
     WarpSign(VFac.FEATURE_OBJECTS),
+    DimensionalPortal(VFac.FEATURE_OBJECTS + "dimensional."),
     ;
 
     private final String path;
