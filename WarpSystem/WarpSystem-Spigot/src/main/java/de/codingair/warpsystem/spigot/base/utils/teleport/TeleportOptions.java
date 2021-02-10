@@ -36,6 +36,8 @@ public class TeleportOptions {
     private boolean waitForTeleport; //Waiting for walking teleports
     private boolean confirmPayment = true;
     private boolean silent;
+    private boolean printDelay = true; //delay in action bar
+    private boolean playTick = true; //delay tick sound
 
     private String payMessage;
     private String paymentDeniedMessage;
@@ -214,6 +216,7 @@ public class TeleportOptions {
     }
 
     public void setTeleportSound(SoundData teleportSound) {
+        if (teleportSound == null) teleportSound = new SoundData(Sound.AMBIENT_CAVE, 0F, 0F);
         this.teleportSound = teleportSound;
     }
 
@@ -313,5 +316,21 @@ public class TeleportOptions {
 
     public void setDelay(int delay) {
         this.delay = delay;
+    }
+
+    public boolean isPrintDelay() {
+        return printDelay;
+    }
+
+    public void setPrintDelay(boolean printDelay) {
+        this.printDelay = printDelay;
+    }
+
+    public boolean isPlayTick() {
+        return playTick;
+    }
+
+    public void setPlayTick(boolean playTick) {
+        this.playTick = playTick;
     }
 }

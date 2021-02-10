@@ -63,7 +63,7 @@ public class WaitForTeleport extends TeleportStage {
 
     @Override
     public void start() {
-        if ((options.isCanMove() || options.isSkip() || options.getDelay(player) == 0) && options.getCosts(player) == 0) {
+        if (!options.isWaitForTeleport() || (options.isCanMove() || options.isSkip() || options.getDelay(player) == 0) && options.getCosts(player) == 0) {
             end();
             return;
         }

@@ -70,14 +70,19 @@ public class TeleportDelay extends TeleportStage {
                     return;
                 }
 
-                if (!hasAnimation && AnimationManager.getInstance().getActive().getTickSound() != null) AnimationManager.getInstance().getActive().getTickSound().play(player);
-
-                if (d == Display.ACTION_BAR) MessageAPI.sendActionBar(player, msg.replace("%seconds%", left + ""));
-                else if (d == TeleportDelay.Display.TITLE) {
-                    int fadeIn = left == delay ? 5 : 0;
-                    int fadeOut = left == 1 ? 5 : 0;
-                    MessageAPI.sendTitle(player, text[0].replace("%seconds%", left + ""), text[1].replace("%seconds%", left + ""), fadeIn, 25 - fadeOut, fadeOut, false, false, false);
+                if (!hasAnimation && AnimationManager.getInstance().getActive().getTickSound() != null && teleport.getOptions().isPlayTick()) {
+                    AnimationManager.getInstance().getActive().getTickSound().play(player);
                 }
+
+                if (teleport.getOptions().isPrintDelay()) {
+                    if (d == Display.ACTION_BAR) MessageAPI.sendActionBar(player, msg.replace("%seconds%", left + ""));
+                    else if (d == TeleportDelay.Display.TITLE) {
+                        int fadeIn = left == delay ? 5 : 0;
+                        int fadeOut = left == 1 ? 5 : 0;
+                        MessageAPI.sendTitle(player, text[0].replace("%seconds%", left + ""), text[1].replace("%seconds%", left + ""), fadeIn, 25 - fadeOut, fadeOut, false, false, false);
+                    }
+                }
+
                 left--;
             }
         };

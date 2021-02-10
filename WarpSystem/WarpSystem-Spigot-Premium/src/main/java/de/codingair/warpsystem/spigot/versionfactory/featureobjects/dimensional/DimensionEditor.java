@@ -26,6 +26,7 @@ public class DimensionEditor extends Editor<DimensionalPortal> {
                 }
 
                 PortalManager.getInstance().registerDimensionalPortal(portal);
+                portal.enable();
             }
 
             @Override

@@ -1,5 +1,7 @@
 package de.codingair.warpsystem.spigot.versionfactory.featureobjects.dimensional;
 
+import de.codingair.codingapi.server.sounds.Sound;
+import de.codingair.codingapi.server.sounds.SoundData;
 import de.codingair.codingapi.tools.io.utils.DataMask;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.FeatureObject;
@@ -46,10 +48,16 @@ public class DimensionalPortal extends FeatureObject implements IDimensionalPort
     @Override
     public FeatureObject perform(Player player, TeleportOptions options) {
         options.setDisplayName(null);
-        options.setTeleportSound(null);
+        options.setTeleportSound(new SoundData(Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1F));
         options.setCancelSound(null);
         options.setMessage(null);
-        options.setAfterEffects(false);
+        options.setAfterEffects(false, false);
+        options.setTeleportAnimation(false);
+        options.setWaitForTeleport(false);
+        options.setPlayTick(false);
+        options.setPrintDelay(false);
+        options.setSkip(true);
+
         return super.perform(player, options);
     }
 
@@ -101,10 +109,17 @@ public class DimensionalPortal extends FeatureObject implements IDimensionalPort
             Destination destination = getDestination();
             Location l = destination.buildLocation();
 
-            if (!e.getPlayer().getWorld().equals(l.getWorld())) {
+            if (l == null || !e.getPlayer().getWorld().equals(l.getWorld())) {
                 perform(e.getPlayer());
                 e.setCancelled(true);
             }
         }
+    }
+
+    @Override
+    public <T extends FeatureObject> T createDestinationIfAbsent() {
+        T t = super.createDestinationIfAbsent();
+        getDestination().getCustomOptions().setParticles(false);
+        return t;
     }
 }
