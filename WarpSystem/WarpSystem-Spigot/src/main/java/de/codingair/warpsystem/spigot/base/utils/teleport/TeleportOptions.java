@@ -45,7 +45,7 @@ public class TeleportOptions {
     private SoundData teleportSound;
     private SoundData cancelSound;
 
-    private boolean afterEffects;
+    private Boolean afterEffects;
     private boolean publicAnimations;
     private boolean teleportAnimation = true;
 
@@ -81,7 +81,7 @@ public class TeleportOptions {
         this.silent = false;
         this.teleportSound = null;
         this.cancelSound = new SoundData(Sound.ENTITY_ITEM_BREAK, 0.7F, 1F);
-        this.afterEffects = WarpSystem.opt().isAfterEffects();
+        this.afterEffects = destination.getCustomOptions().getParticles();
         this.publicAnimations = WarpSystem.opt().isPublicAnimations();
     }
 
@@ -101,7 +101,7 @@ public class TeleportOptions {
         this.silent = false;
         this.teleportSound = o.teleportSound(null);
         this.cancelSound = o.cancelSound(new SoundData(Sound.ENTITY_ITEM_BREAK, 0.7F, 1F));
-        this.afterEffects = o.afterEffects(WarpSystem.opt().isAfterEffects());
+        this.afterEffects = o.afterEffects(destination.getCustomOptions().isParticles());
         this.publicAnimations = o.publicAnimations(WarpSystem.opt().isPublicAnimations());
     }
 
@@ -190,7 +190,7 @@ public class TeleportOptions {
 
     public String getMessage() {
         String displayName = this.displayName;
-        if(destination.getCustomOptions().getDisplayName() != null) displayName = destination.getCustomOptions().getColoredDisplayName();
+        if (destination.getCustomOptions().getDisplayName() != null) displayName = destination.getCustomOptions().getColoredDisplayName();
 
         return message == null ? null : displayName == null ? message : message.replace("%warp%", displayName);
     }
@@ -218,10 +218,11 @@ public class TeleportOptions {
     }
 
     public boolean isAfterEffects() {
-        return afterEffects;
+        return afterEffects != null ? afterEffects : WarpSystem.opt().isAfterEffects();
     }
 
-    public void setAfterEffects(boolean afterEffects) {
+    public void setAfterEffects(boolean afterEffects, boolean force) {
+        if (this.afterEffects != null && !force) return;
         this.afterEffects = afterEffects;
     }
 

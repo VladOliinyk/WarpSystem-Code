@@ -86,7 +86,7 @@ public abstract class FeatureObject implements IFeatureObject {
         options.setTeleportSound(sound);
         options.setSkip(skip);
         options.setCanMove(skip);
-        options.setAfterEffects(afterEffects);
+        options.setAfterEffects(afterEffects, false);
 
         return perform(player, options);
     }

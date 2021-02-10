@@ -238,6 +238,29 @@ public class DestinationPageHandler {
                     }
                 }
             }.setOption(option));
+
+            page.addButton(new SyncButton(5, 2) {
+                @Override
+                public ItemStack craftItem() {
+                    ItemBuilder builder = new ItemBuilder(XMaterial.BLAZE_ROD).setName("§6§n" + Lang.get("Particle_Effects"));
+                    boolean b = page.getDestination().getCustomOptions().isParticles();
+
+                    builder.addLore(Editor.ITEM_SUB_TITLE_COLOR + Lang.get("Current") + ": " + (b ? "§a" + Lang.get("Enabled") : "§c" + Lang.get("Disabled")));
+                    builder.addLore("", Editor.ITEM_SUB_TITLE_COLOR + Lang.get("Leftclick") + ": §7" + Lang.get("Toggle"));
+                    return builder.getItem();
+                }
+
+                @Override
+                public boolean canClick(ClickType click) {
+                    return click == ClickType.LEFT;
+                }
+
+                @Override
+                public void onClick(InventoryClickEvent e, Player player) {
+                    page.getDestination().getCustomOptions().setParticles(!page.getDestination().getCustomOptions().isParticles());
+                    update();
+                }
+            }.setOption(option));
         }
     }
 

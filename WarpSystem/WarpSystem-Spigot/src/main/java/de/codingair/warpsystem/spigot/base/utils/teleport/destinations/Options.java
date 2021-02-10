@@ -2,6 +2,7 @@ package de.codingair.warpsystem.spigot.base.utils.teleport.destinations;
 
 import de.codingair.codingapi.tools.io.utils.DataMask;
 import de.codingair.codingapi.tools.io.utils.Serializable;
+import de.codingair.warpsystem.spigot.base.WarpSystem;
 import org.bukkit.ChatColor;
 
 import java.util.Objects;
@@ -12,6 +13,7 @@ public class Options implements Serializable {
     private Integer delay;
     private Boolean rotation;
     private String displayName;
+    private Boolean particles;
 
     public Options apply(Options options) {
         this.message = options.message;
@@ -19,6 +21,7 @@ public class Options implements Serializable {
         this.delay = options.delay;
         this.rotation = options.rotation;
         this.displayName = options.displayName;
+        this.particles = options.particles;
         return this;
     }
 
@@ -38,6 +41,10 @@ public class Options implements Serializable {
 
         this.displayName = d.getString("displayName");
 
+        i = d.getInteger("particles", null);
+        if (i == null) particles = null;
+        else particles = i == 2;
+
         return true;
     }
 
@@ -48,6 +55,7 @@ public class Options implements Serializable {
         d.put("delay", delay == null ? null : (delay == 0 ? -1 : delay));
         d.put("rotation", rotation == null ? 0 : (rotation ? 2 : 1));
         d.put("displayName", displayName);
+        d.put("particles", particles == null ? 0 : (particles ? 2 : 1));
     }
 
     @Override
@@ -57,6 +65,7 @@ public class Options implements Serializable {
         delay = null;
         rotation = null;
         displayName = null;
+        particles = null;
     }
 
     @Override
@@ -68,12 +77,13 @@ public class Options implements Serializable {
                 Objects.equals(customMessage, options.customMessage) &&
                 Objects.equals(delay, options.delay) &&
                 Objects.equals(rotation, options.rotation) &&
-                Objects.equals(displayName, options.displayName);
+                Objects.equals(displayName, options.displayName) &&
+                Objects.equals(particles, options.particles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(message, customMessage, delay, rotation, displayName);
+        return Objects.hash(message, customMessage, delay, rotation, displayName, particles);
     }
 
     public String buildMessage(String message) {
@@ -123,11 +133,26 @@ public class Options implements Serializable {
         return displayName;
     }
 
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     public String getColoredDisplayName() {
         return displayName == null ? null : de.codingair.codingapi.utils.ChatColor.translateAll('&', displayName);
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public boolean isParticles() {
+        if (particles == null) return WarpSystem.opt().isAfterEffects();
+        return particles;
+    }
+
+    public Boolean getParticles() {
+        return particles;
+    }
+
+    public void setParticles(Boolean particles) {
+        if (particles != null && particles == WarpSystem.opt().isAfterEffects()) {
+            this.particles = null;
+        } else this.particles = particles;
     }
 }

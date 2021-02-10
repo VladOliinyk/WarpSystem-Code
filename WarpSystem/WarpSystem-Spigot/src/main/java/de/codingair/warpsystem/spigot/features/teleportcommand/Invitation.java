@@ -106,7 +106,7 @@ public class Invitation {
                     options.setPayMessage(null);
                     options.setCosts(TeleportCommandManager.getInstance().getTpaCosts());
                     options.setPaymentDeniedMessage(null);
-                    options.setAfterEffects(false);
+                    options.setAfterEffects(false, false);
                     options.addCallback(new Callback<Result>() {
                         @Override
                         public void accept(Result result) {

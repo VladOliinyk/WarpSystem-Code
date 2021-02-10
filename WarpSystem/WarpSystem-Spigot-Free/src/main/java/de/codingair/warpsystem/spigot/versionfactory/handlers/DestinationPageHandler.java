@@ -170,6 +170,53 @@ public class DestinationPageHandler {
                     Lang.PREMIUM_CHAT(player);
                 }
             }.setOption(option));
+
+            page.addButton(new SyncButton(4, 2) {
+                @Override
+                public ItemStack craftItem() {
+                    String current = page.getDestination().getCustomOptions().getColoredDisplayName();
+                    ItemBuilder builder = new ItemBuilder(XMaterial.NAME_TAG).setName("§6§n" + Lang.get("Teleport_Name") + Lang.PREMIUM_LORE);
+
+                    builder.addLore(Editor.ITEM_SUB_TITLE_COLOR + Lang.get("Current") + ": " + (current == null ? "§e" + Lang.get("Default") : "§7\"§f" + current + "§7\""));
+
+                    builder.addLore("", Editor.ITEM_SUB_TITLE_COLOR + Lang.get("Leftclick") + ": §a" + (current == null ? Lang.get("Set") : Lang.get("Change")));
+                    if (current != null) builder.addLore(Editor.ITEM_SUB_TITLE_COLOR + Lang.get("Rightclick") + ": §c" + Lang.get("Remove"));
+
+                    return builder.getItem();
+                }
+
+                @Override
+                public boolean canClick(ClickType click) {
+                    return click == ClickType.LEFT || click == ClickType.SHIFT_LEFT || click == ClickType.RIGHT || click == ClickType.SHIFT_RIGHT;
+                }
+
+                @Override
+                public void onClick(InventoryClickEvent e, Player player) {
+                    Lang.PREMIUM_CHAT(player);
+                }
+            }.setOption(option));
+
+            page.addButton(new SyncButton(5, 2) {
+                @Override
+                public ItemStack craftItem() {
+                    ItemBuilder builder = new ItemBuilder(XMaterial.BLAZE_ROD).setName("§6§n" + Lang.get("Particle_Effects"));
+                    boolean b = page.getDestination().getCustomOptions().isParticles();
+
+                    builder.addLore(Editor.ITEM_SUB_TITLE_COLOR + Lang.get("Current") + ": " + (b ? "§a" + Lang.get("Enabled") : "§c" + Lang.get("Disabled")));
+                    builder.addLore("", Editor.ITEM_SUB_TITLE_COLOR + Lang.get("Leftclick") + ": §7" + Lang.get("Toggle"));
+                    return builder.getItem();
+                }
+
+                @Override
+                public boolean canClick(ClickType click) {
+                    return click == ClickType.LEFT || click == ClickType.SHIFT_LEFT || click == ClickType.RIGHT || click == ClickType.SHIFT_RIGHT;
+                }
+
+                @Override
+                public void onClick(InventoryClickEvent e, Player player) {
+                    Lang.PREMIUM_CHAT(player);
+                }
+            }.setOption(option));
         }
     }
 
