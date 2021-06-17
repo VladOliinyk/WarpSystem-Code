@@ -24,6 +24,7 @@ import de.codingair.warpsystem.velocity.api.files.FileManager;
 import de.codingair.warpsystem.velocity.base.listeners.MainListener;
 import de.codingair.warpsystem.velocity.base.listeners.SetupAssistantListener;
 import de.codingair.warpsystem.velocity.base.managers.*;
+import de.codingair.warpsystem.velocity.redis.BulletHandler;
 import de.codingair.warpsystem.velocity.utils.VelocityHandler;
 import de.codingair.warpsystem.velocity.utils.VelocityPlayer;
 import de.codingair.warpsystem.velocity.utils.VelocityScheduleTask;
@@ -157,8 +158,12 @@ public class WarpSystem extends VelocityPlugin {
         boolean enabled = fileManager.getFile("Config").getSimpleConfig().getBoolean("WarpSystem.Redis", true);
         if (!enabled) {
             name = "Disabled";
+        } else if (proxy.getPluginManager().getPlugin("bullet").isPresent()) {
+            RedisCore.core().setHandler(new BulletHandler());
+            name = "Bullet";
         } else if (proxy.getPluginManager().getPlugin("trevor").isPresent()) {
             RedisCore.core().setHandler(new TrevorHandler());
+            name = "Trevor";
         }
 
         log("Redis hook: " + name);
