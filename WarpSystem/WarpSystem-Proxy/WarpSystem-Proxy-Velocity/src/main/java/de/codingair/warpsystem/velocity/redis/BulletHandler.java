@@ -6,7 +6,6 @@ import net.nitrado.pubsub.PubSubConnection;
 import net.nitrado.pubsub.PubSubObject;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.UUID;
 
 public class BulletHandler extends RedisHandler {
@@ -25,8 +24,7 @@ public class BulletHandler extends RedisHandler {
 
     @Override
     public void send(byte[] data) {
-        byte[] encoded = Base64.getEncoder().encode(data);
-        pubSub.publish(channel, new PacketPayload(source, new String(encoded)));
+        pubSub.publish(channel, new PacketPayload(source, data));
     }
 
     @Override
@@ -38,10 +36,7 @@ public class BulletHandler extends RedisHandler {
                 return; // Ignore data from own proxy
             }
 
-            byte[] data = packetPayload.data.getBytes();
-            byte[] decoded = Base64.getDecoder().decode(data);
-
-            sink.receive(decoded, source);
+            sink.receive(packetPayload.data, source);
         });
     }
 
@@ -56,9 +51,9 @@ public class BulletHandler extends RedisHandler {
 
     private static class PacketPayload implements PubSubObject {
         private final String source;
-        private final String data;
+        private final byte[] data;
 
-        public PacketPayload(String source, String data) {
+        public PacketPayload(String source, byte[] data) {
             this.source = source;
             this.data = data;
         }
