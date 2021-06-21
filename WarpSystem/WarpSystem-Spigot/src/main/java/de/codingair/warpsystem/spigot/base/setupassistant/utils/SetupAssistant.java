@@ -29,6 +29,7 @@ public class SetupAssistant {
     private final HashMap<String, List<Value>> hierarchy = new HashMap<>();
     private final List<String> priority = new ArrayList<>();
     private final boolean general;
+    @SuppressWarnings ("UnstableApiUsage")
     private final EvictingQueue<Object> queue = EvictingQueue.create(17);
     private List<Value> values;
     private PluginVersion filter = null;
@@ -47,20 +48,26 @@ public class SetupAssistant {
             WarpSystem.getDataHandler().send(new ToggleSetupAssistantPacket(player.getName()), player);
         }
 
-        Class<?> oPacketClass = IReflection.getClass(IReflection.ServerPacket.MINECRAFT_PACKAGE, "PacketPlayOutChat");
-        Class<?> iPacketClass = IReflection.getClass(IReflection.ServerPacket.MINECRAFT_PACKAGE, "PacketPlayInChat");
-        IReflection.FieldAccessor<BaseComponent[]> components = IReflection.getField(oPacketClass, "components");
-        IReflection.FieldAccessor<String> a = IReflection.getField(iPacketClass, "a");
+        Class<?> iPacketClass = IReflection.getClass(IReflection.ServerPacket.PACKETS, "PacketPlayInChat");
+        IReflection.FieldAccessor<String> inputText = IReflection.getField(iPacketClass, Version.since(17, "a", "b"));
+
+        Class<?> oPacketClass = IReflection.getClass(IReflection.ServerPacket.PACKETS, "PacketPlayOutChat");
+        IReflection.FieldAccessor<?> outputText = IReflection.getField(oPacketClass, Version.since(17, "components", "a"));
+
+        boolean newer = Version.atLeast(17);
+
+        IReflection.MethodAccessor getText = newer ? IReflection.getMethod(PacketUtils.IChatBaseComponentClass, "getText", String.class, new Class[0]) : null;
 
         reader = new PacketReader(player, "WS-SetupAssistant", WarpSystem.getInstance()) {
             @Override
             public boolean readPacket(Object packet) {
                 if (packet.getClass().equals(iPacketClass)) {
-                    onChat(a.get(packet));
+                    onChat(inputText.get(packet));
                     return true;
                 } else if (packet.getClass().equals(oPacketClass)) { //got output message from bungee
                     //queue for later
                     queue.add(packet);
+                    return true;
                 }
                 return false;
             }
@@ -68,14 +75,22 @@ public class SetupAssistant {
             @Override
             public boolean writePacket(Object packet) {
                 if (packet.getClass().equals(oPacketClass)) {
-                    BaseComponent[] c = components.get(packet);
-
-                    if (c != null && c.length == 1) {
-                        String s = c[0].toLegacyText();
+                    if (newer) {
+                        String s = (String) getText.invoke(outputText.get(packet));
                         if (s.startsWith("§f")) s = s.substring(2);
 
                         //identifier
                         if (s.startsWith("§§§§")) return false;
+                    } else {
+                        BaseComponent[] c = (BaseComponent[]) outputText.get(packet);
+
+                        if (c != null && c.length == 1) {
+                            String s = c[0].toLegacyText();
+                            if (s.startsWith("§f")) s = s.substring(2);
+
+                            //identifier
+                            if (s.startsWith("§§§§")) return false;
+                        }
                     }
 
                     //queue for later

@@ -43,12 +43,10 @@ public class PermissionPlayer_v1_9 implements Player {
         this.player = player;
     }
 
-    @Override
     public boolean equals(Object o) {
         return player.equals(o);
     }
 
-    @Override
     public int hashCode() {
         return player.hashCode();
     }
@@ -193,6 +191,10 @@ public class PermissionPlayer_v1_9 implements Player {
 
     }
 
+    public void sendBlockDamage(@NotNull Location location, float v) {
+
+    }
+
     public void hidePlayer(Plugin plugin, Player player) {
 
     }
@@ -214,6 +216,10 @@ public class PermissionPlayer_v1_9 implements Player {
     }
 
     public int getClientViewDistance() {
+        return 0;
+    }
+
+    public int getPing() {
         return 0;
     }
 
@@ -259,6 +265,11 @@ public class PermissionPlayer_v1_9 implements Player {
 
     public boolean isHandRaised() {
         return false;
+    }
+
+    @Nullable
+    public ItemStack getItemInUse() {
+        return null;
     }
 
     public boolean discoverRecipe(NamespacedKey namespacedKey) {
@@ -505,6 +516,10 @@ public class PermissionPlayer_v1_9 implements Player {
 
     }
 
+    public boolean breakBlock(@NotNull Block block) {
+        return false;
+    }
+
     public void sendBlockChange(Location location, Material material, byte b) {
 
     }
@@ -706,6 +721,30 @@ public class PermissionPlayer_v1_9 implements Player {
     }
 
     public void setFoodLevel(int i) {
+
+    }
+
+    public int getSaturatedRegenRate() {
+        return 0;
+    }
+
+    public void setSaturatedRegenRate(int i) {
+
+    }
+
+    public int getUnsaturatedRegenRate() {
+        return 0;
+    }
+
+    public void setUnsaturatedRegenRate(int i) {
+
+    }
+
+    public int getStarvationRate() {
+        return 0;
+    }
+
+    public void setStarvationRate(int i) {
 
     }
 
@@ -1000,6 +1039,10 @@ public class PermissionPlayer_v1_9 implements Player {
 
     public boolean isSleeping() {
         return this.player.isSleeping();
+    }
+
+    public boolean isClimbing() {
+        return false;
     }
 
     public int getSleepTicks() {
@@ -1304,6 +1347,30 @@ public class PermissionPlayer_v1_9 implements Player {
 
     public void setFireTicks(int i) {
 
+    }
+
+    public void setVisualFire(boolean b) {
+
+    }
+
+    public boolean isVisualFire() {
+        return false;
+    }
+
+    public int getFreezeTicks() {
+        return 0;
+    }
+
+    public int getMaxFreezeTicks() {
+        return 0;
+    }
+
+    public void setFreezeTicks(int i) {
+
+    }
+
+    public boolean isFrozen() {
+        return false;
     }
 
     public int getMaxFireTicks() {

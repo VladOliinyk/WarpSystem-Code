@@ -6,7 +6,7 @@
 
     <groupId>de.codingair</groupId>
     <artifactId>WarpSystem</artifactId>
-    <version>5.0.2_Hotfix-3</version>
+    <version>5.0.2_Hotfix-6</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -63,7 +63,7 @@
             <dependency>
                 <groupId>com.github.CodingAir</groupId>
                 <artifactId>CodingAPI</artifactId>
-                <version>1.21</version>
+                <version>1.23</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -93,7 +93,7 @@
             <dependency>
                 <groupId>org.spigotmc</groupId>
                 <artifactId>spigot-api</artifactId>
-                <version>1.16.4-R0.1-SNAPSHOT</version>
+                <version>1.17-R0.1-SNAPSHOT</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
