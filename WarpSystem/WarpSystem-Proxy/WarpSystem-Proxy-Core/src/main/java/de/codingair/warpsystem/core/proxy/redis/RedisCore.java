@@ -27,12 +27,15 @@ public class RedisCore {
     public void setHandler(RedisHandler handler) {
         this.handler = handler;
         this.handler.setSink((data, source) -> Core.getPlugin().dataHandler().receive(data, null, Direction.UP));
+        createAwareness();
+    }
 
-        Core.getPlugin().dataHandler().send(new ProxyAwarenessPacket(handler.source), null, Direction.UP);
+    private static void createAwareness() {
+        Core.getPlugin().dataHandler().send(new ProxyAwarenessPacket(RedisCore.core().handler.source), null, Direction.UP);
     }
 
     public static void recognize(String proxy) {
-        core().proxies.add(proxy);
+        if (!core().proxies.add(proxy)) createAwareness();
     }
 
     public Set<String> getProxies() {
