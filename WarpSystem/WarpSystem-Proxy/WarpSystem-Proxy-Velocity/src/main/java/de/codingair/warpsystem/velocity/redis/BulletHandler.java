@@ -1,14 +1,16 @@
 package de.codingair.warpsystem.velocity.redis;
 
 import de.codingair.warpsystem.core.proxy.redis.RedisHandler;
-import de.codingair.warpsystem.velocity.base.WarpSystem;
 import net.nitrado.pubsub.PubSub;
 import net.nitrado.pubsub.PubSubConnection;
 import net.nitrado.pubsub.PubSubObject;
 
-import java.io.*;
+import java.io.IOException;
+import java.util.UUID;
 
 public class BulletHandler extends RedisHandler {
+    private static final UUID id = UUID.randomUUID();
+
     private final PubSub pubSub;
 
     public BulletHandler() {
@@ -17,42 +19,25 @@ public class BulletHandler extends RedisHandler {
     }
 
     private static String getProxyId() {
-        return WarpSystem.proxy().getBoundAddress().getHostName() + ":" + WarpSystem.proxy().getBoundAddress().getPort();
+        return id.toString();
     }
 
     @Override
     public void send(byte[] data) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(stream);
-
-        try {
-            out.writeUTF(source);
-            out.writeUTF(new String(data));
-            pubSub.publish(channel, new PacketPayload(source, stream.toString()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        pubSub.publish(channel, new PacketPayload(source, new String(data)));
     }
 
     @Override
     public void registerChannel() {
-        pubSub.subscribe("packets", PacketPayload.class, packetPayload -> {
-            if (packetPayload.source.equals(source)) {
+        pubSub.subscribe(channel, PacketPayload.class, packetPayload -> {
+            String source = packetPayload.source;
+
+            if (source.equals(this.source)) {
                 return; // Ignore data from own proxy
             }
 
-            DataInputStream in = new DataInputStream(new ByteArrayInputStream(packetPayload.data.getBytes()));
-
-            try {
-                String source = in.readUTF();
-
-                if (source.equals(this.source)) return;
-
-                byte[] data = in.readUTF().getBytes();
-                sink.receive(data, source);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            byte[] data = packetPayload.data.getBytes();
+            sink.receive(data, source);
         });
     }
 
