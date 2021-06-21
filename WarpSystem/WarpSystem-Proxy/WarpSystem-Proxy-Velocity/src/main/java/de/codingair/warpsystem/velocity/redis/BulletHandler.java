@@ -6,6 +6,7 @@ import net.nitrado.pubsub.PubSubConnection;
 import net.nitrado.pubsub.PubSubObject;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.UUID;
 
 public class BulletHandler extends RedisHandler {
@@ -24,7 +25,8 @@ public class BulletHandler extends RedisHandler {
 
     @Override
     public void send(byte[] data) {
-        pubSub.publish(channel, new PacketPayload(source, new String(data)));
+        byte[] encoded = Base64.getEncoder().encode(data);
+        pubSub.publish(channel, new PacketPayload(source, new String(encoded)));
     }
 
     @Override
@@ -37,7 +39,9 @@ public class BulletHandler extends RedisHandler {
             }
 
             byte[] data = packetPayload.data.getBytes();
-            sink.receive(data, source);
+            byte[] decoded = Base64.getDecoder().decode(data);
+
+            sink.receive(decoded, source);
         });
     }
 
