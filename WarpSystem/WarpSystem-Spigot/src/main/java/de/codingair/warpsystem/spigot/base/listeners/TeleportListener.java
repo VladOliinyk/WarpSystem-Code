@@ -53,7 +53,7 @@ public class TeleportListener implements Listener {
     public void onTeleport(PlayerTeleportEvent e) {
         org.bukkit.Location loc = TELEPORTS.remove(e.getPlayer());
 
-        if (loc != null) {
+        if (loc != null && loc.equals(e.getTo())) {
             e.setCancelled(false);
             e.setTo(loc);
         }
@@ -122,6 +122,23 @@ public class TeleportListener implements Listener {
         double diffY = Math.abs(e.getFrom().getY() - e.getTo().getY());
 
         if (diff > 0.01 || diffY >= 0.11) WarpSystem.getInstance().getTeleportManager().cancelTeleport(p);
+    }
+
+    @EventHandler
+    public void onTeleportDuringTeleportationProcess(PlayerTeleportEvent e) {
+        Player p = e.getPlayer();
+
+        Teleport t = TeleportManager.getInstance().getTeleport(p);
+        if (t == null || t.isCanMove()) return;
+        Location target = t.getDestination().buildLocation();
+
+        if (target == null) {
+            //we gonna switch the server -> cancel the teleport
+            e.setCancelled(true);
+        } else if (!target.equals(e.getTo())) {
+            //not the same teleport -> cancel
+            e.setCancelled(true);
+        }
     }
 
     private static class TeleportData {

@@ -228,24 +228,10 @@ public class PlayerWarp extends FeatureObject {
         if (d.data != null) this.item.setData(d.data);
         if (d.type != null) {
             Optional<XMaterial> m = XMaterial.matchDefinedXMaterial(d.type, d.data == null || Version.get().isBiggerThan(Version.v1_12) ? 0 : d.data);
-
-            if (!m.isPresent()) {
-                throw new IllegalArgumentException("Error at loading PlayerWarp(Owner-Name=" + (d.owner == null ? owner.getName() : d.owner.getName()) + "; Warp-Name=" + (d.name == null ? name : d.name) + "). Material is null: (" + d.type + ", " + d.data + ")");
-            } else {
-                ItemStack i = m.get().parseItem();
-                this.item.setType(i == null ? Material.STONE : i.getType());
-                this.item.setData(m.get().getData());
-            }
+            applyMaterial(d, m);
         } else if (d.data != null) {
             Optional<XMaterial> m = XMaterial.matchDefinedXMaterial(item.getType().name(), Version.get().isBiggerThan(Version.v1_12) ? 0 : d.data);
-
-            if (!m.isPresent()) {
-                throw new IllegalArgumentException("Error at loading PlayerWarp(Owner-Name=" + (d.owner == null ? owner.getName() : d.owner.getName()) + "; Warp-Name=" + (d.name == null ? name : d.name) + "). Material is null: (" + d.type + ", " + d.data + ")");
-            } else {
-                ItemStack i = m.get().parseItem();
-                this.item.setType(i == null ? Material.STONE : i.getType());
-                this.item.setData(m.get().getData());
-            }
+            applyMaterial(d, m);
         }
 
         if (d.skullId != null) this.item.setSkullId(d.skullId);
@@ -292,6 +278,17 @@ public class PlayerWarp extends FeatureObject {
         if (d.pitch != null) l.setPitch(d.pitch);
 
         if (createDestination) addAction(new WarpAction(new Destination(a)));
+    }
+
+    private void applyMaterial(PlayerWarpData d, Optional<XMaterial> m) {
+        if (!m.isPresent()) {
+            //might be a version conflict with another MC version in the network. We'll gonna use the player head again!
+            resetItem(true);
+        } else {
+            ItemStack i = m.get().parseItem();
+            this.item.setType(i == null ? Material.STONE : i.getType());
+            this.item.setData(m.get().getData());
+        }
     }
 
     @Override
@@ -397,9 +394,10 @@ public class PlayerWarp extends FeatureObject {
         if (this.description != null) this.description.clear();
     }
 
-    public PlayerWarp changeItem(ItemBuilder item) {
+    public void changeItem(ItemBuilder item) {
         if (this.item == null) {
-            return setItem(item);
+            setItem(item);
+            return;
         }
 
         this.item.setType(item.getType())
@@ -411,27 +409,30 @@ public class PlayerWarp extends FeatureObject {
                 .setCustomModel(item.getCustomModel())
                 .setPotionData(item.getPotionData())
         ;
-        return this;
     }
 
-    public boolean isSameItem(ItemBuilder item) {
-        if (this.item == null && item == null) return true;
+    public boolean isAnotherItem(ItemBuilder item) {
+        if (this.item == null && item == null) return false;
 
         if (this.item != null && item != null) {
-            return this.item.getType() == item.getType()
-                    && this.item.getData() == item.getData()
-                    && this.item.getDurability() == item.getDurability()
-                    && this.item.getAmount() == item.getAmount()
-                    && this.item.getEnchantments() == item.getEnchantments()
-                    && Objects.equals(this.item.getSkullId(), item.getSkullId())
-                    && this.item.getColor() == item.getColor()
-                    && this.item.getCustomModel() == item.getCustomModel()
-                    && this.item.getPotionData() == item.getPotionData();
-        } else return false;
+            return this.item.getType() != item.getType()
+                    || this.item.getData() != item.getData()
+                    || this.item.getDurability() != item.getDurability()
+                    || this.item.getAmount() != item.getAmount()
+                    || this.item.getEnchantments() != item.getEnchantments()
+                    || !Objects.equals(this.item.getSkullId(), item.getSkullId())
+                    || this.item.getColor() != item.getColor()
+                    || this.item.getCustomModel() != item.getCustomModel()
+                    || this.item.getPotionData() != item.getPotionData();
+        } else return true;
     }
 
     public void resetItem() {
-        if (isStandardItem()) return;
+        resetItem(false);
+    }
+
+    private void resetItem(boolean force) {
+        if (!force && isStandardItem()) return;
         changeItem(getStandardItemBuilder());
     }
 

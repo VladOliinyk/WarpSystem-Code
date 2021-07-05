@@ -5,49 +5,43 @@ import de.codingair.packetmanagement.packets.Packet;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 
 public class SendGlobalWarpNamesPacket implements Packet {
-    private HashMap<String, String> names = new HashMap<>();
-    private boolean start;
+    private String warp, server;
+    private boolean reset;
 
     public SendGlobalWarpNamesPacket() {
     }
 
-    public SendGlobalWarpNamesPacket(HashMap<String, String> names, boolean start) {
-        this.names = names;
-        this.start = start;
+    public SendGlobalWarpNamesPacket(String warp, String server, boolean reset) {
+        this.warp = warp;
+        this.server = server;
+        this.reset = reset;
     }
 
     @Override
     public void write(DataOutputStream out) throws IOException {
-        out.writeInt(this.names.size());
-        for (String name : this.names.keySet()) {
-            out.writeUTF(name);
-        }
-        for (String server : this.names.values()) {
-            out.writeUTF(server);
-        }
-        out.writeBoolean(this.start);
+        out.writeUTF(this.warp);
+        out.writeUTF(this.server);
+        out.writeBoolean(this.reset);
     }
 
     @Override
     public void read(DataInputStream in) throws IOException {
-        int size = in.readInt();
-        for (int i = 0; i < size; i++) {
-            this.names.put(in.readUTF(), null);
-        }
-        for (String name : this.names.keySet()) {
-            this.names.replace(name, in.readUTF());
-        }
-        this.start = in.readBoolean();
+        this.warp = in.readUTF();
+        this.server = in.readUTF();
+        this.reset = in.readBoolean();
     }
 
-    public HashMap<String, String> getNames() {
-        return names;
+    public String getWarp() {
+        return warp;
     }
 
-    public boolean isStart() {
-        return start;
+    public String getServer() {
+        return server;
+    }
+
+    public boolean isReset() {
+        return reset;
     }
 }

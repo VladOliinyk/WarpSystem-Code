@@ -1,7 +1,6 @@
 package de.codingair.warpsystem.spigot.features.randomteleports.utils;
 
 import de.codingair.codingapi.server.Environment;
-import de.codingair.codingapi.server.reflections.IReflection;
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.Location;
 import de.codingair.codingapi.utils.Node;
@@ -20,7 +19,6 @@ import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class RandomLocationCalculator implements Runnable {
-    private static final IReflection.MethodAccessor isFuel = IReflection.getSaveMethod(Material.class, "isFuel", boolean.class);
     private final org.bukkit.Location startLocation;
     private final Player player;
     private final Player check;

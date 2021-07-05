@@ -1,6 +1,7 @@
 package de.codingair.warpsystem.spigot.base.setupassistant.utils;
 
 import com.google.common.collect.EvictingQueue;
+import de.codingair.codingapi.player.chat.ChatButton;
 import de.codingair.codingapi.player.chat.SimpleMessage;
 import de.codingair.codingapi.player.data.PacketReader;
 import de.codingair.codingapi.server.reflections.IReflection;
@@ -17,6 +18,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -62,8 +64,14 @@ public class SetupAssistant {
             @Override
             public boolean readPacket(Object packet) {
                 if (packet.getClass().equals(iPacketClass)) {
-                    onChat(inputText.get(packet));
-                    return true;
+                    String text = inputText.get(packet);
+                    if (text != null) {
+                        //forward chat button
+                        if (text.startsWith(ChatButton.PREFIX)) return false;
+
+                        onChat(text);
+                        return true;
+                    }
                 } else if (packet.getClass().equals(oPacketClass)) { //got output message from bungee
                     //queue for later
                     queue.add(packet);
@@ -175,7 +183,7 @@ public class SetupAssistant {
         if (requiresReload()) WarpSystem.getInstance().reload(true);
     }
 
-    public void onChat(String message) {
+    public void onChat(@NotNull String message) {
         if (message.contains(":")) {
             String name = message.split(":")[0];
             message = message.replace(name + ":", "");

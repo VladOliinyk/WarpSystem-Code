@@ -404,13 +404,13 @@ public class TeleportCommandHandler implements ITeleportCommandHandler {
         }
 
         if (data.getServer() != null) {
-            boolean interServerTP = data.getServer().equals(WarpSystem.getInstance().getCurrentServer());
+            boolean interServerTP = !data.getServer().equals(WarpSystem.getInstance().getCurrentServer());
 
             if (interServerTP) {
                 boolean offline;
 
                 if (tpToSender) offline = !isProxyTpaHereEnabled(data);
-                else  offline = !isProxyTpaEnabled(data);
+                else offline = !isProxyTpaEnabled(data);
 
                 if (offline) {
                     player.sendMessage(Lang.getPrefix() + Lang.get("Player_is_not_online"));

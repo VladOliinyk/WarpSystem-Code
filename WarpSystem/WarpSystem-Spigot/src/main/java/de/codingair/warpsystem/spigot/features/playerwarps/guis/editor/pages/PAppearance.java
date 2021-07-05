@@ -72,7 +72,7 @@ public class PAppearance extends PageItem {
 
                     if (!warp.isStandardItem()) {
                         if (original.isStandardItem()) builder.addLore(PWEditor.getCostsMessage(PlayerWarpManager.getManager().getItemCosts(), PAppearance.this));
-                        else if (!warp.isSameItem(original.getItem())) builder.addLore(PWEditor.getCostsMessage(PlayerWarpManager.getManager().getItemChangeCosts(), PAppearance.this));
+                        else if (warp.isAnotherItem(original.getItem())) builder.addLore(PWEditor.getCostsMessage(PlayerWarpManager.getManager().getItemChangeCosts(), PAppearance.this));
                     }
 
                     if (p.getInventory().getItem(p.getInventory().getHeldItemSlot()) == null || p.getInventory().getItem(p.getInventory().getHeldItemSlot()).getType() == Material.AIR)
@@ -83,7 +83,7 @@ public class PAppearance extends PageItem {
                     if (!warp.isStandardItem()) {
                         if (builder.getLore() == null || builder.getLore().size() <= 1) builder.addLore("");
                         builder.addLore(Editor.ITEM_SUB_TITLE_COLOR + Lang.get("Rightclick") + ": §c" + Lang.get("Remove"));
-                    } else if (!warp.isSameItem(original.getItem())) {
+                    } else if (warp.isAnotherItem(original.getItem())) {
                         if (builder.getLore() == null || builder.getLore().size() <= 1) builder.addLore("");
                         builder.addLore(Editor.ITEM_SUB_TITLE_COLOR + Lang.get("Rightclick") + ": §c" + Lang.get("Reset"));
                     }
@@ -101,7 +101,7 @@ public class PAppearance extends PageItem {
                         updateCosts();
                     } else if (e.isRightClick()) {
                         if (!warp.isStandardItem()) warp.resetItem();
-                        else if (!warp.isSameItem(original.getItem())) warp.changeItem(original.getItem());
+                        else if (warp.isAnotherItem(original.getItem())) warp.changeItem(original.getItem());
 
                         getLast().updateShowIcon();
                         update();
@@ -115,7 +115,7 @@ public class PAppearance extends PageItem {
                         return !(p.getInventory().getItem(p.getInventory().getHeldItemSlot()) == null || p.getInventory().getItem(p.getInventory().getHeldItemSlot()).getType() == Material.AIR
                                 || warp.getItem().getType() == p.getInventory().getItem(p.getInventory().getHeldItemSlot()).getType());
                     } else if (click == ClickType.RIGHT) {
-                        return !warp.isStandardItem() || !warp.isSameItem(original.getItem());
+                        return !warp.isStandardItem() || warp.isAnotherItem(original.getItem());
                     }
 
                     return false;

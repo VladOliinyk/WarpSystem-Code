@@ -75,41 +75,17 @@ public abstract class GlobalWarpHandler implements Manager {
     public void synchronize(Server<?> server) {
         if (this.globalWarps.isEmpty()) return;
 
-        List<HashMap<String, String>> list = new ArrayList<>();
-        HashMap<String, String> current = new HashMap<>();
-        int currentBytes = 0;
-
-        for (SGlobalWarp warp : this.globalWarps) {
-            currentBytes += warp.getName().length() + warp.getServer().length();
-
-            if (currentBytes > 15000) {
-                list.add(current);
-                current = new HashMap<>();
-            }
-
-            currentBytes = warp.getName().length() + warp.getServer().length();
-            current.put(warp.getName(), warp.getServer());
-        }
-
-        if (current.size() > 0) list.add(current);
-
         boolean start = true;
-        for (HashMap<String, String> l : list) {
-            Core.getPlugin().dataHandler().send(new SendGlobalWarpNamesPacket(l, start), server, Direction.DOWN);
+        for (SGlobalWarp warp : this.globalWarps) {
+            Core.getPlugin().dataHandler().send(new SendGlobalWarpNamesPacket(warp.getName(), warp.getServer(), start), server, Direction.DOWN);
             start = false;
         }
-
-        list.clear();
     }
 
     public abstract void delete(SGlobalWarp warp);
 
     protected void delete(SGlobalWarp warp, DataMask mask) {
         mask.remove(warp.getName());
-    }
-
-    public Set<SGlobalWarp> getGlobalWarps() {
-        return globalWarps;
     }
 
     public SGlobalWarp get(String name) {

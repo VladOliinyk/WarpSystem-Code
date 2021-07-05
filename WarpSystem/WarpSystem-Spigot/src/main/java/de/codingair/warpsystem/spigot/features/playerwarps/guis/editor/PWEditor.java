@@ -143,8 +143,8 @@ public class PWEditor extends Editor<PlayerWarp> implements Ticker {
         //personal item
         if (!warp.isStandardItem()) {
             if (original.isStandardItem()) costs[0] = PlayerWarpManager.getManager().getItemCosts();
-            else if (!warp.isSameItem(original.getItem())) costs[0] = PlayerWarpManager.getManager().getItemChangeCosts();
-        } else if (!warp.isSameItem(original.getItem()))
+            else if (warp.isAnotherItem(original.getItem())) costs[0] = PlayerWarpManager.getManager().getItemChangeCosts();
+        } else if (warp.isAnotherItem(original.getItem()))
             costs[0] = PlayerWarpManager.getManager().getItemChangeCosts() * PlayerWarpManager.getManager().getPersonalItemRefund() * original.getRefundFactor();
 
         //name

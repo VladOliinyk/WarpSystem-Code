@@ -8,6 +8,7 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 import java.io.*;
+import java.util.Base64;
 
 public class RedisBungeeHandler extends RedisHandler implements Listener {
     public RedisBungeeHandler() {
@@ -21,8 +22,12 @@ public class RedisBungeeHandler extends RedisHandler implements Listener {
 
         try {
             out.writeUTF(source);
-            out.writeUTF(new String(data));
-            RedisBungee.getApi().sendChannelMessage(channel, new String(stream.toByteArray()));
+
+            //use Base64 to avoid virtual ends for the packet stream
+            byte[] encoded = Base64.getEncoder().encode(data);
+            out.writeUTF(new String(encoded));
+
+            RedisBungee.getApi().sendChannelMessage(channel, stream.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,15 +45,16 @@ public class RedisBungeeHandler extends RedisHandler implements Listener {
 
     @EventHandler
     public void onPubSub(PubSubMessageEvent e) {
-        if(e.getChannel().equals(channel)) {
+        if (e.getChannel().equals(channel)) {
             DataInputStream in = new DataInputStream(new ByteArrayInputStream(e.getMessage().getBytes()));
 
             try {
                 String source = in.readUTF();
+                if (source.equals(this.source)) return;
 
-                if(source.equals(this.source)) return;
+                String encoded = in.readUTF();
+                byte[] data = Base64.getDecoder().decode(encoded.getBytes());
 
-                byte[] data = in.readUTF().getBytes();
                 sink.receive(data, source);
             } catch (IOException ex) {
                 ex.printStackTrace();
