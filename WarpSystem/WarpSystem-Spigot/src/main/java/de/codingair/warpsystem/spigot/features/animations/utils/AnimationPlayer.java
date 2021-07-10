@@ -162,17 +162,15 @@ public class AnimationPlayer {
     }
 
     public HitBox getHitBox() {
-        if (this.animations == null) return null;
-        if (hitBox != null) return hitBox;
-        else {
+        if (hitBox == null) {
             for (CustomAnimation a : animations) {
                 HitBox box = a.getHitBox();
                 if (hitBox == null) hitBox = box;
                 else hitBox.addProperty(box);
             }
-
-            return hitBox;
         }
+
+        return hitBox;
     }
 
     public void update() {
@@ -193,7 +191,7 @@ public class AnimationPlayer {
         return running;
     }
 
-    public void setRunning(boolean running) {
+    public synchronized void setRunning(boolean running) {
         if (this.animation != null) {
             if (this.running != running) {
                 if (running) {
@@ -203,19 +201,12 @@ public class AnimationPlayer {
 
                     if (animations.isEmpty()) {
                         buildAnimations();
-
-                        for (CustomAnimation anim : this.animations) {
-                            anim.setRunning(true);
-                        }
+                        this.animations.forEach(a -> a.setRunning(true));
                     }
 
                     this.runnable.runTaskTimer(WarpSystem.getInstance(), 0, 20);
                 } else {
-                    if (!loop) {
-                        for (CustomAnimation anim : this.animations) {
-                            anim.setRunning(false);
-                        }
-                    }
+                    if (!loop) this.animations.forEach(a -> a.setRunning(false));
 
                     this.runnable.cancel();
                     removeActivePotionEffects();
@@ -226,7 +217,7 @@ public class AnimationPlayer {
                     }
 
                     if (loop) {
-                        this.running = running;
+                        this.running = false;
                         setRunning(true);
                         return;
                     }

@@ -29,7 +29,7 @@ jobs:
     - name: Deploy
       run: |
         rank="<@&793495281387700234>"
-        milestone=40
+        milestone=41
         
         upload() {
             file=$(find "./WarpSystem/WarpSystem-Bundle-$1/target" -type f -name "WarpSystem_v*.jar" | head -n 1)

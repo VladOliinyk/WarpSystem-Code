@@ -36,19 +36,20 @@ public class RTP_Go_Command extends NaturalCommandComponent {
             if (sender instanceof Player && WarpSystem.cooldown().checkPlayer((Player) sender, Origin.RandomTP)) return false;
 
             StringBuilder builder = new StringBuilder();
-            int endOfCMD = 0;
             for (int i = 1; i < args.length; i++) {
-                endOfCMD = i;
+                if (i > 1) builder.append(" ");
 
                 String s = args[i];
-                builder.append(args[i]);
-
-                if (!s.contains("]")) builder.append(" ");
-                else break;
+                builder.append(s);
             }
-            endOfCMD++;
 
-            String player = args.length >= endOfCMD + 1 ? args[endOfCMD] : null;
+            String cmd = builder.toString().trim();
+            boolean specifyWorld = cmd.contains("]");
+
+            String player;
+            if (specifyWorld) player = cmd.split("]", 2)[1].trim();
+            else player = args[args.length - 1];
+            if (player.isEmpty()) player = null;
 
             if (player != null && !checkOther(sender)) {
                 getBase().noPermission(sender, label, this);
@@ -60,17 +61,26 @@ public class RTP_Go_Command extends NaturalCommandComponent {
                 return false;
             }
 
+            //cut the name out of the command
+            if (player != null) cmd = cmd.substring(0, cmd.length() - player.length()).trim();
+
             if (player == null) player = sender.getName();
-            String finalPlayer = player;
+            final String finalPlayer = player;
 
-            String cmd = builder.toString().trim();
+            boolean teleportingSelf = player.equalsIgnoreCase(sender.getName());
 
-            if (!cmd.startsWith("[") || !cmd.endsWith("]")) {
+            if (cmd.startsWith("[") && cmd.endsWith("]")) cmd = cmd.substring(1, cmd.length() - 1).replace(" ", "").toLowerCase();
+            else if (teleportingSelf) {
                 sender.sendMessage(Lang.getPrefix() + WarpSystem.opt().cmdSug() + Lang.get("Use") + ": /" + label + " go " + WarpSystem.opt().cmdArg() + "[server-1, server-2, ...; world-1, world-2, ...]" + (checkOther(sender) ? " [player]" : ""));
                 return false;
-            } else cmd = cmd.substring(1, cmd.length() - 1).replace(" ", "").toLowerCase();
+            }
 
-            String[] data = cmd.split(";");
+            if (cmd.isEmpty() && teleportingSelf) {
+                sender.sendMessage(Lang.getPrefix() + WarpSystem.opt().cmdSug() + Lang.get("Use") + ": /" + label + " go " + WarpSystem.opt().cmdArg() + "[server-1, server-2, ...; world-1, world-2, ...]" + (checkOther(sender) ? " [player]" : ""));
+                return false;
+            }
+
+            String[] data = cmd.isEmpty() ? new String[0] : cmd.split(";");
 
             Player p = Bukkit.getPlayer(player);
             if (p == null) {
@@ -78,29 +88,21 @@ public class RTP_Go_Command extends NaturalCommandComponent {
                 return false;
             }
 
-            if (!RandomTeleportManager.getInstance().canTeleport(p)) {
-                if (player.equalsIgnoreCase(sender.getName())) sender.sendMessage(Lang.getPrefix() + Lang.get("RandomTP_No_Teleports_Left"));
-                else {
-                    if (sender instanceof Player) {
-                        sender.sendMessage(Lang.getPrefix() + Lang.get("RandomTP_Other_No_Teleports_Left").replace("%PLAYER%", finalPlayer));
-                    } else {
-                        //console
-                        p.sendMessage(Lang.getPrefix() + Lang.get("RandomTP_No_Teleports_Left"));
-                    }
-
-                }
+            //If initiated by another player/console, the player should be teleported
+            if (teleportingSelf && !RandomTeleportManager.getInstance().canTeleport(p)) {
+                sender.sendMessage(Lang.getPrefix() + Lang.get("RandomTP_No_Teleports_Left"));
                 return false;
             }
 
             if (data.length == 1) {
-                //only local world
+                //only on local server
                 //test@test1, test@test2, test@test3
                 String[] worlds = data[0].replaceAll("\\p{Blank}*[a-z]*@", "").split(",");
 
                 World target = Bukkit.getWorld(worlds[(int) (Math.random() * worlds.length)]);
-                if (processTarget(sender, player, finalPlayer, target)) return false;
+                if (processTarget(sender, player, finalPlayer, target, !teleportingSelf)) return false;
             } else if (data.length == 2) {
-                //on server
+                //different servers
                 if (!WarpSystem.getInstance().isProxyConnected()) {
                     sender.sendMessage(Lang.getPrefix() + WarpSystem.opt().cmdSug() + Lang.get("Use") + ": /" + label + " go " + WarpSystem.opt().cmdArg() + "[world-1, world-2, ...] [player]");
                     return false;
@@ -118,20 +120,28 @@ public class RTP_Go_Command extends NaturalCommandComponent {
                 }
 
                 World target = Bukkit.getWorld(targetWorld);
-                if (processTarget(sender, player, finalPlayer, target)) return false;
+                if (processTarget(sender, player, finalPlayer, target, !teleportingSelf)) return false;
+            } else {
+                Player target = Bukkit.getPlayer(finalPlayer);
+                if (target == null) {
+                    sender.sendMessage(Lang.getPrefix() + Lang.get("Player_is_not_online"));
+                    return false;
+                }
+
+                if (processTarget(sender, player, finalPlayer, target.getWorld(), !teleportingSelf)) return false;
             }
         }
 
         return false;
     }
 
-    private boolean processTarget(@NotNull CommandSender sender, String player, String finalPlayer, World target) {
+    private boolean processTarget(@NotNull CommandSender sender, String player, String finalPlayer, World target, boolean force) {
         if (target == null) {
             sender.sendMessage(Lang.getPrefix() + Lang.get("World_Not_Exists"));
             return true;
         }
 
-        RandomTeleportManager.getInstance().tryToTeleport(player, target, false, new Callback<Integer>() {
+        RandomTeleportManager.getInstance().tryToTeleport(player, target, force, new Callback<Integer>() {
             @Override
             public void accept(Integer result) {
                 if (!finalPlayer.equalsIgnoreCase(sender.getName())) {
