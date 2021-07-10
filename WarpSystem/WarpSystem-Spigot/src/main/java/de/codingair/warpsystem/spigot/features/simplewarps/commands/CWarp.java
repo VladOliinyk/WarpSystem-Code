@@ -15,7 +15,6 @@ import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destinati
 import de.codingair.warpsystem.spigot.features.FeatureType;
 import de.codingair.warpsystem.spigot.features.simplewarps.SimpleWarp;
 import de.codingair.warpsystem.spigot.features.simplewarps.managers.SimpleWarpManager;
-import de.codingair.warpsystem.spigot.features.warps.commands.CWarps;
 import de.codingair.warpsystem.spigot.features.warps.managers.IconManager;
 import de.codingair.warpsystem.spigot.features.warps.nextlevel.utils.Icon;
 import org.bukkit.Bukkit;
@@ -39,28 +38,16 @@ public class CWarp extends WSCommandBuilder {
 
             @Override
             public void unknownSubCommand(CommandSender sender, String label, String[] args) {
-                if (FeatureType.WARP_GUI.isActive() && WarpSystem.getInstance().getFileManager().getFile("Config").getConfig().getBoolean("WarpSystem.Commands.Warp.GUI", false)) {
-                    if (Permissions.hasPermission(sender, Permissions.PERMISSION_USE_WARP_GUI)) {
-                        CWarps.run(sender, null);
-                    } else noPermission(sender, label, this);
-                } else {
-                    if (Permissions.hasPermission(sender, Permissions.PERMISSION_USE_SIMPLE_WARPS)) {
-                        sender.sendMessage(Lang.getPrefix() + WarpSystem.opt().cmdSug() + Lang.get("Use") + ": /" + label + " " + WarpSystem.opt().cmdArg() + "<warp>");
-                    } else noPermission(sender, label, this);
-                }
+                if (Permissions.hasPermission(sender, Permissions.PERMISSION_USE_SIMPLE_WARPS)) {
+                    sender.sendMessage(Lang.getPrefix() + WarpSystem.opt().cmdSug() + Lang.get("Use") + ": /" + label + " " + WarpSystem.opt().cmdArg() + "<warp>");
+                } else noPermission(sender, label, this);
             }
 
             @Override
             public boolean runCommand(CommandSender sender, String label, String[] args) {
-                if (FeatureType.WARP_GUI.isActive() && WarpSystem.getInstance().getFileManager().getFile("Config").getConfig().getBoolean("WarpSystem.Commands.Warp.GUI", false)) {
-                    if (Permissions.hasPermission(sender, Permissions.PERMISSION_USE_WARP_GUI)) {
-                        CWarps.run(sender, null);
-                    } else noPermission(sender, label, this);
-                } else {
-                    if (Permissions.hasPermission(sender, Permissions.PERMISSION_USE_SIMPLE_WARPS)) {
-                        sender.sendMessage(Lang.getPrefix() + WarpSystem.opt().cmdSug() + Lang.get("Use") + ": /" + label + " " + WarpSystem.opt().cmdArg() + "<warp>");
-                    } else noPermission(sender, label, this);
-                }
+                if (Permissions.hasPermission(sender, Permissions.PERMISSION_USE_SIMPLE_WARPS)) {
+                    sender.sendMessage(Lang.getPrefix() + WarpSystem.opt().cmdSug() + Lang.get("Use") + ": /" + label + " " + WarpSystem.opt().cmdArg() + "<warp>");
+                } else noPermission(sender, label, this);
 
                 return false;
             }
@@ -87,30 +74,17 @@ public class CWarp extends WSCommandBuilder {
 
             @Override
             public boolean runCommand(CommandSender sender, String label, String argument, String[] args) {
-                if (FeatureType.WARP_GUI.isActive() && WarpSystem.getInstance().getFileManager().getFile("Config").getConfig().getBoolean("WarpSystem.Commands.Warp.GUI", false)) {
-                    if (Permissions.hasPermission(sender, Permissions.PERMISSION_USE_WARP_GUI)) {
-                        Icon category = manager.getPage(argument);
+                if (Permissions.hasPermission(sender, Permissions.PERMISSION_USE_SIMPLE_WARPS)) {
+                    if (args.length == 0 || argument == null || argument.isEmpty()) {
+                        sender.sendMessage(Lang.getPrefix() + WarpSystem.opt().cmdSug() + Lang.get("Use") + ": /" + label + " " + WarpSystem.opt().cmdArg() + "<warp>");
+                        return false;
+                    }
 
-                        if (category != null && category.hasPermission() && !sender.hasPermission(category.getPermission())) {
-                            sender.sendMessage(Lang.getPrefix() + Lang.get("Player_Cannot_Use_Page"));
-                            return false;
-                        }
-
-                        CWarps.run(sender, category);
-                    } else getBaseComponent().noPermission(sender, label, this);
-                } else {
-                    if (Permissions.hasPermission(sender, Permissions.PERMISSION_USE_SIMPLE_WARPS)) {
-                        if (args.length == 0 || argument == null || argument.isEmpty()) {
-                            sender.sendMessage(Lang.getPrefix() + WarpSystem.opt().cmdSug() + Lang.get("Use") + ": /" + label + " " + WarpSystem.opt().cmdArg() + "<warp>");
-                            return false;
-                        }
-
-                        if (hook.runCommand(sender, label, argument, args)) return false;
-                        sender.sendMessage(Lang.getPrefix() + Lang.get("WARP_DOES_NOT_EXISTS"));
-                    } else if (sender.hasPermission(Permissions.PERMISSION_SIMPLE_WARPS_DIRECT_TELEPORT)) {
-                        sender.sendMessage(Lang.getPrefix() + WarpSystem.opt().cmdSug() + Lang.get("Use") + ": /" + label + " <warp> " + WarpSystem.opt().cmdArg() + "<player>");
-                    } else getBaseComponent().noPermission(sender, label, this);
-                }
+                    if (hook.runCommand(sender, label, argument, args)) return false;
+                    sender.sendMessage(Lang.getPrefix() + Lang.get("WARP_DOES_NOT_EXISTS"));
+                } else if (sender.hasPermission(Permissions.PERMISSION_SIMPLE_WARPS_DIRECT_TELEPORT)) {
+                    sender.sendMessage(Lang.getPrefix() + WarpSystem.opt().cmdSug() + Lang.get("Use") + ": /" + label + " <warp> " + WarpSystem.opt().cmdArg() + "<player>");
+                } else getBaseComponent().noPermission(sender, label, this);
                 return false;
             }
         });
