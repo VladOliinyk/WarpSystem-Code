@@ -20,13 +20,13 @@ public class JnRPage extends Page {
     }
 
     public void buildItems() {
-        addButton(2, 1, new JnRButton("Abwasserkanal", Material.COBWEB, new Destination("Abwasserkanal", DestinationType.SimpleWarp)));
-        addButton(4, 1, new JnRButton("Weihnachten", "14e424b1676feec3a3f8ebade9e7d6a6f71f7756a869f36f7df0fc182d436e", new Destination("Weihnachten", DestinationType.SimpleWarp)));
-        addButton(6, 1, new JnRButton("BlauerTunnel", Material.INFESTED_CHISELED_STONE_BRICKS, new Destination("BlauerTunnel", DestinationType.SimpleWarp)));
-        addButton(2, 3, new JnRButton("Labyrinth", Material.JUNGLE_LEAVES, new Destination("Labyrinth", DestinationType.SimpleWarp)));
-        addButton(3, 3, new JnRButton("Lager", Material.CHEST, new Destination("Lager", DestinationType.SimpleWarp)));
-        addButton(5, 3, new JnRButton("Mine", Material.IRON_PICKAXE, new Destination("Mine", DestinationType.SimpleWarp)));
-        addButton(6, 3, new JnRButton("Tower", Material.LANTERN, new Destination("Tower", DestinationType.SimpleWarp)));
+        addButton(2, 1, new JnRButton("Lagerhaus", Material.CHEST, new Destination("Lagerhaus", DestinationType.SimpleWarp)));
+        addButton(4, 1, new JnRButton("Höhle", Material.WITHER_SKELETON_SKULL, new Destination("Höhle", DestinationType.SimpleWarp)));
+        addButton(6, 1, new JnRButton("Katzensprung", Material.FEATHER, new Destination("Katzensprung", DestinationType.SimpleWarp)));
+        addButton(2, 3, new JnRButton("Splash-Dash", Material.TROPICAL_FISH_BUCKET, new Destination("Splash-Dash", DestinationType.SimpleWarp)));
+        addButton(3, 3, new JnRButton("Schnuffwerke", Material.STONECUTTER, new Destination("Schnuffwerke", DestinationType.SimpleWarp)));
+        addButton(5, 3, new JnRButton("Standhaus", Material.CHISELED_SANDSTONE, new Destination("Standhaus", DestinationType.SimpleWarp)));
+        addButton(6, 3, new JnRButton("Labyrinth", Material.JUNGLE_LEAVES, new Destination("Labyrinth", DestinationType.SimpleWarp)));
     }
 
     private static class JnRButton extends Button {

@@ -10,7 +10,6 @@ import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.DestinationType;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -42,7 +41,7 @@ public class PanelButton extends Button {
 
     public static boolean isFull(ServerPing ping) {
         if (ping == null) return true;
-        return (ping.getPlayers() >= 140);
+        return (ping.getPlayers() >= 100);
     }
 
     public ItemStack buildItem() {
@@ -53,14 +52,7 @@ public class PanelButton extends Button {
             item = new ItemBuilder(this.skull);
         }
 
-        if (this.id < 11) {
-            item.setName("§e" + this.name + " " + ((this.id < 10) ? "0" : "") + this.id);
-        } else {
-            item.setType(Material.NETHER_STAR);
-            item.setName("§e" + this.name + " " + this.id + " §8(§6§lPartner§8)");
-            item.addEnchantment(Enchantment.DAMAGE_ALL, 1);
-            item.setHideEnchantments(true);
-        }
+        item.setName("§e" + this.name);
 
 
         if (this.ping == null || !this.ping.getStatus()) {
@@ -71,12 +63,6 @@ public class PanelButton extends Button {
 
             if (this.joined) {
                 item.addLore("", "§7» Bereits beigetreten");
-            } else if (this.id >= 11) {
-                if (this.player.hasPermission("group.partner")) {
-                    item.addLore("", "§7» Speziell für dich");
-                } else {
-                    item.addLore("", "§7» Für die §x§F§F§D§7§4§4#NitradoFamily");
-                }
             } else {
                 item.addLore("", "§7» Server wechseln");
             }
@@ -87,8 +73,6 @@ public class PanelButton extends Button {
     }
 
     public boolean canClick(ClickType type) {
-        if (this.id >= 11 && !this.player.hasPermission("group.partner")) return false;
-
         return (type == ClickType.LEFT && !this.joined && this.ping != null && (!isFull(this.ping) || this.player.hasPermission("WarpPanel.Full")));
     }
 

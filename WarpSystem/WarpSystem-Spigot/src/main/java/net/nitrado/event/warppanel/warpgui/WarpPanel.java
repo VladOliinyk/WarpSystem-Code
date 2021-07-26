@@ -20,7 +20,6 @@ public class WarpPanel extends GUI {
         BasePage base = new BasePage(this);
         registerPage(new JnRPage(this, base), false);
         registerPage(new ServerPage(this, base), false);
-        registerPage(new ArcadePage(this, base), false);
         registerPage(new SwitchPage(this), true);
     }
 
