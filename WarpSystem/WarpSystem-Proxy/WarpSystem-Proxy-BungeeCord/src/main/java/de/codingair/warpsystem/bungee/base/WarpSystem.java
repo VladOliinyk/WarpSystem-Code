@@ -86,6 +86,10 @@ public class WarpSystem extends Plugin implements ProxyPlugin {
         logMessage(" ");
 
         this.fileManager.loadFile("Config", "/", "proxy/");
+
+        //initialize playerDataManager before enabling redis; we might get packets between registering redis
+        playerDataManager = new PlayerDataManager();
+
         checkRedis();
 
         dataManager = new DataManager();
@@ -102,11 +106,11 @@ public class WarpSystem extends Plugin implements ProxyPlugin {
         //listener
         getProxy().getPluginManager().registerListener(this, new MainListener());
         getProxy().getPluginManager().registerListener(this, cooldownManager = new CooldownManager());
+        getProxy().getPluginManager().registerListener(this, playerDataManager);
 
         cooldownManager.load();
 
         getProxy().getPluginManager().registerListener(this, new SetupAssistantListener());
-        getProxy().getPluginManager().registerListener(this, (playerDataManager = new PlayerDataManager()));
 
         Core.getServerManager().run();
         new ChatInputManager();
