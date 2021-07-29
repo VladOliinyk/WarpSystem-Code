@@ -50,10 +50,11 @@ public class WarpSystem extends VelocityPlugin {
     private final FileManager fileManager = new FileManager(this);
     private final JarManager jarManager = new JarManager();
     private final WorldManager worldManager = new WorldManager();
-    private final VelocityHandler dataHandler = new VelocityHandler(this);
+
     private DataManager dataManager;
     private CooldownManager cooldownManager;
     private PlayerDataManager playerDataManager;
+    private VelocityHandler dataHandler;
 
     @Inject
     public WarpSystem(ProxyServer proxy, Logger logger) {
@@ -97,6 +98,7 @@ public class WarpSystem extends VelocityPlugin {
         log(" ");
 
         this.fileManager.getFile("Config", "/", "proxy/");
+        this.dataHandler = new VelocityHandler(this);
 
         //initialize playerDataManager before enabling redis; we might get packets between registering redis
         playerDataManager = new PlayerDataManager();
