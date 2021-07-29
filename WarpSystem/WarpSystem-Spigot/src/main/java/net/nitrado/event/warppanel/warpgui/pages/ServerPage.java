@@ -62,14 +62,14 @@ public class ServerPage extends Page {
         int id = 0;
         int i;
         for (i = 0; i < 3; i++) {
-            addButton(3 + i, 1, new PanelButton(ChatColor.of(COLORS[id]) + NAMES[id], SKULLS[id++], id, "event" + ((id < 10) ? "0" : "") + id, this.gui.getPlayer()));
+            addButton(3 + i, 1, new PanelButton(ChatColor.of(COLORS[id]) + NAMES[id], SKULLS[id++], id, "nitem" + ((id < 10) ? "0" : "") + id, this.gui.getPlayer()));
         }
         for (i = 0; i < 5; i++) {
             if (i == 2) continue;
-            addButton(2 + i, 2, new PanelButton(ChatColor.of(COLORS[id]) + NAMES[id], SKULLS[id++], id, "event" + ((id < 10) ? "0" : "") + id, this.gui.getPlayer()));
+            addButton(2 + i, 2, new PanelButton(ChatColor.of(COLORS[id]) + NAMES[id], SKULLS[id++], id, "nitem" + ((id < 10) ? "0" : "") + id, this.gui.getPlayer()));
         }
         for (i = 0; i < 3; i++) {
-            addButton(3 + i, 3, new PanelButton(ChatColor.of(COLORS[id]) + NAMES[id], SKULLS[id++], id, "event" + ((id < 10) ? "0" : "") + id, this.gui.getPlayer()));
+            addButton(3 + i, 3, new PanelButton(ChatColor.of(COLORS[id]) + NAMES[id], SKULLS[id++], id, "nitem" + ((id < 10) ? "0" : "") + id, this.gui.getPlayer()));
         }
 
         String server = WarpSystem.getInstance().getCurrentServer();

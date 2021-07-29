@@ -13,6 +13,7 @@ public class WarpPanel extends GUI {
     public static final String COLOR_NITRADO = "§x§F§F§D§7§4§4";
     public static final String PERMISSION_FULL = "WarpPanel.Full";
     public static final String PREFIX = "§x§F§F§D§7§4§4WarpPanel §8» §7";
+    public static final int MAX_PLAYER_COUNT_PER_SERVER = 100;
 
     public WarpPanel(Player player) {
         super(player, WarpSystem.getInstance(), 45, "Magischer Teleporter");

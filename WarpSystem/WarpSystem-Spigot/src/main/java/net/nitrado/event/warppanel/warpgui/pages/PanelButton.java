@@ -9,6 +9,7 @@ import de.codingair.warpsystem.core.transfer.packets.spigot.utils.ServerPing;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.DestinationType;
+import net.nitrado.event.warppanel.warpgui.WarpPanel;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -41,7 +42,7 @@ public class PanelButton extends Button {
 
     public static boolean isFull(ServerPing ping) {
         if (ping == null) return true;
-        return (ping.getPlayers() >= 100);
+        return (ping.getPlayers() >= WarpPanel.MAX_PLAYER_COUNT_PER_SERVER);
     }
 
     public ItemStack buildItem() {
@@ -59,7 +60,7 @@ public class PanelButton extends Button {
             item.addLore("§7Status: §cOffline");
         } else {
             item.addLore("§7Status: §aOnline");
-            item.addLore("§7Spieler: " + (isFull(this.ping) ? "§c" : "§a") + this.ping.getPlayers() + "§8/§7" + '');
+            item.addLore("§7Spieler: " + (isFull(this.ping) ? "§c" : "§a") + this.ping.getPlayers() + "§8/§7" + WarpPanel.MAX_PLAYER_COUNT_PER_SERVER);
 
             if (this.joined) {
                 item.addLore("", "§7» Bereits beigetreten");
