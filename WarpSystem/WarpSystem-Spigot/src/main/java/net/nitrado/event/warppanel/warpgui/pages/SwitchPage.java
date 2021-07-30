@@ -121,6 +121,8 @@ public class SwitchPage extends Page {
 
             public boolean canClick(ClickType type) {
                 Profile profile = QuestSystem.getProfile(gui.getPlayer());
+                if (profile == null) return false;
+
                 Location l = profile.getContinueLocation();
 
                 return type == ClickType.LEFT && l != null;
@@ -128,6 +130,8 @@ public class SwitchPage extends Page {
 
             public void onClick(GUI gui, InventoryClickEvent e) {
                 Profile profile = QuestSystem.getProfile(gui.getPlayer());
+                if (profile == null) return;
+
                 Location l = profile.getContinueLocation();
                 if (l == null) return;
 

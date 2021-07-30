@@ -74,7 +74,7 @@ public class ServerPage extends Page {
 
         String server = WarpSystem.getInstance().getCurrentServer();
         if (server.toLowerCase().contains("nitem")) {
-            int nitemId = Integer.parseInt(server.replaceAll("\\D", ""));
+            int nitemId = Integer.parseInt(server.replaceAll("\\D", "")) - 1;
             server = ChatColor.of(COLORS[nitemId]) + NAMES[nitemId];
         } else {
             String name = server.split("[0-9]", -1)[0];
