@@ -73,15 +73,21 @@ public class ServerPage extends Page {
         }
 
         String server = WarpSystem.getInstance().getCurrentServer();
-        String name = server.split("[0-9]", -1)[0];
-        server = name + " " + server.replace(name, "");
-        server = server.substring(0, 1).toUpperCase() + server.substring(1).toLowerCase();
+        if (server.toLowerCase().contains("nitem")) {
+            int nitemId = Integer.parseInt(server.replaceAll("\\D", ""));
+            server = ChatColor.of(COLORS[nitemId]) + NAMES[nitemId];
+        } else {
+            String name = server.split("[0-9]", -1)[0];
+            server = name + " " + server.replace(name, "");
+            server = server.substring(0, 1).toUpperCase() + server.substring(1).toLowerCase();
+        }
+
         final String finalServer = server;
 
         final ServerPing ping = WarpSystem.getInstance().getServerManager().getProperties(WarpSystem.getInstance().getCurrentServer());
         addButton(8, 2, new Button() {
             public ItemStack buildItem() {
-                return (new ItemBuilder(QUESTION)).setName("§7Du bist hier: §e" + finalServer).addLore("§7Status: §aOnline").addLore("§7Spieler: " + ((ping == null) ? "§7?" : ((PanelButton.isFull(ping) ? "§c" : "§a") + ping.getPlayers())) + "§8/§7" + '').getItem();
+                return (new ItemBuilder(QUESTION)).setName("§7Du bist hier: §e" + finalServer).addLore("§7Status: §aOnline").addLore("§7Spieler: " + ((ping == null) ? "§7?" : ((PanelButton.isFull(ping) ? "§c" : "§a") + ping.getPlayers())) + "§8/§7" + WarpPanel.MAX_PLAYER_COUNT_PER_SERVER).getItem();
             }
 
 

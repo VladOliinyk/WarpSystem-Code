@@ -8,7 +8,7 @@ import de.codingair.warpsystem.api.Result;
 import de.codingair.warpsystem.core.transfer.packets.spigot.utils.ServerPing;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
-import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.DestinationType;
+import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.ServerAdapter;
 import net.nitrado.event.warppanel.warpgui.WarpPanel;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -35,7 +35,10 @@ public class PanelButton extends Button {
         this.player = player;
 
         this.ping = WarpSystem.getInstance().getServerManager().getProperties(server);
-        this.destination = new Destination(server, DestinationType.Server);
+
+        ServerAdapter adapter = new ServerAdapter();
+        adapter.setServer(server);
+        this.destination = new Destination(adapter);
 
         this.joined = server.equalsIgnoreCase(WarpSystem.getInstance().getCurrentServer());
     }
@@ -80,7 +83,7 @@ public class PanelButton extends Button {
     public void onClick(GUI gui, InventoryClickEvent e) {
         final Player p = gui.getPlayer();
 
-        this.destination.teleport(p, "§x§F§F§D§7§4§4Nitrado §8» §7Du wurdest zu §eEvent-" + ((this.id < 10) ? ("0" + this.id) : this.id) + "§7 teleportiert.", "", false, false, 0.0D, new Callback<Result>() {
+        this.destination.teleport(p, "§x§F§F§D§7§4§4Nitrado §8» §7Du wurdest zu §e" + this.name + "§7 teleportiert.", "", false, false, 0.0D, new Callback<>() {
             public void accept(Result result) {
                 switch (result) {
                     case ALREADY_ON_TARGET_SERVER:

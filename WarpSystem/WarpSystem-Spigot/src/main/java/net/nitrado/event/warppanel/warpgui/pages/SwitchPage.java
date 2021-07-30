@@ -104,13 +104,15 @@ public class SwitchPage extends Page {
                 ItemBuilder builder = new ItemBuilder();
 
                 Profile profile = QuestSystem.getProfile(gui.getPlayer());
-                Location l = profile.getContinueLocation();
+                if (profile != null) {
+                    Location l = profile.getContinueLocation();
 
-                builder.setType(Material.WRITABLE_BOOK);
-                builder.setName("§c§lStory");
+                    builder.setType(Material.WRITABLE_BOOK);
+                    builder.setName("§c§lStory");
 
-                if (l == null) builder.addLore("", "§7» Kein §7Einstiegspunkt vorhanden");
-                else builder.addLore("", "§7» Zum Einstiegspunkt teleportieren");
+                    if (l != null) builder.addLore("", "§7» Zum Einstiegspunkt teleportieren");
+                    else builder.addLore("", "§7» Kein §7Einstiegspunkt vorhanden");
+                } else builder.addLore("", "§7» Kein §7Einstiegspunkt vorhanden");
 
                 builder.setHideStandardLore(true);
 
