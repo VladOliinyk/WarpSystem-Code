@@ -10,6 +10,7 @@ import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.ServerAdapter;
 import net.nitrado.event.warppanel.warpgui.WarpPanel;
+import net.nitrado.misc.MiscPlugin;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -38,6 +39,7 @@ public class PanelButton extends Button {
 
         ServerAdapter adapter = new ServerAdapter();
         adapter.setServer(server);
+
         this.destination = new Destination(adapter);
 
         this.joined = server.equalsIgnoreCase(WarpSystem.getInstance().getCurrentServer());
@@ -57,7 +59,6 @@ public class PanelButton extends Button {
         }
 
         item.setName("§e" + this.name);
-
 
         if (this.ping == null || !this.ping.getStatus()) {
             item.addLore("§7Status: §cOffline");
@@ -83,25 +84,37 @@ public class PanelButton extends Button {
     public void onClick(GUI gui, InventoryClickEvent e) {
         final Player p = gui.getPlayer();
 
-        this.destination.teleport(p, "§x§F§F§D§7§4§4Nitrado §8» §7Du wurdest zu §e" + this.name + "§7 teleportiert.", "", false, false, 0.0D, new Callback<>() {
-            public void accept(Result result) {
-                switch (result) {
-                    case ALREADY_ON_TARGET_SERVER:
-                        p.sendMessage("§x§F§F§D§7§4§4Nitrado §8» §7Du bist §cbereits auf diesem Server§7.");
-                        break;
+        MiscPlugin plugin = MiscPlugin.getPlugin(MiscPlugin.class);
+        plugin.getDatabaseManager().setLastLocation(p, new net.nitrado.misc.utils.Callback<>() {
+            @Override
+            public void call(Boolean aBoolean) {
+                destination.teleport(p, "§x§F§F§D§7§4§4Nitrado §8» §7Du wurdest zu §e" + name + "§7 teleportiert.", "", false, false, 0.0D, new Callback<>() {
+                    public void accept(Result result) {
+                        switch (result) {
+                            case ALREADY_ON_TARGET_SERVER:
+                                p.sendMessage("§x§F§F§D§7§4§4Nitrado §8» §7Du bist §cbereits auf diesem Server§7.");
+                                break;
 
-                    case TARGET_SERVER_IS_FULL:
-                        p.sendMessage("§x§F§F§D§7§4§4Nitrado §8» §7Dieser Server ist §cvoll§7.");
-                        break;
+                            case TARGET_SERVER_IS_FULL:
+                                p.sendMessage("§x§F§F§D§7§4§4Nitrado §8» §7Dieser Server ist §cvoll§7.");
+                                break;
 
-                    case SERVER_NOT_AVAILABLE:
-                        p.sendMessage("§x§F§F§D§7§4§4Nitrado §8» §7Dieser Server ist §coffline§7.");
-                        break;
+                            case SERVER_NOT_AVAILABLE:
+                                p.sendMessage("§x§F§F§D§7§4§4Nitrado §8» §7Dieser Server ist §coffline§7.");
+                                break;
 
-                    case ERROR:
-                        p.sendMessage("§x§F§F§D§7§4§4WarpPanel §8» §7Es ist ein §cFehler §7aufgetreten. §8(Warp#2)");
-                        break;
-                }
+                            case ERROR:
+                                p.sendMessage("§x§F§F§D§7§4§4WarpPanel §8» §7Es ist ein §cFehler §7aufgetreten. §8(Warp#2)");
+                                break;
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void exception(Exception e) {
+                e.printStackTrace();
+                p.sendMessage(MiscPlugin.PREFIX + "Es ist ein §cFehler §7aufgetreten. §8(Warp#1)");
             }
         });
     }

@@ -3,7 +3,7 @@ author: CodingAir
 version: "${project.version}"
 description: WarpSystem
 main: de.codingair.warpsystem.spigot.base.WarpSystem
-depend: [Quests]
+depend: [ Quests, Miscellaneous ]
 softdepend: [ Multiverse-Core, Vault, Essentials, MultiWorld, PlaceholderAPI, PlayerPoints, GemsEconomy, WorldGuard ]
 api-version: "1.13"
 
