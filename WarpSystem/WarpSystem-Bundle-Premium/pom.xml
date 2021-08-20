@@ -40,10 +40,11 @@
                 <configuration>
                     <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
                     <relocations>
-                        <relocation>
-                            <pattern>de.codingair.codingapi</pattern>
-                            <shadedPattern>de.codingair.warpsystem.lib.codingapi</shadedPattern>
-                        </relocation>
+<!--                        provided by ItemHunt -->
+<!--                        <relocation>-->
+<!--                            <pattern>de.codingair.codingapi</pattern>-->
+<!--                            <shadedPattern>de.codingair.warpsystem.lib.codingapi</shadedPattern>-->
+<!--                        </relocation>-->
                         <relocation>
                             <pattern>de.codingair.packetmanagement</pattern>
                             <shadedPattern>de.codingair.warpsystem.lib.packetmanagement</shadedPattern>
@@ -71,7 +72,7 @@
         <dependency>
             <groupId>com.github.CodingAir</groupId>
             <artifactId>CodingAPI</artifactId>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.CodingAir</groupId>
