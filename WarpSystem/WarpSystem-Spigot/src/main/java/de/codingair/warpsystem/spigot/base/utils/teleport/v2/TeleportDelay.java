@@ -6,6 +6,7 @@ import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.Lang;
 import de.codingair.warpsystem.spigot.features.animations.AnimationManager;
 import de.codingair.warpsystem.spigot.features.animations.utils.AnimationPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TeleportDelay extends TeleportStage {
@@ -39,8 +40,8 @@ public class TeleportDelay extends TeleportStage {
             return;
         }
 
-        boolean hasAnimation;
-        if (hasAnimation = teleport.getOptions().isTeleportAnimation()) {
+        boolean hasAnimation = teleport.getOptions().isTeleportAnimation();
+        if (hasAnimation) {
             this.animation = new AnimationPlayer(player, new PlayerMid(player), AnimationManager.getInstance().getActive(), delay, true, teleport.getOptions().isPublicAnimations());
             this.animation.setTeleportSound(false);
             this.animation.setRunning(true);
@@ -66,7 +67,7 @@ public class TeleportDelay extends TeleportStage {
             @Override
             public void run() {
                 if (left == 0) {
-                    end();
+                    Bukkit.getScheduler().runTask(WarpSystem.getInstance(), TeleportDelay.this::end);
                     return;
                 }
 

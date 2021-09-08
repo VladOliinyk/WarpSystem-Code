@@ -143,8 +143,7 @@ WarpSystem:
     TpaHere: true
     TpaAll: true
     TpaToggle: true
-    #Tpa, TpaHere& TpaAll: |true: Players on this server can receive/send teleport requests from/to other servers. |false: Players can only send TeleportRequests to players on this server
-    #TpAll: Only players from servers with 'Proxy: true' will be teleported to you.
+    #Enables/Disables the proxy wide usage of teleport commands. Teleporting to another server is still possible if disabled.
     Proxy: true
     TeleportRequests:
       #Teleport costs for a transportation via tpa or tpaHere; The teleported player has to pay

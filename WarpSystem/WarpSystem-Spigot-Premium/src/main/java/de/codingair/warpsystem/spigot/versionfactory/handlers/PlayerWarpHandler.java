@@ -240,6 +240,7 @@ public class PlayerWarpHandler extends PlayerWarpManager {
                 }
             }
             playerWarpsData.getConfig().set("PlayerWarps", a);
+            playerWarpsData.saveConfig();
         } else if (!saver) WarpSystem.log("    ...skipping PlayerWarp(s) > Saved on BungeeCord");
 
         if (warpCategories.isEmpty()) {
@@ -272,21 +273,25 @@ public class PlayerWarpHandler extends PlayerWarpManager {
                 add("&7This class marks a warp");
                 add("&7as a &3miscellaneous &7warp!");
             }}));
+
+            JSONArray array = new JSONArray();
+            for (Category c : this.warpCategories) {
+                JSON json = new JSON();
+                c.write(json);
+                array.add(json);
+            }
+
+            config.loadConfig();
+            ConfigMask writer = new ConfigMask(config);
+            List<?> l = writer.getList("PlayerWarps.General.Categories.Classes");
+
+            if (l.isEmpty()) {
+                //still empty?
+                writer.put("PlayerWarps.General.Categories.Classes", array);
+                config.saveConfig();
+            }
         }
 
-        JSONArray array = new JSONArray();
-        for (Category c : this.warpCategories) {
-            JSON json = new JSON();
-            c.write(json);
-            array.add(json);
-        }
-
-        config.loadConfig();
-        ConfigMask writer = new ConfigMask(config);
-        writer.put("PlayerWarps.General.Categories.Classes", array);
-        config.saveConfig();
-
-        playerWarpsData.saveConfig();
         if (!saver && a != null) WarpSystem.log("    ...saved " + a.size() + " PlayerWarp(s)");
     }
 

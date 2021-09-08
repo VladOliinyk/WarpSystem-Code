@@ -6,7 +6,7 @@
 
     <groupId>de.codingair</groupId>
     <artifactId>WarpSystem</artifactId>
-    <version>5.0.4</version>
+    <version>5.0.5</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -63,7 +63,7 @@
             <dependency>
                 <groupId>com.github.CodingAir</groupId>
                 <artifactId>CodingAPI</artifactId>
-                <version>1.30</version>
+                <version>1.31</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -87,7 +87,7 @@
             <dependency>
                 <groupId>io.papermc</groupId>
                 <artifactId>paperlib</artifactId>
-                <version>1.0.5</version>
+                <version>1.0.6</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
