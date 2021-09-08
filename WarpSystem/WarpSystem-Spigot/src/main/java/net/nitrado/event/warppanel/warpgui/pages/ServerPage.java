@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class ServerPage extends Page {
+    private static final boolean REPLAY = true;
     private static final String[] SKULLS = new String[] {
             "7f24b7135789fe799df34594d6805f5112bee6232605ba6de215186ad94",
             "e2b35bda5ebdf135f4e71ce49726fbec5739f0adedf01c519e2aea7f51951ea2",
@@ -62,19 +63,20 @@ public class ServerPage extends Page {
         int id = 0;
         int i;
         for (i = 0; i < 3; i++) {
-            addButton(3 + i, 1, new PanelButton(ChatColor.of(COLORS[id]) + NAMES[id], SKULLS[id++], id, "nitem" + ((id < 10) ? "0" : "") + id, this.gui.getPlayer()));
+            addButton(3 + i, 1, new PanelButton(ChatColor.of(COLORS[id]) + NAMES[id], SKULLS[id++], id, (REPLAY && i == 0 ? "nitem" : ("nitem" + ((id < 10) ? "0" : "") + id)), this.gui.getPlayer(), REPLAY && i != 0));
         }
         for (i = 0; i < 5; i++) {
             if (i == 2) continue;
-            addButton(2 + i, 2, new PanelButton(ChatColor.of(COLORS[id]) + NAMES[id], SKULLS[id++], id, "nitem" + ((id < 10) ? "0" : "") + id, this.gui.getPlayer()));
+            addButton(2 + i, 2, new PanelButton(ChatColor.of(COLORS[id]) + NAMES[id], SKULLS[id++], id, "nitem" + ((id < 10) ? "0" : "") + id, this.gui.getPlayer(), REPLAY));
         }
         for (i = 0; i < 3; i++) {
-            addButton(3 + i, 3, new PanelButton(ChatColor.of(COLORS[id]) + NAMES[id], SKULLS[id++], id, "nitem" + ((id < 10) ? "0" : "") + id, this.gui.getPlayer()));
+            addButton(3 + i, 3, new PanelButton(ChatColor.of(COLORS[id]) + NAMES[id], SKULLS[id++], id, "nitem" + ((id < 10) ? "0" : "") + id, this.gui.getPlayer(), REPLAY));
         }
 
         String server = WarpSystem.getInstance().getCurrentServer();
         if (server.toLowerCase().contains("nitem")) {
-            int nitemId = Integer.parseInt(server.replaceAll("\\D", "")) - 1;
+            String number = server.replaceAll("\\D", "");
+            int nitemId = number.isEmpty() ? 0 : (Integer.parseInt(number) - 1);
             server = ChatColor.of(COLORS[nitemId]) + NAMES[nitemId];
         } else {
             String name = server.split("[0-9]", -1)[0];

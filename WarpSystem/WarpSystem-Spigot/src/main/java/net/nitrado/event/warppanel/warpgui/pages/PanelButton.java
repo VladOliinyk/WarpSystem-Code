@@ -27,15 +27,17 @@ public class PanelButton extends Button {
     private final ServerPing ping;
     private final Destination destination;
     private final boolean joined;
+    private final boolean disabled;
 
-    public PanelButton(String name, String skull, int id, String server, Player player) {
+    public PanelButton(String name, String skull, int id, String server, Player player, boolean disabled) {
         this.name = name;
         this.skull = skull;
+        this.disabled = disabled;
         this.material = null;
         this.id = id;
         this.player = player;
 
-        this.ping = WarpSystem.getInstance().getServerManager().getProperties(server);
+        this.ping = disabled ? null : WarpSystem.getInstance().getServerManager().getProperties(server);
 
         ServerAdapter adapter = new ServerAdapter();
         adapter.setServer(server);
@@ -78,10 +80,11 @@ public class PanelButton extends Button {
     }
 
     public boolean canClick(ClickType type) {
-        return (type == ClickType.LEFT && !this.joined && this.ping != null && (!isFull(this.ping) || this.player.hasPermission("WarpPanel.Full")));
+        return !disabled && (type == ClickType.LEFT && !this.joined && this.ping != null && (!isFull(this.ping) || this.player.hasPermission("WarpPanel.Full")));
     }
 
     public void onClick(GUI gui, InventoryClickEvent e) {
+        if (disabled) return;
         final Player p = gui.getPlayer();
 
         MiscPlugin plugin = MiscPlugin.getPlugin(MiscPlugin.class);
