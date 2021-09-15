@@ -8,6 +8,13 @@ import tech.tagline.trevor.api.network.payload.NetworkPayload;
 public class PacketPayload extends NetworkPayload<String> {
     private final byte[] data;
 
+    /**
+     * Gson constructor
+     */
+    private PacketPayload() {
+        data = new byte[0];
+    }
+
     protected PacketPayload(String source, byte[] data) {
         super(source);
         this.data = data;

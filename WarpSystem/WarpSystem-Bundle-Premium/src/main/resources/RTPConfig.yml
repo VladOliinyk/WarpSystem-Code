@@ -48,7 +48,7 @@ RandomTeleport:
   Support:
     #If enabled, the player will be teleported to a random position, which is not in a protected region
     ProtectedRegions: true
-    #If enabled, the player will be teleported to a random position, which is inside of the WorldBorder
+    #If enabled, the player will be teleported to a random position, which is inside the WorldBorder
     WorldBorder: true
     #If enabled, the player will be teleported to a random position, in one of the listed biomes
     Biome:
