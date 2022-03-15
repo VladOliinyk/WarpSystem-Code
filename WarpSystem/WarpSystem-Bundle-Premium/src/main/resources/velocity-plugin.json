@@ -13,6 +13,10 @@
     {
       "id": "RedisBungee",
       "optional": true
+    },
+    {
+      "id": "bullet",
+      "optional": true
     }
   ],
   "main": "de.codingair.warpsystem.velocity.base.WarpSystem"
