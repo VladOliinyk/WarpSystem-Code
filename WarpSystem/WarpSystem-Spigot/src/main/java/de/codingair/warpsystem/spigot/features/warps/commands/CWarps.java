@@ -1,16 +1,11 @@
 package de.codingair.warpsystem.spigot.features.warps.commands;
 
-import de.codingair.codingapi.player.gui.inventory.v2.exceptions.AlreadyOpenedException;
-import de.codingair.codingapi.player.gui.inventory.v2.exceptions.IsWaitingException;
-import de.codingair.codingapi.player.gui.inventory.v2.exceptions.NoPageException;
 import de.codingair.codingapi.server.commands.builder.BaseComponent;
 import de.codingair.codingapi.server.commands.builder.CommandComponent;
 import de.codingair.warpsystem.spigot.api.WSCommandBuilder;
 import de.codingair.warpsystem.spigot.base.utils.Lang;
 import de.codingair.warpsystem.spigot.base.utils.Permissions;
-import net.nitrado.event.warppanel.warpgui.WarpPanel;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class CWarps extends WSCommandBuilder {
     public CWarps() {
@@ -31,12 +26,7 @@ public class CWarps extends WSCommandBuilder {
 
             @Override
             public boolean runCommand(CommandSender sender, String label, String[] args) {
-                try {
-                    new WarpPanel((Player) sender).open();
-                } catch (AlreadyOpenedException | NoPageException | IsWaitingException e) {
-                    e.printStackTrace();
-                }
-                return false;
+                throw new IllegalArgumentException("not supported");
             }
         }.setOnlyPlayers(true));
     }

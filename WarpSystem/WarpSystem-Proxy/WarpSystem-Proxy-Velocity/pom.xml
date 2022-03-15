@@ -12,8 +12,8 @@
     <artifactId>WarpSystem-Proxy-Velocity</artifactId>
 
     <properties>
-        <maven.compiler.target>11</maven.compiler.target>
-        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
     </properties>
 
     <build>
@@ -32,7 +32,7 @@
 
     <repositories>
         <repository>
-            <id>nexus-snapshots</id>
+            <id>nitrado-event-nexus</id>
             <url>https://nitrado-nexus.medplex.wtf/repository/nitrado/</url>
         </repository>
         <repository>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>net.nitrado</groupId>
             <artifactId>pubsub-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
