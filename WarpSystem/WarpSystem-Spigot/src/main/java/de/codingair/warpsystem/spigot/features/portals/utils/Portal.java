@@ -8,12 +8,13 @@ import de.codingair.codingapi.tools.Location;
 import de.codingair.codingapi.tools.io.JSON.JSON;
 import de.codingair.codingapi.tools.io.lib.JSONArray;
 import de.codingair.codingapi.tools.io.utils.DataMask;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.utils.Result;
 import de.codingair.warpsystem.spigot.base.managers.PostWorldManager;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.FeatureObject;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.WarpAction;
 import de.codingair.warpsystem.spigot.base.utils.teleport.TeleportOptions;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -384,6 +385,10 @@ public class Portal extends FeatureObject {
         return false;
     }
 
+    public void invalidateCachedAxis() {
+        this.cachedAxis = null;
+    }
+
     public Axis getCachedAxis() {
         if (cachedAxis == null) {
             int x, z;
@@ -393,7 +398,82 @@ public class Portal extends FeatureObject {
             x = Math.abs(edges[0].getBlockX() - edges[1].getBlockX());
             z = Math.abs(edges[0].getBlockZ() - edges[1].getBlockZ());
 
-            this.cachedAxis = x > z ? Axis.X : Axis.Z;
+            if (x != z) return this.cachedAxis = x > z ? Axis.X : Axis.Z;
+
+            //check surrounding blocks. Issue: https://github.com/CodingAir/WarpSystem-IssueTracker/issues/653
+            int widthX = edges[1].getBlockX() - edges[0].getBlockX() + 1;
+            int widthZ = edges[1].getBlockZ() - edges[0].getBlockZ() + 1;
+            int height = edges[1].getBlockY() - edges[0].getBlockY() + 1;
+
+            int xSurroundings = 0;
+            int zSurroundings = 0;
+
+            int checkedSides = 0;
+            boolean leftSide = true;
+            do {
+                boolean checkX = checkedSides == 0;
+
+                Vector xDir = new Vector(1, 0, 0);
+                Vector zDir = new Vector(0, 0, 1);
+
+                Vector direction;
+                Vector oDirection; //opposite direction
+                if (checkX) {
+                    direction = xDir;
+                    oDirection = zDir;
+                } else {
+                    direction = zDir;
+                    oDirection = xDir;
+                }
+
+                Location l;
+                if (leftSide) {
+                    l = edges[0].clone();
+                    l.subtract(direction);
+                } else {
+                    l = edges[1].clone();
+                    l.setY(edges[0].getY());
+
+                    if (checkX) l.setZ(edges[0].getBlockZ());
+                    else l.setX(edges[0].getBlockX());
+
+                    l.add(direction);
+                }
+
+                for (int i = 0; i < height; i++) {
+                    int start, width;
+
+                    if (checkX) {
+                        start = l.getBlockZ();
+                        width = widthZ;
+                    } else {
+                        start = l.getBlockX();
+                        width = widthX;
+                    }
+
+                    for (int j = 0; j < width; j++) {
+                        Material material = l.getBlock().getType();
+                        boolean hasBlock = material != Material.AIR && material.isBlock();
+
+                        if (hasBlock) {
+                            if (checkX) xSurroundings++;
+                            else zSurroundings++;
+                        }
+
+                        l.add(oDirection);
+                    }
+
+                    if (checkX) l.setZ(start);
+                    else l.setX(start);
+
+                    l.add(0, 1, 0);
+                }
+
+                if (!leftSide) checkedSides++;
+                leftSide = !leftSide; //toggle side
+            } while (checkedSides < 2);
+
+            return this.cachedAxis = xSurroundings > zSurroundings ? Axis.X : Axis.Z;
         }
 
         return this.cachedAxis;

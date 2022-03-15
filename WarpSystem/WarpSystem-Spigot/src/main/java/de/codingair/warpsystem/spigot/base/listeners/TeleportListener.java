@@ -12,7 +12,7 @@ import de.codingair.warpsystem.spigot.base.utils.teleport.TeleportOptions;
 import de.codingair.warpsystem.spigot.base.utils.teleport.TeleportUtils;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.EmptyAdapter;
-import de.codingair.warpsystem.spigot.base.utils.teleport.v2.Teleport;
+import de.codingair.warpsystem.spigot.base.utils.teleport.process.Teleport;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

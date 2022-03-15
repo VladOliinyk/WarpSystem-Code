@@ -1,7 +1,7 @@
 package de.codingair.warpsystem.core.proxy.utils;
 
-import de.codingair.packetmanagement.DataHandler;
 import de.codingair.packetmanagement.utils.Proxy;
+import de.codingair.packetmanagement.variants.bytestream.StreamDataHandler;
 import de.codingair.warpsystem.core.proxy.base.handlers.PlayerDataHandler;
 import de.codingair.warpsystem.core.proxy.base.handlers.WorldHandler;
 import de.codingair.warpsystem.core.utils.Manager;
@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.stream.Stream;
 
 public interface ProxyPlugin extends Proxy {
@@ -21,7 +22,7 @@ public interface ProxyPlugin extends Proxy {
 
     @NotNull Stream<Server<?>> getRegisteredServers();
 
-    @NotNull <D extends DataHandler<Server<?>>> D dataHandler();
+    @NotNull <D extends StreamDataHandler<Server<?>>> D dataHandler();
 
     @NotNull ScheduleTask schedule(Runnable runnable, long delay, long interval, TimeUnit unit);
 
@@ -34,6 +35,8 @@ public interface ProxyPlugin extends Proxy {
     @Nullable InputStream getResourceAsStream(String path);
 
     void log(String message);
+
+    void log(Level level, String message);
 
     Server<?> getServer(String server);
 

@@ -1,12 +1,15 @@
-package de.codingair.warpsystem.spigot.base.utils.teleport.v2;
+package de.codingair.warpsystem.spigot.base.utils.teleport.process;
 
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.utils.Value;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.utils.Result;
+import de.codingair.warpsystem.api.events.AsyncPlayerTeleportEvent;
+import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.Lang;
 import de.codingair.warpsystem.spigot.base.utils.money.Bank;
 import de.codingair.warpsystem.spigot.base.utils.teleport.TeleportOptions;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -23,27 +26,42 @@ public class Teleport {
     }
 
     public Teleport start() {
-        started = System.currentTimeMillis();
-        Value<Location> afterEffectPosition = new Value<>(player.getLocation());
+        Bukkit.getScheduler().runTaskAsynchronously(WarpSystem.getInstance(), () -> {
+            //run event async
+            AsyncPlayerTeleportEvent event = new AsyncPlayerTeleportEvent(player, options);
+            Bukkit.getPluginManager().callEvent(event);
 
-        options.addCallback(new Callback<Result>() {
-            @Override
-            public void accept(Result result) {
-                if (stage != null && result != Result.SUCCESS && stage.active().isBefore(ConfirmPayment.class) && Bank.adapter() != null) {
-                    //payback
-                    double costs = options.getCosts(player);
-                    if (costs > 0) Bank.adapter().deposit(player, costs);
+            //go sync again
+            Bukkit.getScheduler().runTask(WarpSystem.getInstance(), () -> {
+                if (event.isCancelled()) {
+                    options.fireCallbacks(Result.CANCELLED_BY_EXTERNAL);
+                    return;
                 }
-            }
+
+                started = System.currentTimeMillis();
+                Value<Location> afterEffectPosition = new Value<>(player.getLocation());
+
+                options.addCallback(new Callback<Result>() {
+                    @Override
+                    public void accept(Result result) {
+                        if (stage != null && result != Result.SUCCESS && stage.active().isBefore(ConfirmPayment.class) && Bank.adapter() != null) {
+                            //payback
+                            double costs = options.getCosts(player);
+                            if (costs > 0) Bank.adapter().deposit(player, costs);
+                        }
+                    }
+                });
+
+                stage = new SimulateStage(Teleport.this)
+                        .then(new WaitForTeleport())
+                        .then(new ConfirmPayment())
+                        .then(new TeleportDelay())
+                        .then(new PlayerTeleport(afterEffectPosition))
+                        .then(new AfterEffects(afterEffectPosition))
+                        .begin();
+            });
         });
 
-        stage = new SimulateStage(this)
-                .then(new WaitForTeleport())
-                .then(new ConfirmPayment())
-                .then(new TeleportDelay())
-                .then(new PlayerTeleport(afterEffectPosition))
-                .then(new AfterEffects(afterEffectPosition))
-                .begin();
         return this;
     }
 
@@ -65,7 +83,8 @@ public class Teleport {
         }
 
         if (result == Result.DENIED_PAYMENT) {
-            if (options.getPaymentDeniedMessage(player) != null) player.sendMessage(options.getPaymentDeniedMessage(player));
+            String message = options.getPaymentDeniedMessage(player);
+            if (message != null) player.sendMessage(message);
         }
     }
 
@@ -90,6 +109,6 @@ public class Teleport {
     }
 
     public Destination getDestination() {
-        return options.getDestination();
+        return options.getOriginalDestination();
     }
 }

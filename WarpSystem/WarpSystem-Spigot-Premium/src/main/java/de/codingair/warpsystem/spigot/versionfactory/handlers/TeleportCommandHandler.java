@@ -312,7 +312,7 @@ public class TeleportCommandHandler implements ITeleportCommandHandler {
                             if (deep < 3 + name || deep == 3 + name && last.isEmpty()) suggestions.add(suggest(last, "~ ~"));
                             if (deep < 2 + name || deep == 2 + name && last.isEmpty()) suggestions.add(suggest(last, "~ ~ ~"));
                             if (deep < 1 + name || deep == 1 + name && last.isEmpty()) suggestions.add(suggest(last, "~ ~ ~ ~"));
-                            if (deep == name && last.isEmpty()) suggestions.add("~ ~ ~ ~ ~");
+                            if (deep < name || deep == name  && last.isEmpty()) suggestions.add("~ ~ ~ ~ ~");
                         }
                     }
                 }

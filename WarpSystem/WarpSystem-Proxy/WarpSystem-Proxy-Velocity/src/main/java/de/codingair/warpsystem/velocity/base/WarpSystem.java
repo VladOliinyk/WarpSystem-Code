@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.stream.Stream;
 
 public class WarpSystem extends VelocityPlugin {
@@ -322,7 +323,16 @@ public class WarpSystem extends VelocityPlugin {
 
     @Override
     public void log(String message) {
-        System.out.println(message);
+        logger.info(message);
+    }
+
+    @Override
+    public void log(Level level, String message) {
+        if (level == Level.SEVERE) logger.error(message);
+        else if (level == Level.FINE || level == Level.FINER || level == Level.FINEST) logger.info(message);
+        else if (level == Level.WARNING) logger.warn(message);
+        else if (level == Level.INFO) logger.info(message);
+        else throw new IllegalArgumentException("Unknown logging level: " + level.getName());
     }
 
     public JarManager getJarManager() {

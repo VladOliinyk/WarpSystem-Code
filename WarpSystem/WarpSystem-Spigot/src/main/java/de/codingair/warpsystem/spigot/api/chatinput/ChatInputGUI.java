@@ -4,6 +4,7 @@ import com.google.common.base.CharMatcher;
 import de.codingair.codingapi.API;
 import de.codingair.codingapi.player.MessageAPI;
 import de.codingair.codingapi.server.sounds.SoundData;
+import de.codingair.codingapi.server.specification.Version;
 import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.codingapi.utils.Removable;
 import de.codingair.warpsystem.core.transfer.packets.spigot.ChatInputGUITogglePacket;
@@ -72,8 +73,13 @@ public abstract class ChatInputGUI implements Removable {
         actionBarSwitch = !actionBarSwitch;
     }
 
+    private CharMatcher getWhitespace() {
+        //noinspection deprecation
+        return Version.atLeast(18.0D) ? CharMatcher.whitespace() : CharMatcher.WHITESPACE;
+    }
+
     void onInput(String message) {
-        if (message != null) message = CharMatcher.WHITESPACE.trimFrom(message);
+        if (message != null) message = getWhitespace().trimFrom(message);
 
         ChatInputEvent e = new ChatInputEvent(this, message);
         onEnter(e);

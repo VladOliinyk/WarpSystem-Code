@@ -3,10 +3,10 @@ package de.codingair.warpsystem.core.proxy.transfer;
 import de.codingair.codingapi.tools.Call;
 import de.codingair.codingapi.utils.Value;
 import de.codingair.packetmanagement.utils.Direction;
-import de.codingair.warpsystem.core.proxy.utils.ScheduleTask;
-import de.codingair.warpsystem.core.transfer.packets.proxy.SendJarPacket;
 import de.codingair.warpsystem.core.proxy.Core;
+import de.codingair.warpsystem.core.proxy.utils.ScheduleTask;
 import de.codingair.warpsystem.core.proxy.utils.Server;
+import de.codingair.warpsystem.core.transfer.packets.proxy.SendJarPacket;
 
 import java.io.File;
 import java.io.IOException;

@@ -9,3 +9,6 @@ WarpSystem:
   GlobalSpawnOptions:
     Spawn: null
     Respawn: null
+  #Some reported ping issues when using third-party-software that resulted in inaccessible servers. Toggle this to true to ignore ping errors.
+  #Attention: If toggled to true, some servers may be marked as online even they are offline.
+  IgnorePingErrors: false

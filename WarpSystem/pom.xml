@@ -6,7 +6,7 @@
 
     <groupId>de.codingair</groupId>
     <artifactId>WarpSystem</artifactId>
-    <version>5.0.5</version>
+    <version>5.1.0</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -16,7 +16,6 @@
 
     <modules>
         <module>WarpSystem-Core</module>
-        <module>WarpSystem-Spigot-v1.8</module>
         <module>WarpSystem-Spigot</module>
         <module>WarpSystem-Spigot-Free</module>
         <module>WarpSystem-Bundle-Free</module>
@@ -53,7 +52,7 @@
         <!--    RedisBungee    -->
         <repository>
             <id>md_5-snapshots</id>
-            <url>http://repo.md-5.net/content/repositories/snapshots/</url>
+            <url>https://repo.md-5.net/content/repositories/snapshots/</url>
         </repository>
     </repositories>
 
@@ -63,42 +62,36 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>21.0</version>
-                <scope>provided</scope>
+                <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>com.github.CodingAir</groupId>
                 <artifactId>CodingAPI</artifactId>
-                <version>1.32</version>
+                <version>1.52</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.github.CodingAir</groupId>
                 <artifactId>PacketManagement</artifactId>
-                <version>1.11</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>de.codingair</groupId>
-                <artifactId>WarpSystem-v1.8</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.14</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.github.CodingAir</groupId>
                 <artifactId>WarpSystem-API</artifactId>
-                <version>5.0.0</version>
+                <version>5.0.6</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>io.papermc</groupId>
                 <artifactId>paperlib</artifactId>
-                <version>1.0.6</version>
+                <version>1.0.7</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.spigotmc</groupId>
                 <artifactId>spigot-api</artifactId>
-                <version>1.17-R0.1-SNAPSHOT</version>
+                <version>1.18-R0.1-SNAPSHOT</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>

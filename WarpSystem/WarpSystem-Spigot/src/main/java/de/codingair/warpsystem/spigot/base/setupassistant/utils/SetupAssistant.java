@@ -57,8 +57,7 @@ public class SetupAssistant {
         IReflection.FieldAccessor<?> outputText = IReflection.getField(oPacketClass, Version.since(17, "components", "a"));
 
         boolean newer = Version.atLeast(17);
-
-        IReflection.MethodAccessor getText = newer ? IReflection.getMethod(PacketUtils.IChatBaseComponentClass, "getText", String.class, new Class[0]) : null;
+        IReflection.MethodAccessor getText = newer ? IReflection.getMethod(PacketUtils.IChatBaseComponentClass, Version.since(18, "getText", "a"), String.class, new Class[0]) : null;
 
         reader = new PacketReader(player, "WS-SetupAssistant", WarpSystem.getInstance()) {
             @Override

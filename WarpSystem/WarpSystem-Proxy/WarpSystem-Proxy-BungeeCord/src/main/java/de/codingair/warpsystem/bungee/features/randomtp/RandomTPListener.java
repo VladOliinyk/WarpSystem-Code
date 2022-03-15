@@ -1,9 +1,9 @@
 package de.codingair.warpsystem.bungee.features.randomtp;
 
 import de.codingair.packetmanagement.utils.Direction;
-import de.codingair.warpsystem.core.transfer.packets.spigot.RandomTPWorldsPacket;
 import de.codingair.warpsystem.bungee.base.WarpSystem;
 import de.codingair.warpsystem.bungee.base.events.ServerProvideOptionsEvent;
+import de.codingair.warpsystem.core.transfer.packets.spigot.RandomTPWorldsPacket;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 

@@ -13,6 +13,7 @@ import de.codingair.warpsystem.core.transfer.packets.proxy.PlayerQuitPacket;
 import de.codingair.warpsystem.core.transfer.packets.proxy.ProvidePlayerDataPacket;
 import de.codingair.warpsystem.core.transfer.utils.PlayerData;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -34,6 +35,7 @@ public class PlayerDataHandler {
         });
     }
 
+    @Nullable
     public PlayerData getCache(String name) {
         if (name == null) return null;
 
@@ -121,7 +123,7 @@ public class PlayerDataHandler {
     }
 
     public void buildPlayerDataPackets(Consumer<ProvidePlayerDataPacket> consumer) {
-        for (Collection<PlayerData> names : Iterables.partition(cached.values(), 256)) {
+        for (Collection<PlayerData> names : Iterables.partition(cached.values(), 64)) {
             consumer.accept(new ProvidePlayerDataPacket(names));
         }
     }
@@ -146,9 +148,7 @@ public class PlayerDataHandler {
 
     //redis
     public void apply(@NotNull ProvidePlayerDataPacket packet) {
-        packet.getData().forEach(entry -> {
-            cached.put(entry.getName().toLowerCase(), entry);
-        });
+        packet.getData().forEach(entry -> cached.put(entry.getName().toLowerCase(), entry));
 
         Core.getServerManager().getOnlineServer().forEach(s -> Core.getPlugin().dataHandler().send(packet, s, Direction.DOWN));
     }

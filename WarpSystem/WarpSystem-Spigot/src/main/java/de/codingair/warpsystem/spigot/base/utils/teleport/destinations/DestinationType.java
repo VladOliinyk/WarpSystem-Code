@@ -2,6 +2,7 @@ package de.codingair.warpsystem.spigot.base.utils.teleport.destinations;
 
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.*;
 import de.codingair.warpsystem.spigot.features.portals.utils.PortalDestinationAdapter;
+import org.jetbrains.annotations.NotNull;
 
 public enum DestinationType {
     UNKNOWN(-1, null),
@@ -52,18 +53,17 @@ public enum DestinationType {
         return id;
     }
 
+    @NotNull
     public Class<? extends DestinationAdapter> getAdapter() {
         return adapter;
     }
 
+    @NotNull
     public DestinationAdapter getInstance() {
-        if (getAdapter() == null) return null;
-
         try {
             return getAdapter().newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-            return null;
+            throw new IllegalStateException(e);
         }
     }
 

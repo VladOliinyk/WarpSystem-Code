@@ -3,10 +3,10 @@ package de.codingair.warpsystem.core.proxy.transfer.handlers;
 import de.codingair.packetmanagement.handlers.ResponsiblePacketHandler;
 import de.codingair.packetmanagement.utils.Direction;
 import de.codingair.packetmanagement.utils.Proxy;
-import de.codingair.warpsystem.core.transfer.packets.proxy.SendUUIDPacket;
-import de.codingair.warpsystem.core.transfer.packets.spigot.RequestUUIDPacket;
 import de.codingair.warpsystem.core.proxy.utils.Player;
 import de.codingair.warpsystem.core.proxy.utils.Players;
+import de.codingair.warpsystem.core.transfer.packets.proxy.SendUUIDPacket;
+import de.codingair.warpsystem.core.transfer.packets.spigot.RequestUUIDPacket;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

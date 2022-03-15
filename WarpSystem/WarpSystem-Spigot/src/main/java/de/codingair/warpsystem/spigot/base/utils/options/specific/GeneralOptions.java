@@ -7,7 +7,7 @@ import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.options.Option;
 import de.codingair.warpsystem.spigot.base.utils.options.Options;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Origin;
-import de.codingair.warpsystem.spigot.base.utils.teleport.v2.TeleportDelay;
+import de.codingair.warpsystem.spigot.base.utils.teleport.process.TeleportDelay;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 

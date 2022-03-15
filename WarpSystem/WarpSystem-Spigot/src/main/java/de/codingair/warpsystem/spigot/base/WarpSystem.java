@@ -10,7 +10,7 @@ import de.codingair.codingapi.server.specification.Version;
 import de.codingair.codingapi.tools.time.TimeFetcher;
 import de.codingair.codingapi.tools.time.Timer;
 import de.codingair.packetmanagement.utils.Proxy;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.utils.Result;
 import de.codingair.warpsystem.core.transfer.packets.proxy.SendJarPacket;
 import de.codingair.warpsystem.core.transfer.packets.proxy.SetupAssistantStorePacket;
 import de.codingair.warpsystem.core.transfer.packets.spigot.RequestInitialPacket;

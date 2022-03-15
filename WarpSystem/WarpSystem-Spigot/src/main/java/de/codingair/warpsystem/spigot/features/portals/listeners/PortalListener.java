@@ -165,7 +165,10 @@ public class PortalListener implements Listener, Ticker {
             if (!portal.isVisible() || portal.isEditMode()) continue;
 
             if (portal.isAround(e.getBlock().getLocation(), 1)) {
-                Bukkit.getScheduler().runTaskLater(WarpSystem.getInstance(), portal::update, 1);
+                Bukkit.getScheduler().runTaskLater(WarpSystem.getInstance(), () -> {
+                    portal.invalidateCachedAxis();
+                    portal.update();
+                }, 1);
             }
         }
     }
@@ -196,7 +199,10 @@ public class PortalListener implements Listener, Ticker {
                 if (portal.isAround(e.getBlock().getLocation(), 0))
                     e.setCancelled(true);
                 else if (portal.isAround(e.getBlock().getLocation(), 1)) {
-                    Bukkit.getScheduler().runTaskLater(WarpSystem.getInstance(), portal::update, 1);
+                    Bukkit.getScheduler().runTaskLater(WarpSystem.getInstance(), () -> {
+                        portal.invalidateCachedAxis();
+                        portal.update();
+                    }, 1);
                 }
             }
         }

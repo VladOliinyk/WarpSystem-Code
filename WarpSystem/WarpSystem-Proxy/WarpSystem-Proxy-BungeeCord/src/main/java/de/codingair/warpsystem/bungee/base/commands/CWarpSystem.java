@@ -1,11 +1,11 @@
 package de.codingair.warpsystem.bungee.base.commands;
 
-import de.codingair.warpsystem.core.transfer.utils.serializeable.ServerOptions;
 import de.codingair.warpsystem.bungee.base.Lang;
 import de.codingair.warpsystem.bungee.base.WarpSystem;
 import de.codingair.warpsystem.bungee.utils.BungeeServer;
 import de.codingair.warpsystem.core.proxy.base.Permissions;
 import de.codingair.warpsystem.core.proxy.base.handlers.JarManager;
+import de.codingair.warpsystem.core.transfer.utils.serializeable.ServerOptions;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;

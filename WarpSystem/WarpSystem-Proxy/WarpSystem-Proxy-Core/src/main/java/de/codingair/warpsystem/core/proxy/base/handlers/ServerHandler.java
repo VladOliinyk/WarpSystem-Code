@@ -1,6 +1,9 @@
 package de.codingair.warpsystem.core.proxy.base.handlers;
 
 import com.google.common.base.Preconditions;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import de.codingair.codingapi.tools.io.utils.DataMask;
 import de.codingair.packetmanagement.packets.Packet;
 import de.codingair.packetmanagement.utils.Direction;
 import de.codingair.warpsystem.core.proxy.Core;
@@ -19,6 +22,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.stream.Stream;
 
 public abstract class ServerHandler {
@@ -26,6 +30,11 @@ public abstract class ServerHandler {
     private final ConcurrentHashMap<Server<?>, ServerPing> cachedPing = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<Server<?>, Set<CompletableFuture<Void>>> waiting = new ConcurrentHashMap<>();
     private boolean running = false;
+    private final boolean ignorePingErrors;
+
+    public ServerHandler(DataMask config) {
+        ignorePingErrors = config.getBoolean("WarpSystem.IgnorePingErrors", false);
+    }
 
     public static CompletableFuture<SwitchRequest> sendPlayer(Player player, Server<?> server) {
         Preconditions.checkNotNull(server);
@@ -139,10 +148,18 @@ public abstract class ServerHandler {
         if (running) return;
         running = true;
 
+        Cache<Server<?>, String> errors = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.SECONDS).build();
+
         Core.getPlugin().schedule(() -> Core.getPlugin().getRegisteredServers().forEach(info -> info.ping().whenComplete((serverPing, error) -> cachedPing.compute(info, (server, ping) -> {
             if (ping == null) ping = new ServerPing(false, 0, 0, null);
 
             if (error == null) {
+                boolean wasOffline = errors.getIfPresent(info) != null;
+                if (wasOffline) {
+                    errors.invalidate(info);
+                    Core.getPlugin().log(Level.INFO, "Could ping server '" + info.getName() + "' successfully. It is now accessible for teleporting again.");
+                }
+
                 ping.setStatus(true);
                 ping.setPlayers(serverPing.getPlayers());
                 ping.setMaxPlayers(serverPing.getMaxPlayers());
@@ -152,6 +169,18 @@ public abstract class ServerHandler {
                 ping.setPlayers(0);
                 ping.setMaxPlayers(0);
                 ping.setMotd(null);
+
+                boolean serverJustOffline = error.getMessage().toLowerCase().contains("connection refused");
+                if (!serverJustOffline) {
+                    if (ignorePingErrors) {
+                        //make server accessible again
+                        ping.setStatus(true);
+                        ping.setMaxPlayers(Integer.MAX_VALUE); //make sure this server is not full
+                    } else {
+                        //unknown error -> log
+                        logPingError(errors, info, error);
+                    }
+                }
             }
 
             return ping;
@@ -170,6 +199,23 @@ public abstract class ServerHandler {
                 }
             });
         }, 1, 5, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Logs ping errors to fix not available servers.
+     *
+     * @param errors The error cache to prevent spamming the same errors
+     * @param info   The current server
+     * @param error  The error that was thrown
+     */
+    private synchronized void logPingError(Cache<Server<?>, String> errors, Server<?> info, Throwable error) {
+        String message = errors.getIfPresent(info);
+        if (message == null || !message.equals(error.getMessage())) {
+            errors.put(info, error.getMessage());
+
+            Core.getPlugin().log(Level.WARNING, "Could not ping server '" + info.getName() + "' due to an error. This results in an inaccessible server. You will not be able to teleport to this server.");
+            error.printStackTrace();
+        }
     }
 
     public void sendInitialPacket(Server<?> server) {

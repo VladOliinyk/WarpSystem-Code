@@ -1,8 +1,8 @@
-package de.codingair.warpsystem.spigot.base.utils.teleport.v2;
+package de.codingair.warpsystem.spigot.base.utils.teleport.process;
 
 import de.codingair.codingapi.player.MessageAPI;
 import de.codingair.codingapi.tools.Callback;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.utils.Result;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.Lang;
 import org.bukkit.Location;

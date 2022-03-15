@@ -7,7 +7,6 @@ import de.codingair.warpsystem.core.transfer.packets.proxy.ProvidePlayerDataPack
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class ProvidePlayerDataPacketHandler implements PacketHandler<ProvidePlayerDataPacket> {
     @Override

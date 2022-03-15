@@ -7,7 +7,7 @@ import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.time.TimeMap;
 import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.codingapi.utils.ImprovedDouble;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.utils.Result;
 import de.codingair.warpsystem.spigot.base.utils.Lang;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.FeatureObject;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Action;

@@ -3,7 +3,7 @@ package de.codingair.warpsystem.spigot.versionfactory.handlers;
 import de.codingair.codingapi.server.sounds.Sound;
 import de.codingair.codingapi.server.sounds.SoundData;
 import de.codingair.codingapi.tools.Callback;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.utils.Result;
 import de.codingair.warpsystem.core.transfer.packets.general.TeleportBackPacket;
 import de.codingair.warpsystem.core.transfer.utils.PlayerData;
 import de.codingair.warpsystem.spigot.base.WarpSystem;

@@ -8,7 +8,7 @@ import de.codingair.codingapi.tools.Location;
 import de.codingair.codingapi.tools.io.ConfigMask;
 import de.codingair.codingapi.tools.io.JSON.JSON;
 import de.codingair.codingapi.tools.items.XMaterial;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.utils.Result;
 import de.codingair.warpsystem.core.transfer.packets.spigot.QueueRTPUsagePacket;
 import de.codingair.warpsystem.core.transfer.packets.spigot.RandomTPWorldsPacket;
 import de.codingair.warpsystem.core.utils.Manager;

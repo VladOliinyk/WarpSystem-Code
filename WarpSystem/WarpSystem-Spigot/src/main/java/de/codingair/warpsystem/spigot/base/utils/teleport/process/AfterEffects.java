@@ -1,4 +1,4 @@
-package de.codingair.warpsystem.spigot.base.utils.teleport.v2;
+package de.codingair.warpsystem.spigot.base.utils.teleport.process;
 
 import de.codingair.codingapi.utils.Value;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
@@ -14,7 +14,7 @@ public class AfterEffects extends TeleportStage {
 
     @Override
     public void start() {
-        if (!options.isAfterEffects() || !player.isOnline() || !options.getDestination().usesBukkitTeleportation()) {
+        if (!options.isAfterEffects() || !player.isOnline() || !options.getOriginalDestination().usesBukkitTeleportation()) {
             end();
             return;
         }

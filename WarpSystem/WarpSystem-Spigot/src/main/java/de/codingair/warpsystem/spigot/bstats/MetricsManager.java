@@ -3,19 +3,22 @@ package de.codingair.warpsystem.spigot.bstats;
 import de.codingair.warpsystem.core.utils.Manager;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.features.FeatureType;
+import de.codingair.warpsystem.spigot.versionfactory.VFac;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.AdvancedPie;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MetricsManager implements Manager {
-    private Metrics metrics;
 
     @Override
     public boolean load(boolean loader) {
-        metrics = new Metrics(WarpSystem.getInstance(), 3968);
+        Metrics metrics = new Metrics(WarpSystem.getInstance(), 3968);
 
-        metrics.addCustomChart(new Metrics.AdvancedPie("features", () -> {
+        metrics.addCustomChart(new AdvancedPie("features", () -> {
             Map<String, Integer> map = new HashMap<>();
 
             for (FeatureType type : FeatureType.values()) {
@@ -39,7 +42,7 @@ public class MetricsManager implements Manager {
             if (m instanceof Collectible) {
                 ((Collectible) m).addCustomCarts(metrics);
 
-                metrics.addCustomChart(new Metrics.AdvancedPie(type.getName().toLowerCase(), () -> {
+                metrics.addCustomChart(new AdvancedPie(type.getName().toLowerCase(), () -> {
                     Map<String, Integer> entry = new HashMap<>();
                     ((Collectible) m).collectOptionStatistics(entry);
                     return entry;
@@ -47,8 +50,8 @@ public class MetricsManager implements Manager {
             }
         }
 
-        metrics.addCustomChart(new Metrics.SimplePie("type", () -> "Premium"));
-        metrics.addCustomChart(new Metrics.SimplePie("bungeecord", () -> {
+        metrics.addCustomChart(new SimplePie("type", () -> VFac.isAvailable("Indicator") ? "Free" : "Premium"));
+        metrics.addCustomChart(new SimplePie("bungeecord", () -> {
             if (Bukkit.getServer().getOnlinePlayers().isEmpty()) return "Is empty";
             return WarpSystem.getInstance().isProxyConnected() ? "Yes" : "No";
         }));

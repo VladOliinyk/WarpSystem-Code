@@ -105,7 +105,6 @@ public abstract class LoreButton extends SyncAnvilGUIButton {
 
     @Override
     public void onClose(AnvilCloseEvent e) {
-        System.out.println("onClose: " + editing);
         if (editing != null) {
             toChange.addLore(editing);
             updatingLore(toChange);

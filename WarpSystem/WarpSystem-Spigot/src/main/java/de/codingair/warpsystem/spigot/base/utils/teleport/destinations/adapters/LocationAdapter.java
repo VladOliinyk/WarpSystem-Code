@@ -3,24 +3,24 @@ package de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.Location;
 import de.codingair.codingapi.tools.io.utils.DataMask;
-import de.codingair.codingapi.tools.io.utils.Serializable;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.ILocationAdapter;
+import de.codingair.warpsystem.api.destinations.utils.Result;
+import de.codingair.warpsystem.api.destinations.utils.SimulatedTeleportResult;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.listeners.TeleportListener;
 import de.codingair.warpsystem.spigot.base.utils.Lang;
-import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Usable;
-import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-public class LocationAdapter extends CloneableAdapter implements Serializable, Usable, IdAdapter {
+public class LocationAdapter extends CloneableAdapter implements ILocationAdapter {
     protected Location location;
 
     public LocationAdapter() {
@@ -40,7 +40,7 @@ public class LocationAdapter extends CloneableAdapter implements Serializable, U
     }
 
     @Override
-    public CompletableFuture<Boolean> teleport(Player player, String id, Vector randomOffset, String displayName, boolean checkPermission, String message, boolean silent, double costs, Callback<Result> callback) {
+    public CompletableFuture<Boolean> teleport(@NotNull Player player, @Nullable String id, @NotNull Vector randomOffset, String displayName, boolean checkPermission, String message, boolean silent, double costs, Callback<Result> callback) {
         Location location = buildLocation(id);
 
         if (location == null) {
@@ -94,7 +94,7 @@ public class LocationAdapter extends CloneableAdapter implements Serializable, U
     }
 
     @Override
-    public SimulatedTeleportResult simulate(Player player, String id, boolean checkPermission) {
+    public SimulatedTeleportResult simulate(@NotNull Player player, @NotNull String id, boolean checkPermission) {
         Location location = buildLocation(id);
 
         if (location == null) {
@@ -107,20 +107,20 @@ public class LocationAdapter extends CloneableAdapter implements Serializable, U
     }
 
     @Override
-    public double getCosts(String id) {
+    public double getCosts(@NotNull String id) {
         return 0;
     }
 
     @Override
-    public Location buildLocation(String id) {
-        return this.location == null ? id == null ? null : Location.getByJSONString(id) : this.location;
+    public Location buildLocation(@NotNull String id) {
+        return this.location == null ? Location.getByJSONString(id) : this.location;
     }
 
-    public Location getLocation() {
+    public @Nullable Location getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(@Nullable Location location) {
         this.location = location;
     }
 

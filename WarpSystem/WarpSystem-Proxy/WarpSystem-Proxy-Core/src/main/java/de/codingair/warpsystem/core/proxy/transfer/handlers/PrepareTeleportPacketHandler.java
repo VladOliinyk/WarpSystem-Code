@@ -47,8 +47,13 @@ public class PrepareTeleportPacketHandler implements ResponsibleMultiLayerPacket
             if (targetPlayer == null) {
                 //redis
                 PlayerData data = Core.getPlugin().getPlayerData().getCache(packet.getTarget());
-                target = Core.getPlugin().getServer(data.getServer());
-                targetName = data.getName();
+                if (data != null) {
+                    target = Core.getPlugin().getServer(data.getServer());
+                    targetName = data.getName();
+                } else {
+                    target = null;
+                    targetName = null;
+                }
 
                 if (target == null) return CompletableFuture.completedFuture(new LongPacket(PrepareTeleportPacket.Result.PLAYER_NOT_ONLINE.ordinal()));
             } else if (!handler.isAccessible(targetPlayer.getServer())) {
@@ -61,8 +66,13 @@ public class PrepareTeleportPacketHandler implements ResponsibleMultiLayerPacket
             if (sender == null) {
                 //redis
                 PlayerData data = Core.getPlugin().getPlayerData().getCache(packet.getSender());
-                target = Core.getPlugin().getServer(data.getServer());
-                targetName = data.getName();
+                if (data != null) {
+                    target = Core.getPlugin().getServer(data.getServer());
+                    targetName = data.getName();
+                } else {
+                    target = null;
+                    targetName = null;
+                }
 
                 if (target == null) return CompletableFuture.completedFuture(new LongPacket(PrepareTeleportPacket.Result.PLAYER_NOT_ONLINE.ordinal()));
             } else if (!handler.isAccessible(sender.getServer())) {

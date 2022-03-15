@@ -6,15 +6,18 @@ import de.codingair.codingapi.player.MessageAPI;
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.warpsystem.api.ITeleportManager;
 import de.codingair.warpsystem.api.Options;
-import de.codingair.warpsystem.api.Result;
 import de.codingair.warpsystem.api.TeleportService;
+import de.codingair.warpsystem.api.destinations.IDestinationBuilder;
+import de.codingair.warpsystem.api.destinations.utils.Result;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.Lang;
 import de.codingair.warpsystem.spigot.base.utils.teleport.TeleportOptions;
+import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.DestinationBuilder;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.DestinationType;
-import de.codingair.warpsystem.spigot.base.utils.teleport.v2.Teleport;
-import de.codingair.warpsystem.spigot.base.utils.teleport.v2.TeleportDelay;
+import de.codingair.warpsystem.spigot.base.utils.teleport.process.Teleport;
+import de.codingair.warpsystem.spigot.base.utils.teleport.process.TeleportDelay;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,7 +35,7 @@ public class TeleportManager implements ITeleportManager {
     public static TeleportManager getInstance() {
         if (instance == null) {
             instance = new TeleportManager();
-            TeleportService.setInstanceIfAbsent(instance);
+            TeleportService.setIfAbsent(instance);
         }
 
         return instance;
@@ -51,19 +54,28 @@ public class TeleportManager implements ITeleportManager {
     }
 
     @Override
-    public synchronized CompletableFuture<Result> teleport(Player player, Options options) {
-        TeleportOptions o = new TeleportOptions(options);
+    public synchronized @NotNull CompletableFuture<Result> teleport(@NotNull Player player, @NotNull Options options) {
+        if (!(options instanceof TeleportOptions)) throw new IllegalArgumentException("Cannot use option class: " + options.getClass() + ". Please use the original API TeleportService.buildOptions() method to create your own.");
 
         CompletableFuture<Result> future = new CompletableFuture<>();
-        o.addCallback(new Callback<Result>() {
+        options.addCallback(new Callback<Result>() {
             @Override
             public void accept(Result result) {
                 future.complete(result);
             }
         });
 
-        this.teleport(player, o);
+        this.teleport(player, (TeleportOptions) options);
         return future;
+    }
+
+    public @NotNull Options options() {
+        return new TeleportOptions();
+    }
+
+    @Override
+    public @NotNull IDestinationBuilder destinationBuilder() {
+        return new DestinationBuilder();
     }
 
     public synchronized void teleport(Player player, TeleportOptions options) {
@@ -79,12 +91,12 @@ public class TeleportManager implements ITeleportManager {
             return;
         }
 
-        if (options.getDestination() == null) {
+        if (options.getOriginalDestination() == null) {
             player.sendMessage(Lang.getPrefix() + Lang.get("WARP_DOES_NOT_EXISTS"));
             return;
         }
 
-        if ((options.getDestination().getType() == DestinationType.GlobalWarp || options.getDestination().getType() == DestinationType.Server) && !WarpSystem.getInstance().isProxyConnected()) {
+        if ((options.getOriginalDestination().getType() == DestinationType.GlobalWarp || options.getOriginalDestination().getType() == DestinationType.Server) && !WarpSystem.getInstance().isProxyConnected()) {
             options.fireCallbacks(Result.NO_CONNECTED_PROXY);
             player.sendMessage(Lang.getPrefix() + Lang.get("Server_Is_Not_Online"));
             return;

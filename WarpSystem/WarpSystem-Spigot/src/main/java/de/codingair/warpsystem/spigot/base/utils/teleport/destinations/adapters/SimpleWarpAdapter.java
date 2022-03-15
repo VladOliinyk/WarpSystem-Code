@@ -1,20 +1,23 @@
 package de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters;
 
 import de.codingair.codingapi.tools.Callback;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.ISimpleWarpAdapter;
+import de.codingair.warpsystem.api.destinations.utils.Result;
+import de.codingair.warpsystem.api.destinations.utils.SimulatedTeleportResult;
 import de.codingair.warpsystem.spigot.base.utils.Lang;
-import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.DestinationAdapter;
 import de.codingair.warpsystem.spigot.features.simplewarps.SimpleWarp;
 import de.codingair.warpsystem.spigot.features.simplewarps.managers.SimpleWarpManager;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
-public class SimpleWarpAdapter extends DestinationAdapter {
+public class SimpleWarpAdapter extends DestinationAdapter implements ISimpleWarpAdapter {
     @Override
-    public CompletableFuture<Boolean> teleport(Player player, String id, Vector randomOffset, String displayName, boolean checkPermission, String message, boolean silent, double costs, Callback<Result> callback) {
+    public CompletableFuture<Boolean> teleport(@NotNull Player player, @Nullable String id, @NotNull Vector randomOffset, String displayName, boolean checkPermission, String message, boolean silent, double costs, Callback<Result> callback) {
         SimpleWarp warp = SimpleWarpManager.getInstance().getWarp(id);
 
         if (warp == null) {
@@ -41,7 +44,7 @@ public class SimpleWarpAdapter extends DestinationAdapter {
     }
 
     @Override
-    public SimulatedTeleportResult simulate(Player player, String id, boolean checkPermission) {
+    public SimulatedTeleportResult simulate(@NotNull Player player, @NotNull String id, boolean checkPermission) {
         SimpleWarp warp = SimpleWarpManager.getInstance().getWarp(id);
 
         if (warp == null) {
@@ -60,14 +63,14 @@ public class SimpleWarpAdapter extends DestinationAdapter {
     }
 
     @Override
-    public double getCosts(String id) {
+    public double getCosts(@NotNull String id) {
         SimpleWarp warp = SimpleWarpManager.getInstance().getWarp(id);
         if (warp == null) return 0;
         else return warp.getCosts();
     }
 
     @Override
-    public de.codingair.codingapi.tools.Location buildLocation(String id) {
+    public de.codingair.codingapi.tools.Location buildLocation(@NotNull String id) {
         SimpleWarp warp = SimpleWarpManager.getInstance().getWarp(id);
         return warp == null ? null : warp.getLocation().clone();
     }

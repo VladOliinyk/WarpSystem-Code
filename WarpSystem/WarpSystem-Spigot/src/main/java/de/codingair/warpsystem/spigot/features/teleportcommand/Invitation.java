@@ -4,7 +4,7 @@ import de.codingair.codingapi.player.chat.SimpleMessage;
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.utils.ChatColor;
 import de.codingair.codingapi.utils.Value;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.utils.Result;
 import de.codingair.warpsystem.core.transfer.packets.general.StartTeleportToPlayerPacket;
 import de.codingair.warpsystem.core.transfer.packets.spigot.PrepareTeleportPlayerToPlayerPacket;
 import de.codingair.warpsystem.core.transfer.packets.spigot.PrepareTeleportRequestPacket;

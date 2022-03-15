@@ -8,7 +8,6 @@ import de.codingair.warpsystem.core.proxy.utils.Server;
 import de.codingair.warpsystem.core.transfer.packets.proxy.SendServerWorldNamesPacket;
 import de.codingair.warpsystem.core.transfer.packets.spigot.SendWorldNamesPacket;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;

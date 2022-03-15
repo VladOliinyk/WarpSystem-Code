@@ -3,21 +3,22 @@ package de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.Location;
 import de.codingair.codingapi.tools.io.utils.DataMask;
-import de.codingair.codingapi.tools.io.utils.Serializable;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.IServerAdapter;
+import de.codingair.warpsystem.api.destinations.utils.Result;
+import de.codingair.warpsystem.api.destinations.utils.SimulatedTeleportResult;
 import de.codingair.warpsystem.core.transfer.packets.general.PrepareCoordinationTeleportPacket;
 import de.codingair.warpsystem.core.transfer.packets.spigot.PrepareServerSwitchPacket;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.Lang;
 import de.codingair.warpsystem.spigot.base.utils.Permissions;
-import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Usable;
-import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ServerAdapter extends CloneableAdapter implements Serializable, Usable, IdAdapter {
+public class ServerAdapter extends CloneableAdapter implements IServerAdapter {
     private boolean keepPosition = false;
     private String server = null;
 
@@ -30,7 +31,7 @@ public class ServerAdapter extends CloneableAdapter implements Serializable, Usa
     }
 
     @Override
-    public CompletableFuture<Boolean> teleport(Player player, String id, Vector randomOffset, String displayName, boolean checkPermission, String message, boolean silent, double costs, Callback<Result> callback) {
+    public CompletableFuture<Boolean> teleport(@NotNull Player player, @Nullable String id, @NotNull Vector randomOffset, String displayName, boolean checkPermission, String message, boolean silent, double costs, Callback<Result> callback) {
         if (!WarpSystem.getInstance().isProxyConnected()) {
             if (callback != null) callback.accept(Result.NO_CONNECTED_PROXY);
             return CompletableFuture.completedFuture(false);
@@ -69,7 +70,7 @@ public class ServerAdapter extends CloneableAdapter implements Serializable, Usa
     }
 
     @Override
-    public SimulatedTeleportResult simulate(Player player, String id, boolean checkPermission) {
+    public SimulatedTeleportResult simulate(@NotNull Player player, @NotNull String id, boolean checkPermission) {
         if (!WarpSystem.getInstance().isProxyConnected())
             return new SimulatedTeleportResult(null, Result.NO_CONNECTED_PROXY);
 
@@ -79,12 +80,12 @@ public class ServerAdapter extends CloneableAdapter implements Serializable, Usa
     }
 
     @Override
-    public double getCosts(String id) {
+    public double getCosts(@NotNull String id) {
         return 0;
     }
 
     @Override
-    public Location buildLocation(String id) {
+    public Location buildLocation(@NotNull String id) {
         return null;
     }
 

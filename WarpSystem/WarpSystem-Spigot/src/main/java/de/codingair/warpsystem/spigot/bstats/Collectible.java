@@ -1,5 +1,7 @@
 package de.codingair.warpsystem.spigot.bstats;
 
+import org.bstats.bukkit.Metrics;
+
 import java.util.Map;
 
 public interface Collectible {

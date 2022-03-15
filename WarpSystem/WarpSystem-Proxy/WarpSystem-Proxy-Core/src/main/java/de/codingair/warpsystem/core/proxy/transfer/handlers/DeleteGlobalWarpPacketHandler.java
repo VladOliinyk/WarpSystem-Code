@@ -5,10 +5,10 @@ import de.codingair.packetmanagement.packets.impl.BooleanPacket;
 import de.codingair.packetmanagement.utils.Direction;
 import de.codingair.packetmanagement.utils.Proxy;
 import de.codingair.warpsystem.core.proxy.Core;
+import de.codingair.warpsystem.core.proxy.features.GlobalWarpHandler;
 import de.codingair.warpsystem.core.transfer.packets.proxy.UpdateGlobalWarpPacket;
 import de.codingair.warpsystem.core.transfer.packets.spigot.DeleteGlobalWarpPacket;
 import de.codingair.warpsystem.core.transfer.utils.serializeable.SGlobalWarp;
-import de.codingair.warpsystem.core.proxy.features.GlobalWarpHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -3,11 +3,10 @@ package de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.Location;
 import de.codingair.codingapi.tools.io.utils.DataMask;
-import de.codingair.codingapi.tools.io.utils.Serializable;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.IVelocityAdapter;
+import de.codingair.warpsystem.api.destinations.utils.Result;
+import de.codingair.warpsystem.api.destinations.utils.SimulatedTeleportResult;
 import de.codingair.warpsystem.spigot.api.players.PlayerUtils;
-import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Usable;
-import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
 import de.codingair.warpsystem.spigot.versionfactory.VFac;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -16,20 +15,21 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
-public class VelocityAdapter extends CloneableAdapter implements Serializable, Usable {
+public class VelocityAdapter extends CloneableAdapter implements IVelocityAdapter {
     private Vector vector;
     private Double multiplier;
 
     public VelocityAdapter() {
+        this(null, null);
     }
 
-    public VelocityAdapter(@Nullable Vector vector, @NotNull Double multiplier) {
+    public VelocityAdapter(@Nullable Vector vector, @Nullable Double multiplier) {
         this.vector = vector;
         this.multiplier = multiplier;
     }
 
     @Override
-    public CompletableFuture<Boolean> teleport(Player player, String id, Vector randomOffset, String displayName, boolean checkPermission, String message, boolean silent, double costs, Callback<Result> callback) {
+    public CompletableFuture<Boolean> teleport(@NotNull Player player, @Nullable String id, @NotNull Vector randomOffset, String displayName, boolean checkPermission, String message, boolean silent, double costs, Callback<Result> callback) {
         if (vector == null || multiplier == null) return CompletableFuture.completedFuture(false);
         if (callback != null) callback.accept(Result.SUCCESS);
 
@@ -39,8 +39,10 @@ public class VelocityAdapter extends CloneableAdapter implements Serializable, U
         return CompletableFuture.completedFuture(true);
     }
 
-    private Vector getVector(Player player) {
+    @NotNull
+    private Vector getVector(@NotNull Player player) {
         Vector vector = getVector();
+        if (vector == null) return new Vector(0, 0, 0);
         vector.multiply(this.multiplier);
 
         if (!PlayerUtils.isOnGround(player)) vector.multiply(0.68); //decrease velocity when player is not on ground since the velocity is optimized for players on ground
@@ -51,17 +53,17 @@ public class VelocityAdapter extends CloneableAdapter implements Serializable, U
     }
 
     @Override
-    public SimulatedTeleportResult simulate(Player player, String id, boolean checkPermission) {
+    public SimulatedTeleportResult simulate(@NotNull Player player, @NotNull String id, boolean checkPermission) {
         return new SimulatedTeleportResult(null, Result.SUCCESS);
     }
 
     @Override
-    public double getCosts(String id) {
+    public double getCosts(@NotNull String id) {
         return 0;
     }
 
     @Override
-    public Location buildLocation(String id) {
+    public Location buildLocation(@NotNull String id) {
         return null;
     }
 
@@ -100,18 +102,22 @@ public class VelocityAdapter extends CloneableAdapter implements Serializable, U
         return new VelocityAdapter(vector, multiplier);
     }
 
+    @Override
     public Vector getVector() {
         return vector == null ? null : vector.clone();
     }
 
+    @Override
     public void setVector(Vector vector) {
         this.vector = vector;
     }
 
+    @Override
     public Double getMultiplier() {
         return multiplier;
     }
 
+    @Override
     public void setMultiplier(Double multiplier) {
         this.multiplier = multiplier;
         if (this.multiplier != null) {

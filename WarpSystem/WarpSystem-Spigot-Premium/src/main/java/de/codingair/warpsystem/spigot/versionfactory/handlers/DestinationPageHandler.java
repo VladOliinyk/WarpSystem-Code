@@ -10,6 +10,7 @@ import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.items.XMaterial;
 import de.codingair.codingapi.utils.Node;
 import de.codingair.codingapi.utils.TextAlignment;
+import de.codingair.warpsystem.api.destinations.utils.IDestinationOptions;
 import de.codingair.warpsystem.core.transfer.packets.spigot.RequestServerStatusPacket;
 import de.codingair.warpsystem.spigot.api.chatinput.ChatInputEvent;
 import de.codingair.warpsystem.spigot.api.chatinput.SyncChatInputGUIButton;
@@ -263,7 +264,7 @@ public class DestinationPageHandler {
                 public ItemStack craftItem() {
                     ItemBuilder builder = new ItemBuilder(XMaterial.BLAZE_ROD).setName("§6§n" + Lang.get("Particle_Effects"));
 
-                    de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Options options = page.getDestination().getCustomOptions();
+                    IDestinationOptions options = page.getDestination().getCustomOptions();
                     boolean enabled = options.isParticles();
                     boolean standard = options.getParticles() == null;
 
@@ -291,7 +292,7 @@ public class DestinationPageHandler {
                 public ItemStack craftItem() {
                     ItemBuilder builder = new ItemBuilder(XMaterial.FEATHER).setName("§6§n" + Lang.get("Safe_Teleport"));
 
-                    de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Options options = page.getDestination().getCustomOptions();
+                    IDestinationOptions options = page.getDestination().getCustomOptions();
                     boolean enabled = options.isSafeTP();
                     boolean standard = options.getSafeTP() == null;
 

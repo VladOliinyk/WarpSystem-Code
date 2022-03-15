@@ -5,9 +5,9 @@ import de.codingair.packetmanagement.utils.Direction;
 import de.codingair.packetmanagement.utils.Proxy;
 import de.codingair.warpsystem.core.proxy.Core;
 import de.codingair.warpsystem.core.proxy.features.TeleportHandler;
+import de.codingair.warpsystem.core.proxy.utils.Player;
 import de.codingair.warpsystem.core.proxy.utils.Players;
 import de.codingair.warpsystem.core.transfer.packets.spigot.ToggleForceTeleportsPacket;
-import de.codingair.warpsystem.core.proxy.utils.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

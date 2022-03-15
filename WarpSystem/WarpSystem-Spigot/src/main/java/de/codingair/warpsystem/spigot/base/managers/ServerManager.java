@@ -14,7 +14,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ServerManager implements ProxyFeature {
     private final HashMap<String, ServerPing> properties = new HashMap<>();

@@ -75,9 +75,9 @@ permissions:
       warpsystem.bypass.cooldown: true
   warpsystem.bypass.teleport.*:
     children:
-      warpsysystem.bypass.teleport.costs: true
-      warpsysystem.bypass.teleport.delay: true
-      warpsysystem.bypass.teleport.maxplayers: true
+      warpsystem.bypass.teleport.costs: true
+      warpsystem.bypass.teleport.delay: true
+      warpsystem.bypass.teleport.maxplayers: true
   warpsystem.bypass.teleport.costs:
     default: op
   warpsystem.bypass.teleport.delay:
@@ -111,6 +111,7 @@ permissions:
       warpsystem.use.teleportCommand.tpdeny: true
       warpsystem.use.teleportCommand.tpatoggle: true
       warpsystem.use.teleportCommand.tpahere: true
+      warpsystem.use.teleportCommand.back: true
   warpsystem.use.teleportcommand.tp:
     default: op
   warpsystem.use.teleportcommand.tphere:
@@ -133,6 +134,8 @@ permissions:
     default: op
   warpsystem.use.teleportCommand.tpahere:
     default: op
+  warpsystem.use.teleportCommand.back:
+    default: op
   warpsystem.use.warpgui:
     default: op
   warpsystem.use.warpsigns:
@@ -152,7 +155,7 @@ permissions:
   warpsystem.use.spawn:
     default: op
 
-  warpystem.*:
+  warpsystem.*:
     children:
       warpsystem.notify: true
       warpsystem.modify: true

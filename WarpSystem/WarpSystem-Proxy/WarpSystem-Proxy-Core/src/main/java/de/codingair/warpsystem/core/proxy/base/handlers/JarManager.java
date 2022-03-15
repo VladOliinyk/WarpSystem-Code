@@ -1,10 +1,10 @@
 package de.codingair.warpsystem.core.proxy.base.handlers;
 
 import de.codingair.codingapi.tools.Call;
-import de.codingair.warpsystem.core.proxy.transfer.JarSender;
-import de.codingair.warpsystem.core.transfer.utils.serializeable.ServerOptions;
 import de.codingair.warpsystem.core.proxy.Core;
+import de.codingair.warpsystem.core.proxy.transfer.JarSender;
 import de.codingair.warpsystem.core.proxy.utils.Server;
+import de.codingair.warpsystem.core.transfer.utils.serializeable.ServerOptions;
 
 import java.io.File;
 import java.io.IOException;

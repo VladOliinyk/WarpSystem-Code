@@ -1,25 +1,25 @@
 package de.codingair.warpsystem.spigot.base.utils.teleport.destinations;
 
 import de.codingair.codingapi.tools.Callback;
-import de.codingair.codingapi.tools.Location;
-import de.codingair.warpsystem.api.Result;
-import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
+import de.codingair.warpsystem.api.destinations.utils.IDestinationAdapter;
+import de.codingair.warpsystem.api.destinations.utils.Result;
 import de.codingair.warpsystem.spigot.base.utils.teleport.TeleportUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
-public abstract class DestinationAdapter {
+public abstract class DestinationAdapter implements IDestinationAdapter {
     Destination destination;
 
-    public abstract CompletableFuture<Boolean> teleport(Player player, String id, Vector randomOffset, String displayName, boolean checkPermission, String message, boolean silent, double costs, Callback<Result> callback);
+    @Override
+    public final @NotNull CompletableFuture<Boolean> teleport(@NotNull Player player, @Nullable String id, @Nullable Vector randomOffset, @Nullable String displayName, boolean checkPermission, @Nullable String message, double costs, @Nullable Callback<Result> callback) {
+        return teleport(player, id, randomOffset == null ? new Vector(0, 0, 0) : randomOffset, displayName, checkPermission, message, false, costs, callback);
+    }
 
-    public abstract SimulatedTeleportResult simulate(Player player, String id, boolean checkPermission);
-
-    public abstract double getCosts(String id);
-
-    public abstract Location buildLocation(String id);
+    public abstract CompletableFuture<Boolean> teleport(@NotNull Player player, @Nullable String id, @NotNull Vector randomOffset, @Nullable String displayName, boolean checkPermission, @Nullable String message, boolean silent, double costs, @Nullable Callback<Result> callback);
 
     public DestinationAdapter dest(Destination d) {
         destination = d;
@@ -35,6 +35,4 @@ public abstract class DestinationAdapter {
 
         return CompletableFuture.completedFuture(location);
     }
-
-    public abstract boolean usesBukkitTeleportation();
 }

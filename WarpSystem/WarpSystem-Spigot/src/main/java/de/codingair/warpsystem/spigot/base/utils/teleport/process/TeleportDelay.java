@@ -1,4 +1,4 @@
-package de.codingair.warpsystem.spigot.base.utils.teleport.v2;
+package de.codingair.warpsystem.spigot.base.utils.teleport.process;
 
 import de.codingair.codingapi.particles.animations.movables.PlayerMid;
 import de.codingair.codingapi.player.MessageAPI;

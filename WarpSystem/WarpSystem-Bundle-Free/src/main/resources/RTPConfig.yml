@@ -1,23 +1,23 @@
-#The standard and max amount of random teleports will be configured with permissions:
-#"warpsystem.randomteleporters.free.1" » This permissions means, that the player with that permission has a standard amount of 1 free random teleports
-#"warpsystem.randomteleporters.max.2" » This permissions means, that the player with that permission has a max amount of 2 random teleports, so he could buy one, if it's enabled
+# The standard and max amount of random teleports will be configured with permissions:
+# "warpsystem.randomteleporters.free.1" » This permissions means, that the player with that permission has a standard amount of 1 free random teleports
+# "warpsystem.randomteleporters.max.2" » This permissions means, that the player with that permission has a max amount of 2 random teleports, so he could buy one, if it's enabled
 RandomTeleport:
-  #Max amount of random teleports running concurrently. Teleport will be queued when limit is reached.
+  # Max amount of random teleports running concurrently. Teleport will be queued when limit is reached.
   Concurrent_Teleports: 5
-  #Max/Free RTPs - ONLY if permissions in the main Config.yml are disabled
+  # Max/Free RTPs - ONLY if permissions in the main Config.yml are disabled
   Max: 4
   Free: 1
-  #Costs for one extra teleport (buyable with commands)
+  # Costs for one extra teleport (buyable with commands)
   Buyable:
     Enabled: true
     Costs: 500
   Range:
-    #Don't use too high y values! It will cause lags!!
+    # Don't use too high y values! It will cause lags!!
     Highest_Y:
       Nether: 126
       End: 80
   Worlds:
-    #Ignored values (like in "Example") will be replaced by default values
+    # Ignored values (like in "Example") will be replaced by default values
     # Ignored start values will be replaced by default values. World spawn will be used if startX=-1, startY=-1 & startZ=-1
     # Ignored range values will be replaced by general range values at the top
     # Values: startX, startY, startZ, min_range, max_range, target_worlds, disabled
@@ -46,15 +46,15 @@ RandomTeleport:
     List:
       - Water
   Support:
-    #If enabled, the player will be teleported to a random position, which is not in a protected region
+    # If enabled, the player will be teleported to a random position, which is not in a protected region
     ProtectedRegions: true
-    #If enabled, the player will be teleported to a random position, which is inside of the WorldBorder
-    #Premium feature - WorldBorder won't be supported even it's set to 'true'
+    # If enabled, the player will be teleported to a random position, which is inside of the WorldBorder
+    # Premium feature - WorldBorder won't be supported even it's set to 'true'
     WorldBorder: true
-    #If enabled, the player will be teleported to a random position, in one of the listed biomes
+    # If enabled, the player will be teleported to a random position, in one of the listed biomes
     Biome:
       Enabled: false
-      #Names can be found here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/Biome.html
+      # Names can be found here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/Biome.html
       BiomeList:
         - OCEAN
         - PLAINS

@@ -4,11 +4,11 @@ import de.codingair.packetmanagement.handlers.PacketHandler;
 import de.codingair.packetmanagement.utils.Direction;
 import de.codingair.packetmanagement.utils.Proxy;
 import de.codingair.warpsystem.core.proxy.Core;
+import de.codingair.warpsystem.core.proxy.features.PlayerWarpHandler;
 import de.codingair.warpsystem.core.proxy.utils.Server;
 import de.codingair.warpsystem.core.transfer.packets.general.SendPlayerWarpsPacket;
 import de.codingair.warpsystem.core.transfer.packets.spigot.MoveLocalPlayerWarpsPacket;
 import de.codingair.warpsystem.core.transfer.packets.spigot.utils.PlayerWarpData;
-import de.codingair.warpsystem.core.proxy.features.PlayerWarpHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

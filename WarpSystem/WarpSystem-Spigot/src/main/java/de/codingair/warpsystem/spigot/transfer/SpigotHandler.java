@@ -1,6 +1,6 @@
 package de.codingair.warpsystem.spigot.transfer;
 
-import de.codingair.packetmanagement.variants.OneWayDataHandler;
+import de.codingair.packetmanagement.variants.bytestream.OneWayStreamDataHandler;
 import de.codingair.warpsystem.core.transfer.packets.general.*;
 import de.codingair.warpsystem.core.transfer.packets.proxy.*;
 import de.codingair.warpsystem.core.transfer.packets.spigot.PrepareTeleportRequestPacket;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class SpigotHandler extends OneWayDataHandler<Player> implements PluginMessageListener {
+public class SpigotHandler extends OneWayStreamDataHandler<Player> implements PluginMessageListener {
     public SpigotHandler(WarpSystem plugin) {
         super("warpsystem", plugin);
     }
@@ -67,7 +67,7 @@ public class SpigotHandler extends OneWayDataHandler<Player> implements PluginMe
     }
 
     @Override
-    public void onPluginMessageReceived(@NotNull String tag, @NotNull Player player, @NotNull byte[] bytes) {
+    public void onPluginMessageReceived(@NotNull String tag, @NotNull Player player, byte[] bytes) {
         if (tag.equals(getChannelBackend())) receive(bytes, player);
     }
 

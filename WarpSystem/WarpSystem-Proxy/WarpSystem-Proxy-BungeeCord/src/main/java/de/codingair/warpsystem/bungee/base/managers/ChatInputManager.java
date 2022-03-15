@@ -1,9 +1,9 @@
 package de.codingair.warpsystem.bungee.base.managers;
 
-import de.codingair.warpsystem.core.transfer.packets.spigot.ChatInputGUITogglePacket;
 import de.codingair.warpsystem.bungee.base.WarpSystem;
 import de.codingair.warpsystem.core.proxy.Core;
 import de.codingair.warpsystem.core.proxy.chatinput.ChatInputHandler;
+import de.codingair.warpsystem.core.transfer.packets.spigot.ChatInputGUITogglePacket;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.ServerDisconnectEvent;

@@ -1,11 +1,11 @@
-package de.codingair.warpsystem.spigot.base.utils.teleport.v2;
+package de.codingair.warpsystem.spigot.base.utils.teleport.process;
 
 import de.codingair.codingapi.player.MessageAPI;
 import de.codingair.codingapi.server.specification.Version;
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.utils.ImprovedDouble;
 import de.codingair.codingapi.utils.Value;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.utils.Result;
 import de.codingair.warpsystem.spigot.api.events.PlayerTeleportAcceptEvent;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.utils.Lang;
@@ -47,7 +47,7 @@ public class PlayerTeleport extends TeleportStage {
 
         String finalMessage = message;
 
-        if (options.getDestination().usesBukkitTeleportation()) {
+        if (options.getOriginalDestination().usesBukkitTeleportation()) {
             Bukkit.getPluginManager().registerEvents(listener = new Listener() {
                 @EventHandler (priority = EventPriority.MONITOR)
                 public void onTeleport(PlayerTeleportEvent e) {
@@ -88,7 +88,7 @@ public class PlayerTeleport extends TeleportStage {
                 public void onTeleported(PlayerTeleportAcceptEvent e) {
                     if (player.equals(e.getPlayer())) {
                         if (player.isOnline()) {
-                            options.getDestination().sendMessage(player, finalMessage, options.getDisplayName(), options.getCosts(player), options.getOrigin());
+                            options.getOriginalDestination().sendMessage(player, finalMessage, options.getDisplayName(), options.getCosts(player), options.getOriginalOrigin());
                             if (options.getTeleportSound() != null) options.getTeleportSound().play(player);
                             end();
                         }
@@ -105,12 +105,12 @@ public class PlayerTeleport extends TeleportStage {
             }, WarpSystem.getInstance());
         }
 
-        options.getDestination().teleport(player, message, options.getDisplayName(), options.getPermission() == null, options.isSilent(), options.getCosts(player), new Callback<Result>() {
+        options.getOriginalDestination().teleport(player, message, options.getDisplayName(), options.getPermission() == null, options.isSilent(), options.getCosts(player), new Callback<Result>() {
             @Override
             public void accept(Result res) {
                 if (res == Result.SERVER_NOT_AVAILABLE) player.sendMessage(options.getServerNotOnline());
 
-                if (!options.getDestination().usesBukkitTeleportation()) {
+                if (!options.getOriginalDestination().usesBukkitTeleportation()) {
                     if (res == Result.SUCCESS) end();
                     else cancel(res);
                 }

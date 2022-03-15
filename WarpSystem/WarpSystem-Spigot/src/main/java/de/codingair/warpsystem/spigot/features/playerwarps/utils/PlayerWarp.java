@@ -11,7 +11,7 @@ import de.codingair.codingapi.tools.io.utils.Serializable;
 import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.items.XMaterial;
 import de.codingair.codingapi.utils.ChatColor;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.utils.Result;
 import de.codingair.warpsystem.core.transfer.packets.spigot.PlayerWarpTeleportProcessPacket;
 import de.codingair.warpsystem.core.transfer.packets.spigot.utils.PlayerWarpData;
 import de.codingair.warpsystem.spigot.api.players.Head;

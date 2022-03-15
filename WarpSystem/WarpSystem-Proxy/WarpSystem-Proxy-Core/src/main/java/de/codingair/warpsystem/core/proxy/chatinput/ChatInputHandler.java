@@ -1,7 +1,7 @@
 package de.codingair.warpsystem.core.proxy.chatinput;
 
-import de.codingair.warpsystem.core.transfer.packets.spigot.ChatInputGUITogglePacket;
 import de.codingair.warpsystem.core.proxy.Core;
+import de.codingair.warpsystem.core.transfer.packets.spigot.ChatInputGUITogglePacket;
 
 import java.util.ArrayList;
 import java.util.HashMap;

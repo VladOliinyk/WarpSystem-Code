@@ -5,7 +5,8 @@ import de.codingair.codingapi.server.sounds.SoundData;
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.utils.ImprovedDouble;
 import de.codingair.warpsystem.api.Options;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.utils.IDestination;
+import de.codingair.warpsystem.api.destinations.utils.Result;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.guis.editor.pages.SoundPage;
 import de.codingair.warpsystem.spigot.base.utils.Lang;
@@ -16,17 +17,16 @@ import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.
 import de.codingair.warpsystem.spigot.features.animations.AnimationManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class TeleportOptions {
+public class TeleportOptions implements Options {
     private final Set<Callback<Result>> callback = new HashSet<>();
     private Origin origin;
-    private Destination destination;
+    private IDestination destination;
 
     private String displayName;
     private String permission;
@@ -87,65 +87,65 @@ public class TeleportOptions {
         this.publicAnimations = WarpSystem.opt().isPublicAnimations();
     }
 
-    public TeleportOptions(Options o) {
-        this.destination = new Destination(o.getDestination(), o.randomOffset(new Vector()));
-        this.origin = Origin.Custom;
-        this.displayName = o.displayName();
-        this.permission = o.permission(null);
-        this.costs = o.costs(0);
-        this.delay = o.delay(WarpSystem.opt().getTeleportDelay());
-        this.canMove = o.canMove(WarpSystem.opt().isAllowMove());
-        this.waitForTeleport = o.waitForTeleport(false);
-        this.payMessage = o.payMessage(Lang.getPrefix() + Lang.get("Money_Paid"));
-        this.paymentDeniedMessage = o.paymentDeniedMessage(Lang.getPrefix() + Lang.get("Payment_denied"));
-        this.message = o.message(Lang.getPrefix() + Lang.get("Teleported_To"));
-        this.serverNotOnline = o.serverNotOnline(Lang.getPrefix() + Lang.get("Server_Is_Not_Online"));
-        this.silent = false;
-        this.teleportSound = o.teleportSound(null);
-        this.cancelSound = o.cancelSound(new SoundData(Sound.ENTITY_ITEM_BREAK, 0.7F, 1F));
-        this.afterEffects = o.afterEffects(destination.getCustomOptions().isParticles());
-        this.publicAnimations = o.publicAnimations(WarpSystem.opt().isPublicAnimations());
-    }
-
     public Location buildLocation() {
         return destination == null ? null : destination.buildLocation();
     }
 
-    public void destroy() {
+    public @NotNull Options destroy() {
         callback.clear();
+        return this;
     }
 
-    public Origin getOrigin() {
+    public Origin getOriginalOrigin() {
         return origin;
     }
 
-    public TeleportOptions setOrigin(Origin origin) {
+    @NotNull
+    public de.codingair.warpsystem.api.destinations.utils.Origin getOrigin() {
+        return origin.getApiOrigin();
+    }
+
+    public TeleportOptions setOrigin(@NotNull Origin origin) {
         this.origin = origin;
         return this;
     }
 
-    public Destination getDestination() {
-        return destination;
+    public Destination getOriginalDestination() {
+        if (destination instanceof Destination) return (Destination) destination;
+        return null;
+    }
+
+    @Override
+    public @NotNull IDestination getDestination() {
+        return this.destination;
+    }
+
+    @Override
+    public @NotNull Options setDestination(@NotNull IDestination iDestination) {
+        this.destination = iDestination;
+        return this;
     }
 
     public void setDestination(Destination destination) {
         this.destination = destination;
     }
 
-    public String getDisplayName() {
+    public @Nullable String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName) {
+    public @NotNull Options setDisplayName(@Nullable String displayName) {
         this.displayName = displayName;
+        return this;
     }
 
     public String getPermission() {
         return permission;
     }
 
-    public void setPermission(String permission) {
+    public @NotNull Options setPermission(String permission) {
         this.permission = permission;
+        return this;
     }
 
     public double getCosts(Player player) {
@@ -153,11 +153,12 @@ public class TeleportOptions {
         return costs;
     }
 
-    public void setCosts(double costs) {
+    public @NotNull Options setCosts(double costs) {
         this.costs = costs;
+        return this;
     }
 
-    public Number getFinalCosts(Player player) {
+    public @NotNull Number getFinalCosts(@NotNull Player player) {
         return new ImprovedDouble(costs > 0 && Bank.adapter() != null && !player.hasPermission(Permissions.PERMISSION_ByPass_Teleport_Costs) ? costs : 0).get();
     }
 
@@ -170,35 +171,42 @@ public class TeleportOptions {
         return skip;
     }
 
-    public void setSkip(boolean skip) {
+    public @NotNull Options setSkip(boolean skip) {
         this.skip = skip;
+        return this;
     }
 
     public boolean isCanMove() {
         return canMove;
     }
 
-    public void setCanMove(boolean canMove) {
+    public @NotNull Options setCanMove(boolean canMove) {
         this.canMove = canMove;
+        return this;
     }
 
     public boolean isWaitForTeleport() {
         return waitForTeleport;
     }
 
-    public void setWaitForTeleport(boolean waitForTeleport) {
+    public @NotNull Options setWaitForTeleport(boolean waitForTeleport) {
         this.waitForTeleport = waitForTeleport;
+        return this;
     }
 
     public String getMessage() {
         String displayName = this.displayName;
-        if (destination.getCustomOptions().getDisplayName() != null) displayName = destination.getCustomOptions().getColoredDisplayName();
+
+        if (destination instanceof Destination) {
+            if (destination.getCustomOptions().getDisplayName() != null) displayName = destination.getCustomOptions().getColoredDisplayName();
+        }
 
         return message == null ? null : displayName == null ? message : message.replace("%warp%", displayName);
     }
 
-    public void setMessage(@Nullable String message) {
+    public @NotNull Options setMessage(@Nullable String message) {
         this.message = message;
+        return this;
     }
 
     public boolean isSilent() {
@@ -215,17 +223,19 @@ public class TeleportOptions {
         return teleportSound;
     }
 
-    public void setTeleportSound(SoundData teleportSound) {
+    public @NotNull Options setTeleportSound(SoundData teleportSound) {
         this.teleportSound = teleportSound;
+        return this;
     }
 
     public boolean isAfterEffects() {
         return afterEffects != null ? afterEffects : WarpSystem.opt().isAfterEffects();
     }
 
-    public void setAfterEffects(boolean afterEffects, boolean force) {
-        if (this.afterEffects != null && !force) return;
+    public @NotNull Options setAfterEffects(boolean afterEffects, boolean force) {
+        if (this.afterEffects != null && !force) return this;
         this.afterEffects = afterEffects;
+        return this;
     }
 
     public void fireCallbacks(Result result) {
@@ -240,8 +250,7 @@ public class TeleportOptions {
         return this.callback.isEmpty();
     }
 
-    public TeleportOptions addCallback(Callback<Result> callback) {
-        if (callback == null) return this;
+    public @NotNull TeleportOptions addCallback(@NotNull Callback<Result> callback) {
         this.callback.add(callback);
         return this;
     }
@@ -250,11 +259,12 @@ public class TeleportOptions {
         return payMessage == null ? null : payMessage.replace("%warp%", displayName);
     }
 
-    public void setPayMessage(String payMessage) {
+    public @NotNull Options setPayMessage(String payMessage) {
         this.payMessage = payMessage;
+        return this;
     }
 
-    public String getFinalMessage(Player player) {
+    public String getFinalMessage(@NotNull Player player) {
         return getFinalCosts(player).doubleValue() > 0 ? getPayMessage() : getMessage();
     }
 
@@ -262,58 +272,65 @@ public class TeleportOptions {
         return confirmPayment;
     }
 
-    public void setConfirmPayment(boolean confirmPayment) {
+    public @NotNull Options setConfirmPayment(boolean confirmPayment) {
         this.confirmPayment = confirmPayment;
+        return this;
     }
 
-    public String getPaymentDeniedMessage(Player player) {
+    public String getPaymentDeniedMessage(@NotNull Player player) {
         if (this.paymentDeniedMessage == null) return null;
         return this.paymentDeniedMessage.replace("%AMOUNT%", getFinalCosts(player) + "");
     }
 
-    public void setPaymentDeniedMessage(String paymentDeniedMessage) {
+    public @NotNull Options setPaymentDeniedMessage(String paymentDeniedMessage) {
         this.paymentDeniedMessage = paymentDeniedMessage;
+        return this;
     }
 
     public boolean isTeleportAnimation() {
         return teleportAnimation;
     }
 
-    public void setTeleportAnimation(boolean teleportAnimation) {
+    public @NotNull Options setTeleportAnimation(boolean teleportAnimation) {
         this.teleportAnimation = teleportAnimation;
+        return this;
     }
 
     public String getServerNotOnline() {
         return serverNotOnline;
     }
 
-    public void setServerNotOnline(String serverNotOnline) {
+    public @NotNull Options setServerNotOnline(String serverNotOnline) {
         this.serverNotOnline = serverNotOnline;
+        return this;
     }
 
     public boolean isPublicAnimations() {
         return publicAnimations;
     }
 
-    public void setPublicAnimations(boolean publicAnimations) {
+    public @NotNull Options setPublicAnimations(boolean publicAnimations) {
         this.publicAnimations = publicAnimations;
+        return this;
     }
 
     public SoundData getCancelSound() {
         return cancelSound;
     }
 
-    public void setCancelSound(SoundData cancelSound) {
+    public @NotNull Options setCancelSound(SoundData cancelSound) {
         this.cancelSound = cancelSound;
+        return this;
     }
 
     public int getDelay(Player player) {
         if (player.hasPermission(Permissions.PERMISSION_ByPass_Teleport_Delay) || (skip != null && skip)) return 0;
-        if (destination != null) return destination.getCustomOptions().getDelay(delay);
+        if (destination instanceof Destination) return destination.getCustomOptions().getDelay(delay);
         return delay;
     }
 
-    public void setDelay(int delay) {
+    public @NotNull Options setDelay(int delay) {
         this.delay = delay;
+        return this;
     }
 }

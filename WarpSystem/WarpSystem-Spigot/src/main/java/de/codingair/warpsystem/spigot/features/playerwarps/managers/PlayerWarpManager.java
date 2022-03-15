@@ -22,7 +22,6 @@ import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.Action;
 import de.codingair.warpsystem.spigot.base.utils.featureobjects.actions.types.WarpAction;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.adapters.GlobalLocationAdapter;
 import de.codingair.warpsystem.spigot.bstats.Collectible;
-import de.codingair.warpsystem.spigot.bstats.Metrics;
 import de.codingair.warpsystem.spigot.features.FeatureType;
 import de.codingair.warpsystem.spigot.features.playerwarps.guis.list.FilterType;
 import de.codingair.warpsystem.spigot.features.playerwarps.guis.list.PWList;
@@ -30,6 +29,8 @@ import de.codingair.warpsystem.spigot.features.playerwarps.listeners.PlayerWarpL
 import de.codingair.warpsystem.spigot.features.playerwarps.utils.Category;
 import de.codingair.warpsystem.spigot.features.playerwarps.utils.PlayerWarp;
 import de.codingair.warpsystem.spigot.features.playerwarps.utils.forwardcompatibility.PlayerWarpTagConverter_v4_2_2;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SingleLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -158,7 +159,7 @@ public abstract class PlayerWarpManager implements Manager, Ticker, ProxyFeature
 
     @Override
     public void addCustomCarts(Metrics metrics) {
-        metrics.addCustomChart(new Metrics.SingleLineChart("playerwarp_usage", () -> {
+        metrics.addCustomChart(new SingleLineChart("playerwarp_usage", () -> {
             if (!bungeeCord || WarpSystem.getInstance().isProxyConnected()) {
                 lastCountedPlayerWarpSize = 0;
 
@@ -167,9 +168,14 @@ public abstract class PlayerWarpManager implements Manager, Ticker, ProxyFeature
                     public void accept(PlayerWarp warp) {
                         WarpAction action = warp.getAction(Action.WARP);
                         if (action != null) {
-                            String s = ((GlobalLocationAdapter) action.getValue().getAdapter()).getServer();
-                            if (s == null || s.equals(WarpSystem.getInstance().getCurrentServer())) {
-                                lastCountedPlayerWarpSize++;
+                            GlobalLocationAdapter adapter = (GlobalLocationAdapter) action.getValue().getAdapter();
+
+                            if (adapter != null) {
+                                String s = adapter.getServer();
+
+                                if (s == null || s.equals(WarpSystem.getInstance().getCurrentServer())) {
+                                    lastCountedPlayerWarpSize++;
+                                }
                             }
                         }
                     }

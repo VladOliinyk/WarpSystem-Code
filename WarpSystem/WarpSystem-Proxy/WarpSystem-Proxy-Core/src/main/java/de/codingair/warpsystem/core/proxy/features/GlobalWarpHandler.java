@@ -11,7 +11,8 @@ import de.codingair.warpsystem.core.transfer.utils.serializeable.SLocation;
 import de.codingair.warpsystem.core.utils.Manager;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class GlobalWarpHandler implements Manager {
     private final Set<SGlobalWarp> globalWarps = new HashSet<>();

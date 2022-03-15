@@ -113,6 +113,7 @@ public class Lang {
         languages.add("GER.yml");
         languages.add("ES.yml");
         languages.add("FRA.yml");
+        languages.add("IT.yml");
 
         File folder = new File(plugin.getDataFolder(), "/Languages/");
         if (!folder.exists()) mkDir(folder);

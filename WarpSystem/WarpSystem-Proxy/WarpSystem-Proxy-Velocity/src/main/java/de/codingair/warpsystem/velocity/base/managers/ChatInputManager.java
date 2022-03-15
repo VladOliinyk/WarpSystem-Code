@@ -6,9 +6,9 @@ import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.player.PlayerChatEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.proxy.Player;
-import de.codingair.warpsystem.core.transfer.packets.spigot.ChatInputGUITogglePacket;
 import de.codingair.warpsystem.core.proxy.Core;
 import de.codingair.warpsystem.core.proxy.chatinput.ChatInputHandler;
+import de.codingair.warpsystem.core.transfer.packets.spigot.ChatInputGUITogglePacket;
 import de.codingair.warpsystem.velocity.base.WarpSystem;
 
 public class ChatInputManager extends ChatInputHandler {

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>WarpSystem</artifactId>
         <groupId>de.codingair</groupId>
-        <version>5.0.5</version>
+        <version>5.1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -52,6 +52,22 @@
                             <pattern>io.papermc.lib</pattern>
                             <shadedPattern>de.codingair.warpsystem.lib.papermc</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>de.codingair.warpsystem.lib.bstats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.jetbrains.annotations</pattern>
+                            <shadedPattern>de.codingair.warpsystem.lib.annotations</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.intellij.lang.annotations</pattern>
+                            <shadedPattern>de.codingair.warpsystem.lib.annotations</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.google.gson</pattern>
+                            <shadedPattern>de.codingair.warpsystem.lib.gson</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
 
@@ -94,12 +110,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>WarpSystem-Spigot</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>WarpSystem-Spigot-v1.8</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

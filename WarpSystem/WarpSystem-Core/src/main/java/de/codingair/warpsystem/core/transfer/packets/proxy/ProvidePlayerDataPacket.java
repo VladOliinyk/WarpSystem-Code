@@ -16,7 +16,7 @@ public class ProvidePlayerDataPacket implements Packet {
     }
 
     public ProvidePlayerDataPacket(Collection<PlayerData> data) {
-        if (data.size() > 256) throw new IllegalArgumentException("Too many names: " + data.size());
+        if (data.size() > 64) throw new IllegalArgumentException("Too many names: " + data.size());
         this.data = data;
     }
 

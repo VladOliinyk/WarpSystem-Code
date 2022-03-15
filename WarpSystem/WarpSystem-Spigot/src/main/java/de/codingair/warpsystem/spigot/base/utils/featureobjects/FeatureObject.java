@@ -12,7 +12,7 @@ import de.codingair.codingapi.tools.io.utils.DataMask;
 import de.codingair.codingapi.tools.io.utils.Serializable;
 import de.codingair.codingapi.utils.ImprovedDouble;
 import de.codingair.codingapi.utils.Value;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.utils.Result;
 import de.codingair.warpsystem.core.transfer.packets.spigot.utils.ServerPing;
 import de.codingair.warpsystem.spigot.api.placeholders.PAPI;
 import de.codingair.warpsystem.spigot.base.WarpSystem;
@@ -29,10 +29,10 @@ import de.codingair.warpsystem.spigot.base.utils.money.Bank;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Origin;
 import de.codingair.warpsystem.spigot.base.utils.teleport.TeleportOptions;
 import de.codingair.warpsystem.spigot.base.utils.teleport.destinations.Destination;
-import de.codingair.warpsystem.spigot.base.utils.teleport.v2.ConfirmPayment;
-import de.codingair.warpsystem.spigot.base.utils.teleport.v2.Teleport;
-import de.codingair.warpsystem.spigot.base.utils.teleport.v2.TeleportDummy;
-import de.codingair.warpsystem.spigot.base.utils.teleport.v2.WaitForTeleport;
+import de.codingair.warpsystem.spigot.base.utils.teleport.process.ConfirmPayment;
+import de.codingair.warpsystem.spigot.base.utils.teleport.process.Teleport;
+import de.codingair.warpsystem.spigot.base.utils.teleport.process.TeleportDummy;
+import de.codingair.warpsystem.spigot.base.utils.teleport.process.WaitForTeleport;
 import de.codingair.warpsystem.spigot.features.warps.nextlevel.exceptions.IconReadException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -98,7 +98,7 @@ public abstract class FeatureObject implements Serializable {
     }
 
     public void prepareTeleportOptions(String player, TeleportOptions options) {
-        if (options.getDestination() == null) options.setDestination(hasAction(Action.WARP) ? getAction(WarpAction.class).getValue() : null);
+        if (options.getOriginalDestination() == null) options.setDestination(hasAction(Action.WARP) ? getAction(WarpAction.class).getValue() : null);
         if (options.getDisplayName() == null) options.setDisplayName(hasAction(Action.WARP) ? getAction(WarpAction.class).getValue().getId() : null);
         if (hasAction(Action.SOUND)) options.setTeleportSound(getAction(SoundAction.class).getValue());
 

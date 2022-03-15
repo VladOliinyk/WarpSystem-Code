@@ -15,7 +15,7 @@ import de.codingair.warpsystem.spigot.base.setupassistant.annotations.Function;
 import de.codingair.warpsystem.spigot.base.utils.Lang;
 import de.codingair.warpsystem.spigot.base.utils.Permissions;
 import de.codingair.warpsystem.spigot.base.utils.teleport.Origin;
-import de.codingair.warpsystem.spigot.base.utils.teleport.v2.Teleport;
+import de.codingair.warpsystem.spigot.base.utils.teleport.process.Teleport;
 import de.codingair.warpsystem.spigot.features.FeatureType;
 import de.codingair.warpsystem.spigot.features.portals.commands.CPortals;
 import de.codingair.warpsystem.spigot.features.portals.guis.DeleteGUI;
@@ -222,7 +222,7 @@ public class PortalManager implements Manager {
             @Override
             public void onLeave(Player player) {
                 Teleport t = WarpSystem.getInstance().getTeleportManager().getTeleport(player);
-                if (t != null && t.getOptions().getOrigin() == Origin.Portal) {
+                if (t != null && t.getOptions().getOriginalOrigin() == Origin.Portal) {
                     WarpSystem.getInstance().getTeleportManager().cancelTeleport(player);
                 }
             }

@@ -1,7 +1,7 @@
 package de.codingair.warpsystem.core.proxy.transfer;
 
-import de.codingair.packetmanagement.DataHandler;
 import de.codingair.packetmanagement.utils.Direction;
+import de.codingair.packetmanagement.variants.bytestream.StreamDataHandler;
 import de.codingair.warpsystem.core.proxy.Core;
 import de.codingair.warpsystem.core.proxy.redis.RedisCore;
 import de.codingair.warpsystem.core.proxy.transfer.handlers.*;
@@ -13,7 +13,7 @@ import de.codingair.warpsystem.core.transfer.packets.spigot.*;
 import de.codingair.warpsystem.core.transfer.packets.spigot.utils.ConnectionPacket;
 import de.codingair.warpsystem.core.transfer.packets.utils.PacketType;
 
-public abstract class CoreDataHandler<C> extends DataHandler<Server<C>> {
+public abstract class CoreDataHandler<C> extends StreamDataHandler<Server<C>> {
     public static final String redisChannel = "warpsystem:redis";
 
     public CoreDataHandler(ProxyPlugin plugin) {

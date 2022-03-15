@@ -5,13 +5,13 @@ import de.codingair.codingapi.tools.io.utils.DataMask;
 import de.codingair.packetmanagement.utils.Direction;
 import de.codingair.warpsystem.core.features.cooldown.Cooldown;
 import de.codingair.warpsystem.core.features.cooldown.ICooldownManager;
+import de.codingair.warpsystem.core.proxy.Core;
+import de.codingair.warpsystem.core.proxy.utils.Player;
+import de.codingair.warpsystem.core.proxy.utils.Server;
 import de.codingair.warpsystem.core.transfer.handlers.CooldownDataPacketHandler;
 import de.codingair.warpsystem.core.transfer.handlers.CooldownPacketHandler;
 import de.codingair.warpsystem.core.transfer.packets.spigot.CooldownDataPacket;
 import de.codingair.warpsystem.core.transfer.packets.spigot.CooldownPacket;
-import de.codingair.warpsystem.core.proxy.Core;
-import de.codingair.warpsystem.core.proxy.utils.Player;
-import de.codingair.warpsystem.core.proxy.utils.Server;
 
 import java.util.*;
 

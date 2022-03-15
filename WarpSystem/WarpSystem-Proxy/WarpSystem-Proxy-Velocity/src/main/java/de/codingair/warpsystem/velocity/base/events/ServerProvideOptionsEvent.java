@@ -1,7 +1,7 @@
 package de.codingair.warpsystem.velocity.base.events;
 
-import de.codingair.warpsystem.core.transfer.utils.serializeable.ServerOptions;
 import de.codingair.warpsystem.core.proxy.base.events.IServerProvideOptionsEvent;
+import de.codingair.warpsystem.core.transfer.utils.serializeable.ServerOptions;
 import de.codingair.warpsystem.velocity.utils.VelocityServer;
 
 public class ServerProvideOptionsEvent implements IServerProvideOptionsEvent {

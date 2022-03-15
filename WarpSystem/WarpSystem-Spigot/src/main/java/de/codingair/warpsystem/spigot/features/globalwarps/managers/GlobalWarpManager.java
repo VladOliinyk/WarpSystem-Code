@@ -13,7 +13,7 @@ import de.codingair.warpsystem.spigot.base.WarpSystem;
 import de.codingair.warpsystem.spigot.base.managers.TeleportManager;
 import de.codingair.warpsystem.spigot.base.utils.Permissions;
 import de.codingair.warpsystem.spigot.base.utils.ProxyFeature;
-import de.codingair.warpsystem.spigot.base.utils.teleport.v2.Teleport;
+import de.codingair.warpsystem.spigot.base.utils.teleport.process.Teleport;
 import de.codingair.warpsystem.spigot.features.FeatureType;
 import de.codingair.warpsystem.spigot.features.globalwarps.commands.CGlobalWarp;
 import de.codingair.warpsystem.spigot.features.globalwarps.commands.CGlobalWarps;

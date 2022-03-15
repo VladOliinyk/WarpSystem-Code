@@ -7,7 +7,7 @@ import de.codingair.codingapi.server.reflections.IReflection;
 import de.codingair.codingapi.server.reflections.PacketUtils;
 import de.codingair.codingapi.tools.Callback;
 import de.codingair.codingapi.tools.Location;
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.utils.Result;
 import de.codingair.warpsystem.core.transfer.packets.spigot.QueueRTPUsagePacket;
 import de.codingair.warpsystem.core.transfer.packets.spigot.RandomTPPacket;
 import de.codingair.warpsystem.spigot.api.events.PlayerFinalJoinEvent;

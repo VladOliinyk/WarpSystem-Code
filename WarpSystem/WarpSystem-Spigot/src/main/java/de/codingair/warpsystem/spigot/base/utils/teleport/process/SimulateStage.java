@@ -1,10 +1,10 @@
-package de.codingair.warpsystem.spigot.base.utils.teleport.v2;
+package de.codingair.warpsystem.spigot.base.utils.teleport.process;
 
-import de.codingair.warpsystem.api.Result;
+import de.codingair.warpsystem.api.destinations.utils.Result;
+import de.codingair.warpsystem.api.destinations.utils.SimulatedTeleportResult;
 import de.codingair.warpsystem.spigot.base.managers.TeleportManager;
 import de.codingair.warpsystem.spigot.base.utils.Lang;
 import de.codingair.warpsystem.spigot.base.utils.money.Bank;
-import de.codingair.warpsystem.spigot.base.utils.teleport.SimulatedTeleportResult;
 
 public class SimulateStage extends TeleportStage {
     protected SimulateStage(Teleport teleport) {
@@ -13,14 +13,14 @@ public class SimulateStage extends TeleportStage {
 
     @Override
     public void start() {
-        if (options.getDestination() == null) throw new IllegalArgumentException("Destination cannot be null!");
+        if (options.getOriginalDestination() == null) throw new IllegalArgumentException("Destination cannot be null!");
         if (options.getPermission() != null && !options.getPermission().equals(TeleportManager.NO_PERMISSION) && !player.hasPermission(options.getPermission())) {
             player.sendMessage(Lang.getPrefix() + Lang.get("Player_Cannot_Use_Warp"));
             cancel(Result.NO_PERMISSION);
             return;
         }
 
-        SimulatedTeleportResult sim = this.options.getDestination().simulate(player, options.getPermission() == null);
+        SimulatedTeleportResult sim = this.options.getOriginalDestination().simulate(player, options.getPermission() == null);
         if (sim.getError() != null) {
             player.sendMessage(sim.getError());
             cancel(sim.getResult());
