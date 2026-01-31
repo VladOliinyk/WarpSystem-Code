@@ -51,7 +51,19 @@ public class CTeleport extends WSCommandBuilder {
                 Player p = (Player) sender;
 
                 if (Permissions.hasPermission(p, Permissions.PERMISSION_USE_TELEPORT_COMMAND_TP)) {
-                    if (!process(p, args)) {
+                    List<String> argList = new ArrayList<>(Arrays.asList(args));
+                    boolean silentMode = false;
+                    if (argList.contains("-silent")) {
+                        if (Permissions.hasPermission(p, Permissions.PERMISSION_USE_TELEPORT_COMMAND_TP_SILENT)) {
+                            silentMode = true;
+                            argList.remove("-silent");
+                        } else {
+                            p.sendMessage(Lang.getPrefix() + Lang.get("No_Permission"));
+                            return true;
+                        }
+                    }
+                    args = argList.toArray(new String[0]);
+                    if (!process(p, args, silentMode)) {
                         String bracket = WarpSystem.opt().cmdSug();
                         String arg = WarpSystem.opt().cmdArg();
 
@@ -294,7 +306,7 @@ public class CTeleport extends WSCommandBuilder {
         return true;
     }
 
-    private static boolean process(Player p, String[] args) {
+    private static boolean process(Player p, String[] args, boolean silentMode) {
         if (args.length == 0) return false;
 
         String name = args[0];
@@ -305,7 +317,7 @@ public class CTeleport extends WSCommandBuilder {
         }
 
         if (args.length == 1 && data != null) {
-            TeleportCommandManager.handler().tp(p, WarpSystem.getInstance().getPlayerDataManager().getCache(p), data);
+            TeleportCommandManager.handler().tp(p, WarpSystem.getInstance().getPlayerDataManager().getCache(p), data, !silentMode);
             return true;
         }
 
@@ -317,16 +329,16 @@ public class CTeleport extends WSCommandBuilder {
 
                 if (otherData != null) {
                     //player name
-                    TeleportCommandManager.handler().tp(p, data, otherData);
+                    TeleportCommandManager.handler().tp(p, data, otherData, !silentMode);
                     return true;
                 }
             }
         }
 
-        return process(p, data, args);
+        return process(p, data, args, silentMode);
     }
 
-    private static boolean process(Player p, PlayerData other, String[] args) {
+    private static boolean process(Player p, PlayerData other, String[] args, boolean silentMode) {
         int i = 0;
         if (other != null) i++;
 
@@ -359,10 +371,10 @@ public class CTeleport extends WSCommandBuilder {
             }
         }
 
-        return process(p, other, x, y, z, args);
+        return process(p, other, x, y, z, args, silentMode);
     }
 
-    private static boolean process(Player p, PlayerData other, Double x, Double y, Double z, String[] args) {
+    private static boolean process(Player p, PlayerData other, Double x, Double y, Double z, String[] args, boolean silentMode) {
         int i = 0;
         if (other != null) i++;
         if (x != null) i += 3;
@@ -389,10 +401,10 @@ public class CTeleport extends WSCommandBuilder {
             }
         }
 
-        return process(p, other, x, y, z, yaw, pitch, args);
+        return process(p, other, x, y, z, yaw, pitch, args, silentMode);
     }
 
-    private static boolean process(Player p, PlayerData other, Double x, Double y, Double z, Float yaw, Float pitch, String[] args) {
+    private static boolean process(Player p, PlayerData other, Double x, Double y, Double z, Float yaw, Float pitch, String[] args, boolean silentMode) {
         int i = 0;
         if (other != null) i++;
         if (x != null) i += 3;
@@ -434,7 +446,7 @@ public class CTeleport extends WSCommandBuilder {
         }
 
         if (other == null) other = WarpSystem.getInstance().getPlayerDataManager().getCache(p);
-        return TeleportCommandManager.handler().tp(p, other, x, y, z, yaw, pitch, server, world);
+        return TeleportCommandManager.handler().tp(p, other, x, y, z, yaw, pitch, server, world, !silentMode);
     }
 
     private static boolean isNumeric(String s) {

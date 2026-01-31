@@ -6,7 +6,7 @@
 
     <groupId>de.codingair</groupId>
     <artifactId>WarpSystem</artifactId>
-    <version>5.1.15-add-console-tp</version>
+    <version>5.1.16</version>
     <packaging>pom</packaging>
 
     <properties>

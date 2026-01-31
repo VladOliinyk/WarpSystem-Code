@@ -16,11 +16,13 @@ public interface ITeleportCommandHandler {
 
     boolean tp(Player gate, PlayerData player, @Nullable Double x, @Nullable Double y, @Nullable Double z, @Nullable Float yaw, @Nullable Float pitch, @Nullable String server, @Nullable String world);
 
+    boolean tp(Player gate, PlayerData player, @Nullable Double x, @Nullable Double y, @Nullable Double z, @Nullable Float yaw, @Nullable Float pitch, @Nullable String server, @Nullable String world, boolean notifyPlayer);
+
     void tp(Player gate, PlayerData player, PlayerData target);
 
     boolean tp(CommandSender sender, PlayerData player, @Nullable Double x, @Nullable Double y, @Nullable Double z, @Nullable Float yaw, @Nullable Float pitch, @Nullable String server, @Nullable String world);
 
-    void tp(CommandSender sender, PlayerData player, PlayerData target);
+    void tp(Player gate, PlayerData player, PlayerData target, boolean notifyPlayer);
 
     List<String> suggestTp(String[] args, List<String> suggestions);
 
