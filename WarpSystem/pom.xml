@@ -6,7 +6,7 @@
 
     <groupId>de.codingair</groupId>
     <artifactId>WarpSystem</artifactId>
-    <version>5.1.14_Hotfix-8_VIBE-PAPER-1.21-PATCH</version>
+    <version>5.1.15-add-console-tp</version>
     <packaging>pom</packaging>
 
     <properties>
